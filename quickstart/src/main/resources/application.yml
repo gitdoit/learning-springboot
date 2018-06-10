@@ -1,0 +1,8 @@
+server:
+  port: 8080
+demo:
+  name: sfsdf
+  age: sdfsdf
+  peopro:
+    name: sdf
+    age: sdfsdf
