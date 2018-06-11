@@ -1,8 +1,17 @@
 server:
   port: 8080
-demo:
-  name: sfsdf
-  age: sdfsdf
-  peopro:
-    name: sdf
-    age: sdfsdf
+
+#demo:
+#  name: sfsdf
+#  age: sdfsdf
+#  peopro:
+#    name: sdf
+#    age: sdfsdf
+#    list:
+#      - nihao
+#      - nibuhao
+#    map: {k1: 1,k2: v2}
+#    date: 2018/06/11
+#    dog:
+#      name: 小狗
+#      age: 88

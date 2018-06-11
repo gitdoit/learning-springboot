@@ -24,12 +24,14 @@ public class QuickstartApplicationTests {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private Peo p;
+    //@Autowired
+   // private Peo p;
     @Autowired
     private PeoPor pp;
+
+
     //初始化工作
-    @Before
+    //@Before
     public void setUp() {
         //独立安装测试
         mockMvc = MockMvcBuilders.standaloneSetup(new IndexController()).build();

@@ -3,6 +3,10 @@ package org.seefly.quickstart.domain;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author liujianxin
  * @date 2018-06-09 19:57
@@ -14,6 +18,42 @@ import org.springframework.stereotype.Component;
 public class PeoPor {
     private String name;
     private String age;
+    private List<String> list;
+    private Map<String,String> map;
+    private Date date;
+    private Dog dog;
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public void setDog(Dog dog) {
+        this.dog = dog;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    public Map<String, String> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, String> map) {
+        this.map = map;
+    }
 
     public String getName() {
         return name;
@@ -36,6 +76,10 @@ public class PeoPor {
         return "PeoPor{" +
                 "name='" + name + '\'' +
                 ", age='" + age + '\'' +
+                ", list=" + list +
+                ", map=" + map +
+                ", date=" + date +
+                ", dog=" + dog +
                 '}';
     }
 }

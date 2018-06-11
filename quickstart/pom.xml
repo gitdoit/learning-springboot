@@ -36,6 +36,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--这个用来些yml配置文件的时候能够出现提示-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <!--maven插件，将项目打包成可执行的jar文件，平台无需安装tomcat可直接通过java -jar xxx.jar启动项目-->
     <build>
