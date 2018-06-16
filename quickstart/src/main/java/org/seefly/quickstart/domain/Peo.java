@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @date 2018-06-09 19:04
  * 描述信息：演示属性值的注入，这个跟以前spring一样都
  **/
-@Component
+//@Component
 public class Peo {
     @Value("${demo.name}")
     private String name;

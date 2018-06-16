@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2018-06-09 15:35
  * 描述信息：
  **/
-@Controller
+//@Controller
 public class IndexController {
 
     @Autowired
