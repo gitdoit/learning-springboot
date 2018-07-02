@@ -11,6 +11,7 @@
     <name>quickstart</name>
     <description>Demo project for Spring Boot</description>
 
+
     <!--依赖springboot项目，该父类依赖另一个父类，此父类中表明了具体的依赖，其中就引入了内嵌的tomcat-->
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -19,31 +20,46 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <!--属性定义-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
 
+
+    <!--依赖-->
     <dependencies>
+        <!--web模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <!--模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!--测试模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!--这个用来些yml配置文件的时候能够出现提示-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--lombok注解-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
+
+
     <!--maven插件，将项目打包成可执行的jar文件，平台无需安装tomcat可直接通过java -jar xxx.jar启动项目-->
     <build>
         <plugins>

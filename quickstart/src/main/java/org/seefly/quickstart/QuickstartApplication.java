@@ -15,13 +15,13 @@ import org.springframework.context.annotation.ImportResource;
  *          @Import(AutoConfigurationImportSelector.class) 此注解被组合在@EnableAutoConfiguration中，他的作用是将自动
  *          选择这个应用所依赖的组件，并将他们配置好。
  */
-@SpringBootApplication
 /**
  * 这个注解的作用是导入自定义的组件配置文件，就像一开始学spring的时候写的那些application-service.xml一样
  * 然后在这里指定一下配置文件的位置就可以了。
  * 但是spring现在推荐使用代码配置的方式...
  * @ImportResource(locations = {"classpath:beans.xml"})
  */
+@SpringBootApplication
 public class QuickstartApplication {
 
     public static void main(String[] args) {

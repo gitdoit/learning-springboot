@@ -1,17 +1,17 @@
+#server.servlet.path指定项目访问路径，终于找到了
 server:
   port: 8080
-
-#demo:
-#  name: sfsdf
-#  age: sdfsdf
-#  peopro:
-#    name: sdf
-#    age: sdfsdf
-#    list:
-#      - nihao
-#      - nibuhao
-#    map: {k1: 1,k2: v2}
-#    date: 2018/06/11
-#    dog:
-#      name: 小狗
-#      age: 88
+#debug模式会在springboot启动的时候打印哪些自动配置类启用了哪些没有
+#debug: true
+#  profiles:
+#    active: dev
+---
+server:
+  port: 8081
+spring:
+  profiles: dev
+---
+server:
+  port: 8082
+spring:
+  profiles: prod

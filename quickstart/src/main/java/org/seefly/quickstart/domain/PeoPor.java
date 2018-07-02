@@ -1,5 +1,6 @@
 package org.seefly.quickstart.domain;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -16,13 +17,16 @@ import java.util.Map;
  * 描述信息：通过COnfigurationProPerties注解来将配置文件以domo.peopro为前缀的键值对注入到
  * 该类中对应的属性中
  **/
-@Component
+//@Validated
+
 /**
  * 使用下面这个注解可以指定读取指定的配置文件进行注入
+ * @PropertySource
   */
 @PropertySource(value = {"classpath:peopor.properties"})
 @ConfigurationProperties(prefix = "peopro")
-//@Validated
+@Component
+@Data
 public class PeoPor {
     /**
      * 使用校验器校验属性注入的值是否合法，
@@ -35,63 +39,6 @@ public class PeoPor {
     private Map<String,String> map;
     private Date date;
     private Dog dog;
-    public Dog getDog() {
-        return dog;
-    }
 
-    public void setDog(Dog dog) {
-        this.dog = dog;
-    }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public List<String> getList() {
-        return list;
-    }
-
-    public void setList(List<String> list) {
-        this.list = list;
-    }
-
-    public Map<String, String> getMap() {
-        return map;
-    }
-
-    public void setMap(Map<String, String> map) {
-        this.map = map;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    @Override
-    public String toString() {
-        return "PeoPor{" +
-                "name='" + name + '\'' +
-                ", age='" + age + '\'' +
-                ", list=" + list +
-                ", map=" + map +
-                ", date=" + date +
-                ", dog=" + dog +
-                '}';
-    }
 }
