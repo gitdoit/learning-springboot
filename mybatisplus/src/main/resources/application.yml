@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: root
+    password: shang2010
+    url: jdbc:mysql://47.100.3.134:3306/film?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  row-bounds-with-count: true
