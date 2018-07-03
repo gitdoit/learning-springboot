@@ -4,6 +4,7 @@ package org.seefly.mybatisplus.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import org.seefly.mybatisplus.Enum.UserType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class User extends Model<User> {
     private Integer status;
     private Date last_login_time;
     private String salt;
-    private Integer user_type;
+    private UserType user_type;
     private String login_ip;
     private String last_login_ip;
     @Override

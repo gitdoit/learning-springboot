@@ -11,7 +11,7 @@ import lombok.Getter;
 public enum MethodEnum {
     //注意，如果定义自己的方法，那么要在最后一个枚举后加分号。
     A("这是A"),B("这是B"),C("这是C");
-    private String desc;
+    private final String desc;
     MethodEnum (String desc){
         this.desc = desc;
     }
