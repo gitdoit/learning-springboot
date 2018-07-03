@@ -4,4 +4,4 @@
 1. quickstart---快速开始，springboot基础配置文件及属性注入
 2. bmybatis-----springboot+mybatis-plust+pageHelper学习
 </br>
-个人网站：[http://www.wohaolihai.com](http://www.wohaol}ihai.com)
+个人网站：[网站链接](http://www.wohaolihai.com)
