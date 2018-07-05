@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
+
 /**
  * @author liujianxin
  * @date 2018-06-09 15:35
@@ -42,6 +44,14 @@ public class IndexController {
     @ResponseBody
     public String batch(TestReq req){
         System.out.println(req);
+        return "ok";
+    }
+
+
+    @RequestMapping("/d")
+    @ResponseBody
+    public String date(Date date){
+        System.out.println(date);
         return "ok";
     }
 }

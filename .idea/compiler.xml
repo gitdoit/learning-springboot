@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="bmybatis" />
+        <module name="java" />
         <module name="quickstart" />
       </profile>
     </annotationProcessing>
