@@ -11,7 +11,7 @@
 
     <modules>
         <module>quickstart</module>
-        <module>bmybatis</module>
+        <module>mybatisplus</module>
         <module>java</module>
     </modules>
 </project>
