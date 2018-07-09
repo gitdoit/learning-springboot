@@ -33,8 +33,6 @@ public class MybatisConfigMetaObjOptLockConfig {
 
     @Bean("mybatisSqlSession")
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourcePatternResolver resolver, GlobalConfig globalConfiguration) throws Exception {
-        System.out.println(dataSource.getClass()+"======================================");
-        System.out.println(dataSource.getConnection().getMetaData().getURL()+"================================================");
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         //model设置别名，这样在写mapper.xml的时候就不用指定参数或者返回值类型的全限定名了

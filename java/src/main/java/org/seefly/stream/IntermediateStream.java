@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -70,6 +71,47 @@ public class IntermediateStream {
 
         Stream<Integer> stream1 = new ArrayList<>(asList(1, 2, 3, 4)).stream();
         stream1.filter(i -> i%2 == 0).forEach(System.out::print);
+    }
+
+
+    /**
+     * 测试peek操作，直译过来就是瞥一眼，API上介绍说，这个通常用来debug用的
+     * 这个操作跟forEach很象，但是forEach是一个消耗流操作，这个不是
+     * 他就是瞥一眼，不能对元素有任何操作.
+     * 注意：如果一个流，在没有被消耗掉之前，使用peek他是不会起作用的。
+     * 也就是说，你想使用peek瞥一眼，只有在流被消耗掉的时候它才去瞥一眼，不然不会
+     */
+    @Test
+    public void testPeek(){
+        Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
+        // 看看这个操作，先是过滤奇数，然后瞥一眼
+        // 再将过滤后的之加一，再瞥一眼。本以为打印的结果应该是 2 4 3 5.但是没有想到是2345
+        // 为啥呢？我也不知道
+        stream.filter(e -> e % 2 == 0).peek(System.out::print).
+               map(e -> e + 1).peek(System.out::print).
+               collect(Collectors.toList());
+
+        Stream.of("one", "two", "three", "four") .filter(e -> e.length() > 3)
+               .peek(e -> System.out.println("Filtered value: " + e))
+                .map(String::toUpperCase)
+                .peek(e -> System.out.println("Mapped value: " + e))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * findFirst和findAny
+     * findFist是找到第一个
+     * findAny是找到任意一个
+     * 示例：https://zhidao.baidu.com/question/1498838916214323339.html
+     * 下面的几种方法都会返回一个Optional
+     */
+    @Test
+    public void testFindFirst(){
+        Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
+        stream.max(Integer::compareTo).ifPresent(System.out::print);
+        stream.min(Integer::compareTo).ifPresent(System.out::print);
+        stream.findFirst().ifPresent(System.out::print);
+        stream.findAny().ifPresent(System.out::print);
     }
 
 
