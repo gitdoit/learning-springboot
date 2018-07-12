@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: seefly
+  rocketmq:
+        producer:
+          instanceName: market_phone_service_producer
+        consumer:
+          subscribe: op_device_cmd
+        topic:
+          event-topic: MICRO_WX_MSG_TASK_RESULT_TPOIC
+  rocket-mq:
+    namesrv-addr: localhost:9876
+    consumer:
+      group: micro-biz-consumer
+      subscribe: MICRO_WX_MSG_STATUS_TOPIC
