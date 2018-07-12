@@ -1,0 +1,19 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+.gitignore
+.idea/workspace.xml
+java/src/main/java/org/seefly/App.java
+java/src/test/
+java/target/
+mybatisplus/target/
+quickstart/src/main/resources/public/
+quickstart/src/main/resources/resources/
+quickstart/src/main/resources/static/
+quickstart/target/

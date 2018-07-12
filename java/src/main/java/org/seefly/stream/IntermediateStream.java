@@ -57,6 +57,15 @@ public class IntermediateStream {
         // 可见多个list流合并为一个list流
         Stream<Integer> integerStream = listStream.flatMap(s -> s.stream());
         //listStream1.forEach(System.out::print);
+
+        /*
+        *
+        * Stream.of(req.getFansList(), req.getGroupList()).flatMap(s -> s.stream()).forEach(d -> {
+                    WxFansStatus status = WxFansStatus.valueOfByStatus(d.getStatus());
+                    UpdateWxFansExclude updateWxFansExclude = new UpdateWxFansExclude(d.getId(), d.getWxId(), wxUserId, status);
+                    updateList.add(updateWxFansExclude);
+        });
+        * */
     }
 
 
