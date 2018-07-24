@@ -36,7 +36,9 @@ public class MybatisConfigMetaObjOptLockConfig {
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         //model设置别名，这样在写mapper.xml的时候就不用指定参数或者返回值类型的全限定名了
-        sqlSessionFactory.setTypeAliasesPackage("org.seefly.myplus.model");
+        sqlSessionFactory.setTypeAliasesPackage("org.seefly.mybatisplus.model");
+        // 扫描注解
+        sqlSessionFactory.setTypeEnumsPackage("org.seefly.mybatisplus.Enum");
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
         configuration.setJdbcTypeForNull(JdbcType.NULL);

@@ -1,7 +1,7 @@
 package org.seefly.stream;
 
+import lombok.Data;
 import org.junit.Test;
-import org.seefly.pojo.User;
 
 import java.util.Optional;
 
@@ -29,5 +29,15 @@ public class OptionalTest {
         Optional<Object> o = Optional.ofNullable(user);
         //基本用法。如果存在，则执行给定的lambda
         o.ifPresent(System.out::print);
+    }
+
+    @Data
+    private static class User{
+        private String userName;
+        private String email;
+        public User(String userName,String email){
+            this.email = email;
+            this.userName = userName;
+        }
     }
 }

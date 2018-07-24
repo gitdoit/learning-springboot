@@ -40,7 +40,7 @@ public class RocketConsumerConfig {
     /**
      * 群发消息结果通知的消费者
      */
-    @Bean(destroyMethod = "shutdown", name = "wxMsgTaskResultConsumer")
+    @Bean(destroyMethod = "shutdown", name = "myConsumer")
     @Lazy(false)
     public MQPushConsumer wxMsgTaskResultConsumer() throws MQClientException {
         // consumerGroup,协议，消息队列算法-平均散列队列算法

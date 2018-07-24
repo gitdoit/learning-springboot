@@ -66,7 +66,6 @@ public class RocketProducerConfig {
             producer.setInstanceName(rocketConf.getProducer().getInstanceName());
         }
         producer.setVipChannelEnabled(false);
-
         producer.start();
         log.info("RocketMq cmdProducer Started.");
         return producer;

@@ -1,10 +1,11 @@
 package org.seefly.quickstart.web;
 
-import org.seefly.quickstart.domain.Peo;
 import org.seefly.quickstart.domain.PeoPor;
+import org.seefly.quickstart.domain.RestBean;
 import org.seefly.quickstart.request.TestReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,11 +48,25 @@ public class IndexController {
         return "ok";
     }
 
+    @RequestMapping("/bean")
+    public String beanName(){
+        System.out.println("beanmae");
+        return "helloView";
+    }
+
 
     @RequestMapping("/d")
     @ResponseBody
     public String date(Date date){
         System.out.println(date);
         return "ok";
+    }
+
+
+    @RequestMapping("/rest")
+    public String rest(ModelMap modelMap){
+        RestBean bean = new RestBean();
+        modelMap.addAttribute("bean",bean);
+        return "spittles";
     }
 }
