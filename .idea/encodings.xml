@@ -2,17 +2,25 @@
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A1_StartAfterDead.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A1_ThreadClass.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A2_FutureTask.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A3_DeamonThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A4_ThreadGroup.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A5_ThreadPool.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/A6_InterruptMethod.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B1_SynBasic.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B2_SynBlock.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B3_WaitNotify.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B4_Yield.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B5_NotifyAll.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B6_UnSys.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/B7_SysByBlockingQueue.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java/src/main/java/org/seefly/thread/BlockingQueueDemo1.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatisplus" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quickstart" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rocketmq" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

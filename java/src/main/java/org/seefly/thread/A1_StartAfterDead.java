@@ -1,9 +1,9 @@
 package org.seefly.thread;
 /**
- * @author Áõ½¨öÎ
- *Ò»¸öÏß³ÌËÀÍöÖ®ºó²»ÄÜÔÙÍ¨¹ıstar()·½·¨ÊÔÍ¼Ê¹ËûÔÙ´ÎÔËĞĞ¡£·ñÔò³öÏÖIllegalThreadStateException
- *Ò»¸öÏß³ÌÔÚÕı³£½áÊøºó£¬Å×³öÒ»¸öÎ´²¶»ñµÄÒì³££¬µ÷ÓÃstopºó»áËÀÍö¡£
- *Ïß³ÌÔÚĞÂ½¨Ì¬ÒÔ¼°ËÀÍöÌ¬Ê±µ÷ÓÃisAlive·½·¨Ê±·µ»Øfalse
+ * @author åˆ˜å»ºé‘«
+ *ä¸€ä¸ªçº¿ç¨‹æ­»äº¡ä¹‹åä¸èƒ½å†é€šè¿‡star()æ–¹æ³•è¯•å›¾ä½¿ä»–å†æ¬¡è¿è¡Œã€‚å¦åˆ™å‡ºç°IllegalThreadStateException
+ *ä¸€ä¸ªçº¿ç¨‹åœ¨æ­£å¸¸ç»“æŸåï¼ŒæŠ›å‡ºä¸€ä¸ªæœªæ•è·çš„å¼‚å¸¸ï¼Œè°ƒç”¨stopåä¼šæ­»äº¡ã€‚
+ *çº¿ç¨‹åœ¨æ–°å»ºæ€ä»¥åŠæ­»äº¡æ€æ—¶è°ƒç”¨isAliveæ–¹æ³•æ—¶è¿”å›false
  * */
 public class A1_StartAfterDead {
 	public static void main(String[] args) {
@@ -16,9 +16,9 @@ public class A1_StartAfterDead {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-        //´Ë´¦ÓÉÓÚÊ¹ÓÃÁËjoin·½·¨£¬¿Ï¶¨·µ»Øfalse
+        //æ­¤å¤„ç”±äºä½¿ç”¨äº†joinæ–¹æ³•ï¼Œè‚¯å®šè¿”å›false
 		System.out.println("isAlive after join:"+t.isAlive());;
-        //ÕâÀïÊÔÍ¼Ê¹ÒÑ¾­ËÀÍöµÄÏß³ÌÖØĞÂÆô¶¯¡£±¨´í£ºIllegalThreadStateException
+        //è¿™é‡Œè¯•å›¾ä½¿å·²ç»æ­»äº¡çš„çº¿ç¨‹é‡æ–°å¯åŠ¨ã€‚æŠ¥é”™ï¼šIllegalThreadStateException
 		t.start();
 	}
 
