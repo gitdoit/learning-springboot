@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyAppConfig {
 
+
+
     @Bean
     public HelloService helloService(){
         System.out.println("使用代码配置向容器中注入HelloService...");

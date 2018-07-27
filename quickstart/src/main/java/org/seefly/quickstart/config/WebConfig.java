@@ -3,6 +3,9 @@ package org.seefly.quickstart.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -20,6 +23,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,16 +39,32 @@ import java.util.Map;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+    /**
+     * 添加自定义的消息转换器
+     * 当请求头中的Accept=liujianxin/haoniubi;charset=utf-8的时候
+     * 将会使用我这个转换器进行转换
+     * @param converters
+     */
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        /*StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+        List<MediaType> list = Collections.emptyList();
+        list.add(new MediaType("liujianxin","haoniubi",StandardCharsets.UTF_8));
+        converter.setSupportedMediaTypes(list);
+        converters.add(converter);*/
+        super.configureMessageConverters(converters);
+    }
+
 
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         // 设置默认响应类型,当没有从后缀，请求头，参数中获取到响应类型时默认返回json格式
-        configurer.defaultContentType(MediaType.APPLICATION_JSON);
+        //configurer.defaultContentType(MediaType.APPLICATION_JSON);
         // 忽略请求头中的响应类型
-        configurer.ignoreAcceptHeader(true);
+        //configurer.ignoreAcceptHeader(true);
         // application/json
-        configurer.mediaType("json",MediaType.APPLICATION_JSON);
+        //configurer.mediaType("json",MediaType.APPLICATION_JSON);
     }
 
     @Bean
