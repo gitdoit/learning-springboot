@@ -1,12 +1,19 @@
 package org.seefly.quickstart.config;
 
+import lombok.extern.slf4j.Slf4j;
+import org.seefly.quickstart.anno.MyParamAnno;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -21,6 +28,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.Charset;
@@ -35,9 +43,39 @@ import java.util.Map;
  * @date 2018-07-13 09:37
  * 描述信息：
  **/
-
+@Slf4j
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
+
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        HandlerMethodArgumentResolver resolver = new HandlerMethodArgumentResolver(){
+            /**
+             * 可以处理带有@MyparamAnno注解的参数解析绑定
+             * @param parameter
+             * @return
+             */
+            @Override
+            public boolean supportsParameter(MethodParameter parameter) {
+                return parameter.hasParameterAnnotation(MyParamAnno.class);
+            }
+            @Override
+            public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                          NativeWebRequest request, WebDataBinderFactory binderFactory) throws Exception {
+                String paramValue =  request.getParameter(parameter.getParameterName());
+                log.info("参数名称："+parameter.getParameterName());
+                Object arg = null;
+                if (paramValue != null) {
+                    arg = paramValue+"liujianxinniubi";
+                }
+                log.info("请求值："+arg);
+                return arg;
+            }
+        };
+        argumentResolvers.add(resolver);
+        super.addArgumentResolvers(argumentResolvers);
+    }
 
     /**
      * 添加自定义的消息转换器
@@ -170,4 +208,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
+
 }

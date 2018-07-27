@@ -1,8 +1,10 @@
 package org.seefly.quickstart.web;
 
+import org.seefly.quickstart.anno.MyParamAnno;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Enumeration;
 
 /**
@@ -89,4 +91,36 @@ public class ParamController {
         System.out.println(add);
         return age;
     }
+
+
+    @RequestMapping(value = "/date",method = RequestMethod.GET)
+    public String custmoPram(Date date){
+        System.out.println(date);
+        return date.toString();
+    }
+
+    /**
+     * 测试自定义注解配合自定义消息解析器
+     * 我自定义的消息解析器在检测到方法的参数上含有自定义注解@myParamAnno时会启用自定义
+     * 消息转解析转换消息
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/res",method = RequestMethod.GET)
+    public String testCustom(@MyParamAnno String name){
+        System.out.println(name);
+        return name;
+    }
+
+    /**
+     * 我们知道如果使用@RequestBody注解，那么将会启用RequestResponseBodyMethodProcessor
+     * 进行消息处理，
+     * @return
+     */
+    @RequestMapping(value = "/body")
+    public String testRequestBody(@RequestBody String body){
+        return null;
+    }
+
+
 }
