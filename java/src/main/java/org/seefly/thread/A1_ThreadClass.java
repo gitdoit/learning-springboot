@@ -1,4 +1,5 @@
 package org.seefly.thread;
+
 /**
  * @author 刘建鑫
  * Thread的定义：public class Thread extends Object implements Runnable
@@ -21,8 +22,6 @@ public class A1_ThreadClass {
 		ThreadDemo A = new ThreadDemo("A");
         //通过A内的方法start直接启动线程
 		A.start();
-
-
 		//实例化接口Runnable
 		RunnableDemo B = new RunnableDemo("B");
         //由于实例B为Runnable接口实例，自身无法启动。可通过实例化Thread对象，将Runnable参数传入启动

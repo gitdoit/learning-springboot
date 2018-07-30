@@ -5,7 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author 刘建鑫
- * 本线程用来演示ReentrantLock的使用方法
+ * 本线程用来演示ReentrantLock的基本使用方法,用来代替Sychronized关键字
+ *
  * 注意，上锁解锁一定是成对出现的。而且要要将解锁步骤放进finally块内，保证一定会被执行到。
  * <p>
  * ReentrantLock锁具有可重入性，也就是说一个线程可以对已经被枷锁的ReentrantLock锁再次加锁；
