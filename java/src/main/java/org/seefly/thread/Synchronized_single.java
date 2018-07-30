@@ -1,43 +1,53 @@
 package org.seefly.thread;
+
 /**
- * ¸ÃÀàÓÃÀ´ÑİÊ¾µ¥ÀıÄ£Ê½ÏÂµÄÀÁººÊ½ºÍÍ¬²½´úÂë¿éµÄÁªÏµ
- * 
- * ÎÊÀÁººÊ½ºÍ¶öººÊ½ÓĞÊ²Ã´²»Í¬£¿
- * 		ÀÁººÊ½µÄÌØµãÊÇÊµÀıµÄÑÓÊ±¼ÓÔØ
- * ÄÇÃ´ÕâÑù»á²»»áÓĞÊ²Ã´ÎÊÌâ£¿
- * 		ÓĞ£¬ÔÚ¶àÏß³Ì·ÃÎÊÊ±»á³öÏÖ°²È«ÎÊÌâ
- * ÔõÃ´½â¾ö£¿
- * 		¿ÉÒÔ¼ÓÍ¬²½À´½â¾ö£¬µ«ÊÇÕâÑù»áÓĞĞ©µÍĞ§£¬¿ÉÒÔ¼ÓË«ÖØÅĞ¶ÏÀ´½â¾ö¡£
- * ¼ÓÍ¬²½µÄÊ±ºò£¬Ê¹ÓÃµÄËøÊÇÄÄÒ»¸ö£¿
- * 		¸ÃÀàËùÊôµÄ×Ö½ÚÂëÎÄ¼ş¶ÔÏó
- * */
+ * è¯¥ç±»ç”¨æ¥æ¼”ç¤ºå•ä¾‹æ¨¡å¼ä¸‹çš„æ‡’æ±‰å¼å’ŒåŒæ­¥ä»£ç å—çš„è”ç³»
+ * <p>
+ * é—®æ‡’æ±‰å¼å’Œé¥¿æ±‰å¼æœ‰ä»€ä¹ˆä¸åŒï¼Ÿ
+ * æ‡’æ±‰å¼çš„ç‰¹ç‚¹æ˜¯å®ä¾‹çš„å»¶æ—¶åŠ è½½
+ * é‚£ä¹ˆè¿™æ ·ä¼šä¸ä¼šæœ‰ä»€ä¹ˆé—®é¢˜ï¼Ÿ
+ * æœ‰ï¼Œåœ¨å¤šçº¿ç¨‹è®¿é—®æ—¶ä¼šå‡ºç°å®‰å…¨é—®é¢˜
+ * æ€ä¹ˆè§£å†³ï¼Ÿ
+ * å¯ä»¥åŠ åŒæ­¥æ¥è§£å†³ï¼Œä½†æ˜¯è¿™æ ·ä¼šæœ‰äº›ä½æ•ˆï¼Œå¯ä»¥åŠ åŒé‡åˆ¤æ–­æ¥è§£å†³ã€‚
+ * åŠ åŒæ­¥çš„æ—¶å€™ï¼Œä½¿ç”¨çš„é”æ˜¯å“ªä¸€ä¸ªï¼Ÿ
+ * è¯¥ç±»æ‰€å±çš„å­—èŠ‚ç æ–‡ä»¶å¯¹è±¡
+ */
 public class Synchronized_single {
 
+    private static class Single {
+        private static Single s = null;
+
+        private Single() {
+        }
+
+        public static Single getInstanc() {
+            if (s == null) {
+                synchronized (Single.class) {
+                    if (s == null) {
+                        s = new Single();
+                    }
+                }
+            }
+            return s;
+        }
+    }
+
+
+    private static class Single1 {
+        private static final Single1 s = new Single1();
+
+        private Single1() {
+        }
+
+        public static Single1 getInstance() {
+            return s;
+        }
+    }
+
+
 }
 
-class Single{
-	private static Single s = null;
-	private Single(){}
-	
-	public static Single getInstanc(){//ÀÁººÊ½
-		if(s == null)
-		{
-			synchronized(Single.class)
-			{
-				if(s == null){
-					s = new Single();
-				}
-			}
-		}
-		return s;
-	}
-}
 
-class Single1{//¶öººÊ½
-	private static final Single1 s = new Single1();
-	private Single1(){};
-	public static Single1 getInstance(){
-		return s;
-	}
-}
+
+
 

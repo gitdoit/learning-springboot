@@ -33,7 +33,9 @@ public class RocketConsumerConfig {
 
     @Value("${spring.rocketmq.topic.event-topic}")
     private String eventTopic;
-
+    /**
+     * spring事件发布
+     */
     @Resource
     private ApplicationEventPublisher eventPublisher;
 
@@ -61,13 +63,15 @@ public class RocketConsumerConfig {
         consumer.setConsumeThreadMax(consumerConfig.getMaxConsumers());
         //设置订阅的topic
         consumer.subscribe(eventTopic, "*");
-        //给一个匿名的Event
+        //注册消息监听，给一个匿名的Event
         consumer.registerMessageListener((List<MessageExt> msgs, ConsumeConcurrentlyContext context) -> {
             MessageExt msg = msgs.get(0);
             try {
                 System.out.println("有消息");
+                //自定义事件
                 MessageListener event = JSON.parseObject(new String(msg.getBody()), MessageListener.class);
                 event.setId(msg.getMsgId());
+                //配合spring的事件机制，当有消息时则发布一个事件，对应的监听器则会监听到
                 eventPublisher.publishEvent(event);
             } catch (Exception e) {
                 log.error("消息处理异常 [{}:{}]", msg.getTopic(), msg.getMsgId(), e);
