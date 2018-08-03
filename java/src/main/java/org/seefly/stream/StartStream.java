@@ -2,6 +2,8 @@ package org.seefly.stream;
 
 import org.junit.Test;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +19,14 @@ import java.util.stream.Stream;
  **/
 public class StartStream {
 
+
+    @Test
+    public void test1(){
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        //过滤空集合，否则当后面的操作会报错。这里即使过滤掉了所有的元素 后面的操作都不会报异常
+        Stream.of(list, null).filter(CollectionUtils::isNotEmpty).flatMap(List::stream).forEach(System.out::print);
+    }
     /**
      * 创建Stream流的几种方式
      */

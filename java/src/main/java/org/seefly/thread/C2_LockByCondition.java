@@ -56,13 +56,12 @@ public class C2_LockByCondition {
     }
 
 
-
-
+    /**
+     * 自定义一个同步线程容器
+     */
     private static class SysQueue {
-        /**
-         * 同步容器
-         */
-        private final List<Integer> list = new ArrayList<>();
+
+        private final List<Integer> list;
         private final int capacity;
         private int index = 0;
 
@@ -79,7 +78,7 @@ public class C2_LockByCondition {
         public SysQueue(int capacity) {
             assert capacity > 0 && capacity < Integer.MAX_VALUE;
             this.capacity = capacity;
-
+            this.list = new ArrayList<>(capacity);
         }
 
         /**

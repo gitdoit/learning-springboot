@@ -15,11 +15,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * lock.lock//加锁
  * try
  * {
- * 需要同步的代码
+ *      需要同步的代码
  * }
  * finally
- * {
- * lock.unlock;//释放锁
+ * {    //释放锁
+ *      lock.unlock;
  * }
  * *
  */
