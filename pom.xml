@@ -13,5 +13,7 @@
         <module>quickstart</module>
         <module>mybatisplus</module>
         <module>java</module>
+        <module>redis</module>
+        <module>rocketmq</module>
     </modules>
 </project>

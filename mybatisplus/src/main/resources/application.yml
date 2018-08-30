@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: shang2010
-    url: jdbc:mysql://47.100.3.134:3306/film?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=true
+    url: jdbc:mysql://119.23.252.178:3306/website?useUnicode=true&characterEncoding=utf8&autoReconnect=true
 pagehelper:
   helperDialect: mysql
   reasonable: true

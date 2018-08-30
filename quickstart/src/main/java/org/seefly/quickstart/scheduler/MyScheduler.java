@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 2018-08-03 14:44
  * 描述信息：
  **/
-@Component
+//@Component
 public class MyScheduler {
 
     @Resource(name="taskExecutor")

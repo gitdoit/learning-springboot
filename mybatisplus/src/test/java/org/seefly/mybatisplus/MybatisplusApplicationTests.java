@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seefly.mybatisplus.Enum.UserType;
 import org.seefly.mybatisplus.mapper.UserMapper;
+import org.seefly.mybatisplus.model.MacInfo;
 import org.seefly.mybatisplus.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,12 @@ public class MybatisplusApplicationTests {
 
     @Test
     public void testUpdate(){
-        User user  = new User(1,null);
+       /* MacInfo mc = new MacInfo();
+        mc.setDeviceMac("sdfsdf");
+        mc.setSourceMac("sdfsf:sdfsf");
+        mc.setTargetMac("sdfsdf:sdfsdf:aaaa");
+        mc.insert();*/
+       User user = new User(333,"sdfsdfsdfsfd");
     }
 
 }

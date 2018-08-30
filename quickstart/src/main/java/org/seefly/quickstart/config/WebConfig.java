@@ -85,11 +85,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        /*StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+        StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
         List<MediaType> list = Collections.emptyList();
         list.add(new MediaType("liujianxin","haoniubi",StandardCharsets.UTF_8));
         converter.setSupportedMediaTypes(list);
-        converters.add(converter);*/
+        converters.add(converter);
         super.configureMessageConverters(converters);
     }
 

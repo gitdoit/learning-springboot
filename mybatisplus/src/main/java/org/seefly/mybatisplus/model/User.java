@@ -29,6 +29,10 @@ public class User extends Model<User> {
     private UserType user_type;
     private String login_ip;
     private String last_login_ip;
+    public String[] haha = null;
+
+    public User(){}
+
 
     public User(Integer id, String login_name, String login_pwd, Timestamp create_time, Integer status, Timestamp last_login_time, String salt, Integer user_type, String login_ip, String last_login_ip) {
         this.id = id;

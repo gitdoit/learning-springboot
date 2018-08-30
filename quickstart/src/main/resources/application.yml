@@ -4,6 +4,9 @@ server:
 spring:
   profiles:
     active: dev
+binder:
+  name: binder
+  add: chinaanhui
 #debug模式会在springboot启动的时候打印哪些自动配置类启用了哪些没有
 #debug: true
 #  profiles:
@@ -12,6 +15,10 @@ spring:
 ---
 spring:
   profiles: dev
+  datasource:
+      username: root
+      password: shang2010
+      url: jdbc:mysql://119.23.252.178:3306/website?useUnicode=true&characterEncoding=utf8&autoReconnect=true
 ---
 spring:
   profiles: prod
