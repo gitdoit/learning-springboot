@@ -17,3 +17,8 @@ quickstart/src/main/resources/public/
 quickstart/src/main/resources/resources/
 quickstart/src/main/resources/static/
 quickstart/target/
+src/main/java/org/seefly/redis/RedisApplication.java
+src/main/resources/application.yml
+src/main/resources/static/
+src/main/resources/templates/
+src/test/

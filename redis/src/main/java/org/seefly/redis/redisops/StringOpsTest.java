@@ -1,13 +1,8 @@
 package org.seefly.redis.redisops;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.BoundValueOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,11 +16,8 @@ import java.util.concurrent.TimeUnit;
  * @author liujianxin
  * @date 2018-08-30 13:11
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class StringOps {
-    @Autowired
-    private RedisTemplate<String, String> template;
+
+public class StringOpsTest extends BaseOps {
 
     /**
      * 基本字符串操作
@@ -33,15 +25,19 @@ public class StringOps {
     @Test
     public void opt1() {
         // 绑定key，可以避免下面的每次操作都重复的绑定key
-        BoundValueOperations<String, String> ops = template.boundValueOps("string:set");
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:set");
         // 由于上面已经指定了key，这里可以直接放入value。若该key已有对应的value，则会覆盖
         ops.set("hello ");
         // 从指定偏移量开始覆盖该key对应的value
         ops.set("redis", 7);
-        //追加
+        //追加，若不存在则创建
         ops.append("!");
         ops.setIfAbsent("set如果不存在");
         System.out.println(ops.get());
+        //返回该键对应的值的长度
+        //ops.size();
+        //见名知意
+        //ops.getAndSet()
     }
 
     /**
@@ -56,7 +52,7 @@ public class StringOps {
      */
     @Test
     public void opt2() throws InterruptedException {
-        BoundValueOperations<String, String> ops = template.boundValueOps("string:timer");
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:timer");
         //5秒后删除
         ops.set("delete me later", 5, TimeUnit.SECONDS);
         System.out.println("计时开始:" + ops.get());
@@ -73,18 +69,47 @@ public class StringOps {
         kv.put("string:multiSet:key1","value1");
         kv.put("string:multiSet:key2","value2");
         //同时放入多个键值对
-        template.opsForValue().multiSet(kv);
+        stringTemplate.opsForValue().multiSet(kv);
+        //template.opsForValue().multiSetIfAbsent();
 
 
         List<String> keys = new ArrayList<>(2);
         keys.add("string:multiSet:key1");
         keys.add("string:multiSet:key2");
         //同时获取多个值
-        List<String> values = template.opsForValue().multiGet(keys);
+        List<String> values = stringTemplate.opsForValue().multiGet(keys);
         for(String value : values){
             System.out.println(value);
         }
+
+
     }
 
+    /**
+     * 支持对整数的自增和double的自增
+     */
+    @Test
+    public void opt4() {
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:longInc");
+        ops.set("2333");
+        System.out.println("自增前："+ops.get());
+        ops.increment(4333);
+        System.out.println("自增后："+ops.get());
+    }
+
+    /**
+     * 演示bit操作
+     * 对指定位置上的比特位进行变换
+     * 0 -->48 --> 0011 0000
+     * 1 -->49 --> 0011 0001
+     */
+    @Test
+    public void opt5(){
+        ValueOperations<String, String> opsForValue = stringTemplate.opsForValue();
+        opsForValue.set("string:bit","0");
+        //把0的二进制第7位变为1
+        opsForValue.setBit("string:bit",7,true);
+        System.out.println(opsForValue.get("string:bit"));
+    }
 
 }

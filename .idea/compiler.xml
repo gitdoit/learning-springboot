@@ -9,6 +9,7 @@
         <module name="java" />
         <module name="mybatisplus" />
         <module name="quickstart" />
+        <module name="redis" />
         <module name="rocketmq" />
       </profile>
     </annotationProcessing>
