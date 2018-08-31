@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 该类用来演示redis的对list数据类型操作
+ * 该数据类型实际为双向链表的形式对数据进行存储
+ * 所以它既有常规的链表特性，也有栈的特性
+ * 基于此，我们可以用这个数据类型来完成例如最新消息排行榜，最新回复等功能
  * @author liujianxin
  * @date 2018-08-30 14:51
  */

@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 该类用来演示redis的String类型数据操作
+ * 使用场景
+ *  计数操作，如文章阅读量等字段
+ *  数据有效期
  *
  * @author liujianxin
  * @date 2018-08-30 13:11

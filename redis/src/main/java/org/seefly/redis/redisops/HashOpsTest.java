@@ -2,12 +2,22 @@ package org.seefly.redis.redisops;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 使用场景
+ *  对结构化数据存储，例如存储用户信息的某些字段
+ *  将一个javaBean缓存到redis中
+ *  使用其中某个唯一字段作为其主键，其他属性以键值对的形式存放
+ *  这样可以使用这个唯一字段获取到这个被缓存的javaBean
+ *  或者使用唯一主键字段+字段名获取到指定的属性值
+ *  这个数据类型用起来和关系型数据库很像
+ *
  * @author liujianxin
  * @date 2018-08-30 17:14
  */
@@ -40,6 +50,8 @@ public class HashOpsTest extends BaseOps {
         if (ops.hasKey("name")) {
             //获取指定键对应的值
             System.out.println(ops.get("name"));
+            //删除指定的key-value对
+            //ops.delete("name");
         }
         //同时获取多个
         System.out.println(ops.multiGet(Arrays.asList("name", "info")));
@@ -50,8 +62,24 @@ public class HashOpsTest extends BaseOps {
         System.out.println(ops.values());
         //该散列表下的所有键值对
         ops.entries().forEach((k,v) ->{
-            //do your work
+            //ops.delete(k);
         });
 
+
+    }
+
+    /**
+     * 遍历操作
+     */
+    @Test
+    public void ops3(){
+        BoundHashOperations<String, Object, Object> ops = objTemplate.boundHashOps("hash:put");
+        Cursor<Map.Entry<Object, Object>> scan = ops.scan(ScanOptions.scanOptions().count(2).match("info").build());
+        while(scan.hasNext()){
+            Map.Entry<Object, Object> next = scan.next();
+            System.out.println(scan.getCursorId());
+            System.out.println(scan.getPosition());
+            System.out.println(next.getKey()+":"+next.getValue());
+        }
     }
 }

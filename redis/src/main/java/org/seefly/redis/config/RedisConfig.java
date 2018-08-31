@@ -26,6 +26,10 @@ public class RedisConfig {
     @Autowired
     private Environment env;
 
+    /**
+     * 连接池
+     * @return
+     */
     @Bean("jedisConnectionFactory")
     public JedisConnectionFactory factory() {
         RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration();
