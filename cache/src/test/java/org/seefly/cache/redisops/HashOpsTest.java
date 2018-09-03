@@ -1,4 +1,4 @@
-package org.seefly.redis.redisops;
+package org.seefly.cache.redisops;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundHashOperations;

@@ -1,4 +1,4 @@
-package org.seefly.redis.config;
+package org.seefly.cache.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
