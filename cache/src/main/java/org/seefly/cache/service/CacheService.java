@@ -1,5 +1,6 @@
 package org.seefly.cache.service;
 
+import org.seefly.cache.cache.Cachebel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -14,8 +15,14 @@ public class CacheService {
     @Autowired
     private StringRedisTemplate template;
 
-    @Cacheable(key="#id",value = "testCache")
+    @Cachebel(key="#id",expireTime = 3600)
     public String getInfo(String id){
+        System.out.println("get from redis");
         return template.boundValueOps(id).get();
+    }
+
+
+    public String getBySel(){
+        return null;
     }
 }

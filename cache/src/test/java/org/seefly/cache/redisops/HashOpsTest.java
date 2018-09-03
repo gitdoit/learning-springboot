@@ -1,11 +1,14 @@
 package org.seefly.cache.redisops;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,15 @@ import java.util.Map;
  * @date 2018-08-30 17:14
  */
 public class HashOpsTest extends BaseOps {
+
+    @Autowired
+    private EhCacheCacheManager manager;
+    @Test
+    public void test1(){
+        Collection<String> names = manager.getCacheNames();
+        System.out.println(names);
+    }
+
 
     /**
      * 基本添加操作
