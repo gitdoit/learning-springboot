@@ -11,14 +11,6 @@ binder:
 #debug: true
 #  profiles:
 #    active: dev
-
----
-spring:
-  profiles: dev
-  datasource:
-      username: root
-      password: shang2010
-      url: jdbc:mysql://119.23.252.178:3306/website?useUnicode=true&characterEncoding=utf8&autoReconnect=true
 ---
 spring:
   profiles: prod

@@ -6,12 +6,16 @@ import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import javax.sql.DataSource;
@@ -23,7 +27,11 @@ import javax.sql.DataSource;
  **/
 @MapperScan("org.seefly.quickstart.mapper")
 @Configuration
-public class MybatisConfigMetaObjOptLockConfig {
+@PropertySource("classpath:privateConfig.properties")
+public class MybatisConfig {
+
+    @Autowired
+    private Environment env;
 
     @Bean("mybatisSqlSession")
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourcePatternResolver resolver) throws Exception {
@@ -36,7 +44,6 @@ public class MybatisConfigMetaObjOptLockConfig {
 
         //开启输出执行的sql语句，输出到控制台。也可以指定其他的类，输出到文件或者数据库等地方
         configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
-
         //开启驼峰命名，将login_name -->loginName
         configuration.setMapUnderscoreToCamelCase(true);
 
@@ -51,6 +58,18 @@ public class MybatisConfigMetaObjOptLockConfig {
         sqlSessionFactory.setMapperLocations(resolver.getResources("classpath*:mybatis/mapper/*.xml"));
         TableInfoHelper.initSqlSessionFactory(sqlSessionFactory.getObject());
         return sqlSessionFactory.getObject();
+    }
+
+    /**
+     * 数据源，使用Hikari
+     */
+    @Bean
+    public DataSource dataSource(){
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setUsername(env.getProperty("database.username"));
+        dataSource.setPassword(env.getProperty("database.password"));
+        dataSource.setJdbcUrl(env.getProperty("database.url"));
+        return dataSource;
     }
 
 
