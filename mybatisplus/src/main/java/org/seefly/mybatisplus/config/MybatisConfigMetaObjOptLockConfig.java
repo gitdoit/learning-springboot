@@ -9,12 +9,16 @@ import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import javax.sql.DataSource;
@@ -29,8 +33,11 @@ import javax.sql.DataSource;
 
 @MapperScan("org.seefly.mybatisplus.mapper")
 @Configuration
+@PropertySource("classpath:privateConfig.properties")
 public class MybatisConfigMetaObjOptLockConfig {
 
+    @Autowired
+    private Environment env;
     @Bean("mybatisSqlSession")
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourcePatternResolver resolver, GlobalConfig globalConfiguration) throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
@@ -89,5 +96,14 @@ public class MybatisConfigMetaObjOptLockConfig {
 
         conf.setDbConfig(dbConfig);
         return conf;
+    }
+
+    @Bean
+    public DataSource dataSource(){
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setUsername(env.getProperty("database.username"));
+        dataSource.setPassword(env.getProperty("database.password"));
+        dataSource.setJdbcUrl(env.getProperty("database.url"));
+        return dataSource;
     }
 }
