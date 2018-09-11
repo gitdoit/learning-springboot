@@ -3,6 +3,7 @@ package org.seefly.cache.redisops;
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundListOperations;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,8 +22,9 @@ public class ListOpsTest extends BaseOps{
     @Test
     public void ops1(){
         BoundListOperations<String, String> ops = stringTemplate.boundListOps("list:singlePush");
-        // 单个操作
+        //lpush list:singlePush come
         ops.leftPush("come");
+        //rpush list:singlePush element2
         ops.rightPush("element2");
         ops.leftPush("element3");
         // 放在左边起第一个值为come的元素左边
@@ -40,6 +42,7 @@ public class ListOpsTest extends BaseOps{
     @Test
     public void ops2(){
         BoundListOperations<String, String> ops = stringTemplate.boundListOps("list:batchPush");
+
         System.out.println("裁剪前："+ops.range(0,-1));
         //保留从第一各参数开始到第二个参数之间的元素，若第二个参数为-1，则截取到为该list的长度
         ops.trim(1,-1);
@@ -63,9 +66,9 @@ public class ListOpsTest extends BaseOps{
     @Test
     public void ops4(){
         BoundListOperations<String, String> ops = stringTemplate.boundListOps("list:batchPush");
-        //获取第一个元素
+        //获取第一个元素 lindex list:batchPush 0
         ops.index(0);
-        //弹出左边第一个元素，弹出之后该元素将会从链表中移除
+        //弹出左边第一个元素，弹出之后该元素将会从链表中移除    lpop list:batchPush
         ops.leftPop();
         // 同上，若无元素可用，则阻塞等待指定时间
         ops.leftPop(3,TimeUnit.SECONDS);

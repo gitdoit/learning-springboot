@@ -1,8 +1,8 @@
-package org.seefly.quickstart.web;
+package org.seefly.quickstart.controller;
 
 import org.seefly.quickstart.domain.PeoPor;
 import org.seefly.quickstart.domain.RestBean;
-import org.seefly.quickstart.request.TestReq;
+import org.seefly.quickstart.controller.request.TestReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

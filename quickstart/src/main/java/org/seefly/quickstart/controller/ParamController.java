@@ -1,4 +1,4 @@
-package org.seefly.quickstart.web;
+package org.seefly.quickstart.controller;
 
 import org.seefly.quickstart.anno.MyParamAnno;
 import org.springframework.web.bind.annotation.*;

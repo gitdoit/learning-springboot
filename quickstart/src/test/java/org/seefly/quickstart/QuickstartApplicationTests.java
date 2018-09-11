@@ -1,6 +1,5 @@
 package org.seefly.quickstart;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
@@ -8,7 +7,6 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -20,8 +18,6 @@ import org.seefly.quickstart.domain.PeoPor;
 import org.seefly.quickstart.mapper.MacMapper;
 import org.seefly.quickstart.model.MacInfo;
 import org.seefly.quickstart.service.AsyncTaskService;
-import org.seefly.quickstart.wifi.AESUtil;
-import org.seefly.quickstart.wifi.Sign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -31,7 +27,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -84,16 +81,6 @@ public class QuickstartApplicationTests {
     }
 
     public void getResult(String mac) throws Exception {
-        String token = "4bd6bc1b8d214d28bb6a0da582bc6ebc";
-        String key = "6a21d007806348b2bd24bca78b41155f";
-        //加密MAC
-        mac = AESUtil.encrypt(mac,key);
-        //参数签名
-        Map<String,String> map = new HashMap<>();
-        map.put("token",token);
-        map.put("macs",mac);
-        String sign = Sign.sign(key, map);
-
 
 
 
@@ -102,12 +89,11 @@ public class QuickstartApplicationTests {
         HttpPost post = new HttpPost();
         post.setHeader("Accept", "application/json, text/javascript, */*; q=0.01");
         post.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        post.setURI(new URI("http://www.1024data.cn:58089/v1/mac/msisdn"));
+        post.setURI(new URI("http://baidu.com"));
 
         List<NameValuePair> nvps = new ArrayList<>();
-        nvps.add(new BasicNameValuePair("token", token));
-        nvps.add(new BasicNameValuePair("macs", mac));
-        nvps.add(new BasicNameValuePair("sign", sign));
+        nvps.add(new BasicNameValuePair("token", ""));
+        nvps.add(new BasicNameValuePair("macs", ""));
         post.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
         CloseableHttpResponse response = client.execute(post);
 

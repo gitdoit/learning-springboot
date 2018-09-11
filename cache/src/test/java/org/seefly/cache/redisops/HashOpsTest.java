@@ -1,14 +1,12 @@
 package org.seefly.cache.redisops;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.seefly.cache.model.User;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,18 +19,15 @@ import java.util.Map;
  *  或者使用唯一主键字段+字段名获取到指定的属性值
  *  这个数据类型用起来和关系型数据库很像
  *
+ *  散列可以存储多个键值对之间的映射，和字符串一样，散列存储的值既可以是字符串又可以是数字
+ *  并且用户同样可以对散列存储的数据执行自增/减操作
+ *
  * @author liujianxin
  * @date 2018-08-30 17:14
  */
 public class HashOpsTest extends BaseOps {
 
-    @Autowired
-    private EhCacheCacheManager manager;
-    @Test
-    public void test1(){
-        Collection<String> names = manager.getCacheNames();
-        System.out.println(names);
-    }
+
 
 
     /**
@@ -42,6 +37,7 @@ public class HashOpsTest extends BaseOps {
     public void ops1() {
         //这里的配置的key相当于这条数据的主键，一条数据有多个键值对
         BoundHashOperations<String, Object, Object> ops = objTemplate.boundHashOps("hash:put");
+        //hset hash:put name redisForMe
         ops.put("name", "redisForMe");
         ops.put("info", "outMan");
         ops.put("age","15");
@@ -60,7 +56,7 @@ public class HashOpsTest extends BaseOps {
         BoundHashOperations<String, Object, Object> ops = objTemplate.boundHashOps("hash:put");
         //判断该条数据中是否含有指定键值对
         if (ops.hasKey("name")) {
-            //获取指定键对应的值
+            //获取指定键对应的值 hget hash:put name
             System.out.println(ops.get("name"));
             //删除指定的key-value对
             //ops.delete("name");
@@ -72,7 +68,7 @@ public class HashOpsTest extends BaseOps {
         System.out.println(ops.keys());
         //索取该散列表下的value集合
         System.out.println(ops.values());
-        //该散列表下的所有键值对
+        //该散列表下的所有键值对 hgetall hash:put
         ops.entries().forEach((k,v) ->{
             //ops.delete(k);
         });
@@ -94,4 +90,14 @@ public class HashOpsTest extends BaseOps {
             System.out.println(next.getKey()+":"+next.getValue());
         }
     }
+    @Test
+    public void ops4(){
+        User u = new User();
+        u.setName("刘");
+        u.setAge(25);
+        u.setId("1536113167660");
+        BoundHashOperations<String, String, User> ops = objTemplate.boundHashOps("hash:object");
+        ops.put(u.getId(),u);
+    }
+
 }

@@ -30,7 +30,7 @@ public class ZSetOpsTest extends BaseOps {
     @Test
     public void ops1() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
-        // 值唯一，权重可可以相同
+        // 值唯一，权重可可以相同 zadd set:ZSet:A 1.0 老子天下第一
         ops.add("老子天下第一", 1.0);
         ops.add("老子天下第一", 1.5);
         ops.add("老子天下第1.5", 1.5);
@@ -48,7 +48,7 @@ public class ZSetOpsTest extends BaseOps {
     @Test
     public void ops2() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
-        // 移除指定元素
+        // 移除指定元素 zrem set:ZSet:A 老子天下第一
         Long num = ops.remove("老子天下第一");
         // 移除指定区间内的元素
         ops.removeRange(0, -1);
@@ -74,7 +74,7 @@ public class ZSetOpsTest extends BaseOps {
         //获取指定区间范围内的元素，然后反转排序。注意：redis中的元素不受影响
         Set<String> strings = ops.reverseRange(0, 2);
 
-        //同上，不过返回值是TypedTuple
+        //同上，不过返回值是TypedTuple zrange set:ZSet:A 0 -1 withscores
         Set<ZSetOperations.TypedTuple<String>> rws = ops.rangeWithScores(0, 2);
         rws.stream().map(ZSetOperations.TypedTuple::getValue).forEach(System.out::print);
         Set<ZSetOperations.TypedTuple<String>> rrs = ops.reverseRangeWithScores(0, 2);

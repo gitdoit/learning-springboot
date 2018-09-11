@@ -30,6 +30,7 @@ public class StringOpsTest extends BaseOps {
         // 绑定key，可以避免下面的每次操作都重复的绑定key
         BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:set");
         // 由于上面已经指定了key，这里可以直接放入value。若该key已有对应的value，则会覆盖
+        // order --> set string:set hello
         ops.set("hello ");
         // 从指定偏移量开始覆盖该key对应的value
         ops.set("redis", 7);
@@ -41,6 +42,9 @@ public class StringOpsTest extends BaseOps {
         //ops.size();
         //见名知意
         //ops.getAndSet()
+
+        // order --> del string:set
+        //stringTemplate.delete("string:set");
     }
 
     /**

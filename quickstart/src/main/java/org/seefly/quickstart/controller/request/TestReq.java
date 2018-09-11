@@ -1,4 +1,4 @@
-package org.seefly.quickstart.request;
+package org.seefly.quickstart.controller.request;
 
 import lombok.Data;
 

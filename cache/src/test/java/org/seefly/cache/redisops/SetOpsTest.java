@@ -20,13 +20,24 @@ public class SetOpsTest extends BaseOps {
 
     /**
      * 基本添加操作
+     * s
      */
     @Test
     public void ops1(){
         BoundSetOperations<String, String> ops = stringTemplate.boundSetOps("set:A");
         //并集操作,返回新增元素个数，若所有元素都已存在，则返回0
+        //sadd set:A e1 e2 e3
         Long add = ops.add("e1", "e2", "e3");
         System.out.println(add);
+    }
+
+
+    @Test
+    public void ops8(){
+        BoundSetOperations<String, String> ops = stringTemplate.boundSetOps("set:A");
+        //集合是否包含某个元素
+        // sismember set:A e1
+        Boolean member = ops.isMember("e1");
     }
 
     /**
@@ -36,6 +47,7 @@ public class SetOpsTest extends BaseOps {
     public void ops2(){
         BoundSetOperations<String, String> ops = stringTemplate.boundSetOps("set:A");
         //移除n个指定元素，返回成功移除的元素个数
+        //srem set:A e1
         Long e1 = ops.remove("e1");
         //移动指定的元素到另一个集合中
         Boolean move = ops.move("set:B", "e1");
@@ -48,6 +60,7 @@ public class SetOpsTest extends BaseOps {
     public void  ops5(){
         BoundSetOperations<String, String> ops = stringTemplate.boundSetOps("set:A");
         //获取集合中所有的元素
+        //smembers set:A
         Set<String> all = ops.members();
         //随机获取集合中的一个元素
         String ran = ops.randomMember();
