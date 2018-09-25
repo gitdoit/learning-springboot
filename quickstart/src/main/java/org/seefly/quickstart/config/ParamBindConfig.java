@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * 描述信息：该类用来演示springboot2.0中新的API-Binder
  * 该API作用和之前的@ConfigurationProperties(prefix = "peopro")作用类似
  * 但用法上有些区别
+ * There is some gift,come on
  **/
 @Configuration
 public class ParamBindConfig {
