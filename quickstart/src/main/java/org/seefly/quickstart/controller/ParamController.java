@@ -1,11 +1,14 @@
 package org.seefly.quickstart.controller;
 
+import org.seefly.quickstart.anno.BoxMessage;
 import org.seefly.quickstart.anno.MyParamAnno;
+import org.seefly.quickstart.controller.request.BoxDataReq;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author liujianxin
@@ -46,7 +49,7 @@ import java.util.Enumeration;
  **/
 
 @RestController
-@RequestMapping("/anno")
+@RequestMapping
 public class ParamController {
 
     /**
@@ -120,6 +123,18 @@ public class ParamController {
     @RequestMapping(value = "/body")
     public String testRequestBody(@RequestBody String body){
         return null;
+    }
+
+    @RequestMapping(value = "/cvs")
+    public String testCvs(@BoxMessage String name){
+        System.out.println(name);
+        return "ok";
+    }
+
+    @RequestMapping(value = "/box")
+    public String test222(@BoxMessage List<BoxDataReq.BoxData> req){
+        System.out.println(req);
+        return "OK";
     }
 
 

@@ -27,7 +27,6 @@ import javax.sql.DataSource;
  **/
 @MapperScan("org.seefly.quickstart.mapper")
 @Configuration
-@PropertySource("classpath:privateConfig.properties")
 public class MybatisConfig {
 
     @Autowired

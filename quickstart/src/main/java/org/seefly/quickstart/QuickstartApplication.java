@@ -3,6 +3,7 @@ package org.seefly.quickstart;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @SpringBootApplication 标注这是一个springboot的程序入口，这个注解是一个组合注解
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.ImportResource;
  * @ImportResource(locations = {"classpath:beans.xml"})
  */
 @SpringBootApplication
+@PropertySource("classpath:privateConfig.properties")
 public class QuickstartApplication {
 
     public static void main(String[] args) {

@@ -25,6 +25,4 @@ hs_err_pid*
 *.idea
 logs/
 
-/quickstart/src/main/resources/privateConfig.properties
-/cache/src/main/resources/privateConfig.properties
-/mybatisplus/src/main/resources/privateConfig.properties
+**/privateConfig.properties

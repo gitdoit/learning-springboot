@@ -1,6 +1,6 @@
 #server.servlet.path指定项目访问路径，终于找到了
 server:
-  port: 8080
+  port: 80
 spring:
   profiles:
     active: dev
