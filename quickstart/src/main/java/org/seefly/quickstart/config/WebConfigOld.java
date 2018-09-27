@@ -105,37 +105,13 @@ public class WebConfigOld extends WebMvcConfigurerAdapter {
         //configurer.mediaType("json",MediaType.APPLICATION_JSON);
     }
 
-    @Bean
-    public ViewResolver cnViewResolver(ContentNegotiationManager manager){
-        ContentNegotiatingViewResolver viewResolver = new ContentNegotiatingViewResolver();
-        viewResolver.setContentNegotiationManager(manager);
-        return viewResolver;
-    }
+
 
     /********************************************BeanNameViewResolver - 视图解析器*************************************************************************************/
 
-    /**
-     * beanNameViewResolver的任务就是将视图解析为Spring应用上下文中 的bean
-     * 其中bean的id与视图名字相同
-     * @return
-     */
-    @Bean
-    public ViewResolver beanNameResolver(){
-        BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
-        beanNameViewResolver.setOrder(2);
-        return beanNameViewResolver;
-    }
 
-    /**
-     * 由于配置了beanNameViewResolver，且这里也注册了一个View的实例
-     * 那么在Controller中返回这个bean的id(spittles)时，将会使用这个视图来处理响应
-     *
-     * @return
-     */
-    @Bean
-    public View spittles(){
-        return new MappingJackson2JsonView();
-    }
+
+
 
     /**
      * 自定义View

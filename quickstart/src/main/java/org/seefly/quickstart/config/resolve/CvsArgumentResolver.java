@@ -1,8 +1,10 @@
 package org.seefly.quickstart.config.resolve;
 
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.seefly.quickstart.anno.BoxMessage;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -10,9 +12,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +27,13 @@ import java.util.List;
  * @date 2018-09-13 20:54
  */
 public class CvsArgumentResolver implements HandlerMethodArgumentResolver {
+    private static final RequestResponseBodyMethodProcessor processor ;
+    static {
+        List<HttpMessageConverter<?>> list = new ArrayList<>();
+        list.add(new FastJsonHttpMessageConverter());
+        processor = new RequestResponseBodyMethodProcessor(list);
+    }
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(BoxMessage.class);
@@ -37,9 +48,10 @@ public class CvsArgumentResolver implements HandlerMethodArgumentResolver {
                 MultipartHttpServletRequest rr = (MultipartHttpServletRequest) req.getRequest();
                 MultipartFile filedata = rr.getFile("filedata");
                 Class<?> parameterType = parameter.getParameterType();
+
                 return new CsvToBeanBuilder<>(new InputStreamReader(filedata.getInputStream())).withType(parameterType).build().parse();
             }else {
-
+                //Object o = processor.resolveArgument();
             }
         }
         // 其次拿到参数类型

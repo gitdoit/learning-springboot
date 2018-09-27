@@ -3,6 +3,7 @@ package org.seefly.quickstart.controller;
 import org.seefly.quickstart.anno.BoxMessage;
 import org.seefly.quickstart.anno.MyParamAnno;
 import org.seefly.quickstart.controller.request.BoxDataReq;
+import org.seefly.quickstart.domain.Dog;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,5 +138,13 @@ public class ParamController {
         return "OK";
     }
 
+    @RequestMapping(value = "msg")
+    public Dog param(String msg){
+        System.out.println(msg);
+        Dog dog = new Dog();
+        dog.setAge(11);
+        dog.setName("sdfsfd");
+        return dog;
+    }
 
 }

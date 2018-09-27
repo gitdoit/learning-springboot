@@ -6,6 +6,7 @@ import org.seefly.quickstart.controller.request.TestReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,7 +52,7 @@ public class IndexController {
     @RequestMapping("/bean")
     public String beanName(){
         System.out.println("beanmae");
-        return "helloView";
+        return "spittles";
     }
 
 
@@ -65,8 +66,15 @@ public class IndexController {
 
     @RequestMapping("/rest")
     public String rest(ModelMap modelMap){
-        RestBean bean = new RestBean();
-        modelMap.addAttribute("bean",bean);
+
         return "spittles";
     }
+
+    @GetMapping("/restaa")
+    public RestBean getaa(ModelMap modelMap){
+        RestBean bean = new RestBean();
+        modelMap.addAttribute("bean",bean);
+        return new RestBean();
+    }
+
 }
