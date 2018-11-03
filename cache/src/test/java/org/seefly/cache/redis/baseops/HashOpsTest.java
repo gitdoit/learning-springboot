@@ -1,4 +1,4 @@
-package org.seefly.cache.redisops;
+package org.seefly.cache.redis.baseops;
 
 import org.junit.Test;
 import org.seefly.cache.model.User;

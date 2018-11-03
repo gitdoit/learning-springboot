@@ -1,4 +1,4 @@
-package org.seefly.cache.redisops;
+package org.seefly.cache.redis.baseops;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -20,7 +20,6 @@ public class SetOpsTest extends BaseOps {
 
     /**
      * 基本添加操作
-     * s
      */
     @Test
     public void ops1(){
@@ -37,7 +36,9 @@ public class SetOpsTest extends BaseOps {
         BoundSetOperations<String, String> ops = stringTemplate.boundSetOps("set:A");
         //集合是否包含某个元素
         // sismember set:A e1
+        //这个方法不会返回null，非真即假。即使这个set集合不存在，它也会返回false，不会返回null
         Boolean member = ops.isMember("e1");
+        System.out.println(member);
     }
 
     /**

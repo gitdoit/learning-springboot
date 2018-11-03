@@ -1,4 +1,4 @@
-package org.seefly.cache.redisops;
+package org.seefly.cache.redis.baseops;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 该类用来演示redis的String类型数据操作
@@ -32,8 +31,8 @@ public class StringOpsTest extends BaseOps {
         // 由于上面已经指定了key，这里可以直接放入value。若该key已有对应的value，则会覆盖
         // order --> set string:set hello
         ops.set("hello ");
-        // 从指定偏移量开始覆盖该key对应的value
-        ops.set("redis", 7);
+        // 从指定偏移量开始覆盖该key对应的value。小坑~~~~~~多一位
+        ops.set(" redis", 6);
         //追加，若不存在则创建
         ops.append("!");
         ops.setIfAbsent("set如果不存在");
@@ -56,15 +55,18 @@ public class StringOpsTest extends BaseOps {
      * 需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。
      * 因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
      * 于是，惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
+     *
+     * 还有一个需要特别注意的地方是如果一个字符串已经设置了过期时间，然后你调用了 set 方法修改了它，它的过期时间会消失。
      */
     @Test
     public void opt2() throws InterruptedException {
-        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:timer");
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("string:timer1");
         //5秒后删除
-        ops.set("delete me later", 5, TimeUnit.SECONDS);
+        //ops.set("delete me later", 20, TimeUnit.MINUTES);
+        System.out.println(ops.getExpire());
         System.out.println("计时开始:" + ops.get());
         Thread.sleep(5000);
-        System.out.println("5秒计时结束:" + ops.get());
+        System.out.println("5秒计时结束:" + ops.getExpire());
     }
 
     /**

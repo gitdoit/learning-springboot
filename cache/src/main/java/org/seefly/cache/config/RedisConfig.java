@@ -11,7 +11,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.OxmSerializer;
@@ -43,9 +45,6 @@ public class RedisConfig {
     }
 
     /**
-     * springboot 会给你生成两个Template
-     * 一个是RedisTemplate，一个是StringRedisTemplate
-     * 当然条件都是没有这个template的情况下会自动生成，用的Factor是上面配置的
      * <p/>
      * 两者异同
      * 两者的数据是不共通的；也就是说StringRedisTemplate只能管理StringRedisTemplate里面的数据，RedisTemplate只能管理RedisTemplate中的数据。<br>
@@ -83,4 +82,17 @@ public class RedisConfig {
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         return redisTemplate;
     }
+
+    //@Bean
+    public RedisTemplate<String,String> lettcRedisTemplate(LettuceConnectionFactory factory){
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(factory);
+        //将数据以UTF-8的编码方式转换为字节数据
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        stringRedisTemplate.setValueSerializer(stringRedisSerializer);
+        return stringRedisTemplate;
+    }
+
+
+
 }

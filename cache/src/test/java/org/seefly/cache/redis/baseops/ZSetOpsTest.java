@@ -1,4 +1,4 @@
-package org.seefly.cache.redisops;
+package org.seefly.cache.redis.baseops;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.*;
@@ -31,9 +31,9 @@ public class ZSetOpsTest extends BaseOps {
     public void ops1() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
         // 值唯一，权重可可以相同 zadd set:ZSet:A 1.0 老子天下第一
-        ops.add("老子天下第一", 1.0);
-        ops.add("老子天下第一", 1.5);
-        ops.add("老子天下第1.5", 1.5);
+        ops.add("A", 1.0);
+        ops.add("B", 1.5);
+        ops.add("C.5", 1.5);
         //该类主要重写了hashCode equals compareTo的逻辑
         //我们可以实现TypedTuple接口来写自己的业务逻辑
         //DefaultTypedTuple<String> t = new DefaultTypedTuple<>("老子宇宙第二", 2.0);
@@ -49,7 +49,7 @@ public class ZSetOpsTest extends BaseOps {
     public void ops2() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
         // 移除指定元素 zrem set:ZSet:A 老子天下第一
-        Long num = ops.remove("老子天下第一");
+        Long num = ops.remove("A");
         // 移除指定区间内的元素
         ops.removeRange(0, -1);
         // 移除指定权重范围内的元素

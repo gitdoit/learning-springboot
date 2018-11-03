@@ -16,4 +16,6 @@ public class TestWithNoSpring {
         double distance = Math.pow(10.0, (rssi - 20 * Math.log10(2412) - 32.44) / 20) * 1000;
         System.out.println(distance);
     }
+
+
 }
