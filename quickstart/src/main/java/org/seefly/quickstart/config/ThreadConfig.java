@@ -88,11 +88,10 @@ public class ThreadConfig {
      */
     @Bean
     public SchedulingConfigurer schedulingConfigurer() {
-        SchedulingConfigurer schedulingConfigurer = (taskRegistrar) -> {
+        return (taskRegistrar) -> {
             //设置任务执行器，替换默认的单线程执行器
             taskRegistrar.setScheduler(taskExecutor());
         };
-        return schedulingConfigurer;
     }
 
     /**

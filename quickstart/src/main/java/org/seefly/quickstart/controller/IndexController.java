@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-
 /**
  * @author liujianxin
  * @date 2018-06-09 15:35
@@ -32,7 +30,7 @@ public class IndexController {
 
     @RequestMapping("/hello")
     public String page(){
-        return "nihao";
+        return "login";
     }
 
     /**
@@ -49,26 +47,7 @@ public class IndexController {
         return "ok";
     }
 
-    @RequestMapping("/bean")
-    public String beanName(){
-        System.out.println("beanmae");
-        return "spittles";
-    }
 
-
-    @RequestMapping("/d")
-    @ResponseBody
-    public String date(Date date){
-        System.out.println(date);
-        return "ok";
-    }
-
-
-    @RequestMapping("/rest")
-    public String rest(ModelMap modelMap){
-
-        return "spittles";
-    }
 
     @GetMapping("/restaa")
     public RestBean getaa(ModelMap modelMap){

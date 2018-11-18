@@ -4,7 +4,8 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.seefly.quickstart.config.resolve.AnnoArgumentResolver;
 import org.seefly.quickstart.config.resolve.CvsArgumentResolver;
-import org.seefly.quickstart.domain.RestBean;
+import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.accept.FixedContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.accept.ParameterContentNegotiationStrategy;
@@ -19,27 +21,43 @@ import org.springframework.web.accept.PathExtensionContentNegotiationStrategy;
 import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * @author liujianxin
  * @date 2018-09-11 19:49
+ * 对于@EnableWebMvc注解
+ * 当在配置类或者启动类上标注这个注解的时候
+ * springboot自动配置类{@link WebMvcAutoConfiguration}中的自动配置将会失效
+ * 例如静态资源映射这些都没有了，也就是说这个注解表示全面接管web方面的配置
+ * 此时生效的只有{@link DelegatingWebMvcConfiguration}类中的配置
+ *
+ * 国际化：{@link MessageSourceAutoConfiguration}
  */
+
 @Slf4j
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        //路径映射视图，省的在Controller中写一个空方法返回视图了
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/index.html").setViewName("index");
+    }
 
     /**
      * 添加自定义参数解析器，用于从请求中获取数据将之绑定到对应的接口参数中
@@ -143,7 +161,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        /**
+        /*
          * 启用内容协商，并设置视图类型
          * 当请求为 http://...../book.json   ->  响应json格式数据
          *         http://...../book.xml    ->  响应xml格式数据
@@ -162,13 +180,57 @@ public class WebConfig implements WebMvcConfigurer {
          * @param manager
          * @return
          */
-        Jaxb2Marshaller xml = new Jaxb2Marshaller();
-        xml.setPackagesToScan("org.seefly.quickstart.domain");
-        xml.setClassesToBeBound(RestBean.class);
-        registry.enableContentNegotiation(new MappingJackson2JsonView(),new MarshallingView(xml));
+       // Jaxb2Marshaller xml = new Jaxb2Marshaller();
+        //xml.setPackagesToScan("org.seefly.quickstart.domain");
+        //xml.setClassesToBeBound(RestBean.class); ,new MarshallingView(xml)
+        //启用这个thymeleaf不能用了
+        //registry.enableContentNegotiation(new MappingJackson2JsonView());
         //开启beanName视图解析，省的自己创建这个实例放到容器里了
         registry.beanName();
     }
 
+    /**
+     * 自定义View
+     * View接口的任务就是接收模型以及Srevlet的request和response对象，并将输出渲染到response中
+     * @return
+     */
+    @Bean
+    public View helloView(){
+        return new View(){
+            @Override
+            public String getContentType() {
+                return "text/html";
+            }
+            @Override
+            public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+                response.getWriter().println("heller world");
+            }
+        };
+    }
 
+    /**
+     * 国际化,这里自动配置
+     * 自动配置的国际化解析器是根据请求头中的Accept-Language来选择的
+     * 现在自定义配置解析请求参数中的国际化参数来选择国际化配置
+     * {@link WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#localeResolver()}
+     */
+    @Bean
+    public LocaleResolver localeResolver(){
+        return new LocaleResolver() {
+            @Override
+            public Locale resolveLocale(HttpServletRequest request) {
+                String local = request.getParameter("l");
+                if(StringUtils.isEmpty(local)){
+                    return request.getLocale() == null ? request.getLocale() : Locale.getDefault();
+                }
+                String[] params = local.split("_");
+                return new Locale(params[0],params[1]);
+            }
+
+            @Override
+            public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
+
+            }
+        };
+    }
 }

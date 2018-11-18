@@ -4,6 +4,9 @@ server:
 spring:
   profiles:
     active: dev
+ # 国际化文件位置及名称
+  messages:
+    basename: i18n.login
 binder:
   name: binder
   add: chinaanhui

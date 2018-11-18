@@ -36,6 +36,8 @@ public class BoxUpdateController {
 
 
 
+
+
     @RequestMapping("/downloadFirm")
     public ResponseEntity<byte[]> getFirmware(String box,String firmware) throws IOException {
         log.info("盒子{}固件更新请求，盒子固件版本{}",box,firmware);
