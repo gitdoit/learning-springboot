@@ -1,8 +1,6 @@
 package org.seefly.thread;
 
 /**
- * @author liujianxin
- * @date 2018-07-25 11:04
  * 描述信息：本类用来演示join方法
  *  有一时候一个线程的输入或许会依赖另一个或者多个线程的输出，此时需要等待依赖线程执行完毕才能
  *  这个时候可以使用join方法完成这个功能。
@@ -13,6 +11,8 @@ package org.seefly.thread;
  *
  *  join(long millis) throws InterruptedException
  *  有参的Join方法指定超时时间，在指定时间内目标线程还未执行完毕，那么将放弃等待继续执行。
+ * @author liujianxin
+ * @date 2018-07-25 11:04
  **/
 public class B4_Join {
     volatile static int  i = 0;

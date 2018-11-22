@@ -1,6 +1,5 @@
 package org.seefly.thread;
 /**
- * @author 刘建鑫
  * 该类展示了Thread无法共享的缺点。
  * 实例A,C是Thread的子类，他们都在买票，但是剩余票数无法共享。
  * 而Runnable实例B虽然开启了两个线程，但是他们却卖的同一张票。
@@ -12,6 +11,7 @@ package org.seefly.thread;
  * 通过Thread类建立线程对象
  * 将Runnable接口的对象作为实参构建Thread类对象
  * 调用Thread类的start方法开启方法，并调用Runnable接口的run方法
+ * @author 刘建鑫
  * */
 public class A1_Thread {
 

@@ -1,8 +1,6 @@
 package org.seefly.thread;
 
 /**
- * @author liujianxin
- * @date 2018-07-30 10:50
  * 描述信息：Volatile关键字的作用
  * <p>
  * 1.
@@ -21,6 +19,8 @@ package org.seefly.thread;
  * 但各个线程修改自己本地变量以及更新到主存并不是一个原子操作。
  *
  * AtomicInteger
+ * @author liujianxin
+ * @date 2018-07-30 10:50
  **/
 public class B8_Volatile {
 

@@ -1,4 +1,4 @@
-package org.seefly.juc;
+package org.seefly.juc.atomic;
 
 import java.util.concurrent.atomic.AtomicReference;
 

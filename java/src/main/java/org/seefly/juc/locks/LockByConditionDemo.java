@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.juc.locks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *  注意：和wait,notify方法一样，在使用前一定要先获取锁。
  *
  **/
-public class C2_LockByCondition {
+public class LockByConditionDemo {
 
     public static void main(String[] args) throws InterruptedException{
         final SysQueue sq = new SysQueue(50);

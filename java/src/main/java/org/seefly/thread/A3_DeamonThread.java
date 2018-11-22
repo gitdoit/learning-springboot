@@ -1,6 +1,5 @@
 package org.seefly.thread;
 /**
- * @author 刘建鑫
  * 后台线程又称为守护线程
  * 该线程有一个特点那就是，在主线程死亡后那么它也会死亡。
  * 例如有两个线程t1,t2
@@ -8,7 +7,8 @@ package org.seefly.thread;
  * 设置：t2.setDaemon(true) 然后t2.start()
  * 此时t2线程就被设置为t1线程的守护线程，在t1死亡后t2也会死亡
  * 注意不要在线程为就绪态后设置Daemon否则会报IllegalThreadStateException
- * 
+ *
+ * @author 刘建鑫
  * */
 public class A3_DeamonThread implements Runnable{
 	public static void main(String[] args) {

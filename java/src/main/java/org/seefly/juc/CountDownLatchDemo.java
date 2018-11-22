@@ -1,12 +1,10 @@
-package org.seefly.thread;
+package org.seefly.juc;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.*;
 
 /**
- * @author liujianxin
- * @date 2018-07-30 17:15
  * 描述信息：线程倒计时器
  *
  * 如何使线程顺序执行？
@@ -17,8 +15,10 @@ import java.util.concurrent.*;
  *
  * 如何执行这样一个任务，就是指定一个线程的执行条件需要在其他多个线程执行完毕之后执行呢？
  * 这个计数器并不能保证顺序执行，只能保证最后一个执行的顺序
+ * @author liujianxin
+ * @date 2018-07-30 17:15
  **/
-public class C4_CountDownLatch {
+public class CountDownLatchDemo {
 
     public static void main(String[] args) throws InterruptedException{
         //计数器倒计时起始值为10，意味着需要倒计时10次

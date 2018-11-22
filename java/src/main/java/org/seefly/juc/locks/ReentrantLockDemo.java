@@ -1,10 +1,9 @@
-package org.seefly.thread;
+package org.seefly.juc.locks;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author 刘建鑫
  * 本线程用来演示ReentrantLock的基本使用方法,用来代替Sychronized关键字
  *
  * 注意，上锁解锁一定是成对出现的。而且要要将解锁步骤放进finally块内，保证一定会被执行到。
@@ -21,9 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * {    //释放锁
  *      lock.unlock;
  * }
- * *
+ * @author liujianxin
  */
-public class C1_ReentrantLock {
+public class ReentrantLockDemo {
 
     public static void main(String[] args) {
         BankDemo b = new BankDemo(100, 1000);

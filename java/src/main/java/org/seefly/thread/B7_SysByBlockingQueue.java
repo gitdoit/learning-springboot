@@ -3,7 +3,6 @@ package org.seefly.thread;
 import java.util.concurrent.*;
 
 /**
- * @author 刘建鑫
  * 阻塞列队的作用是在多线程环境下起到同步的目的。
  * 多个线程对一个阻塞列队进行操作，使用BlockingQueue.put()方法，若队列已满，则阻塞该线程，等不满的时候会自动启动
  *
@@ -39,6 +38,7 @@ import java.util.concurrent.*;
  * 从阻塞列队头部取元素，如果队列为空，那么调用此方法的线程将会进入阻塞态，知道队列中有元素。
  *
  *
+ * @author 刘建鑫
  * */
 public class B7_SysByBlockingQueue {
 

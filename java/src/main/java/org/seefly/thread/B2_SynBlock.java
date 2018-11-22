@@ -3,8 +3,8 @@ package org.seefly.thread;
 import org.junit.Test;
 
 /**
+ * 该类演示了对于同一个同步代码块,使用不同的锁会产生不同的效果。
  * @author 刘建鑫
- *该类演示了对于同一个同步代码块,使用不同的锁会产生不同的效果。
  * */
 public class B2_SynBlock {
 

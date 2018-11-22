@@ -1,9 +1,9 @@
 package org.seefly.thread;
 
 /**
+ * 描述信息：该类用来演示两个已经被废弃的方法为什么会被废弃 = =
  * @author liujianxin
  * @date 2018-07-25 09:55
- * 描述信息：该类用来演示两个已经被废弃的方法为什么会被废弃 = =
  **/
 public class B3_ResumeSuspend {
     private static Object block = new Object();

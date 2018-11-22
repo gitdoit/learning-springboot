@@ -1,4 +1,4 @@
-package org.seefly.juc;
+package org.seefly.juc.atomic;
 
 import org.apache.commons.lang3.RandomUtils;
 

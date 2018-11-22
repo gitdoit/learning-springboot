@@ -3,7 +3,6 @@ package org.seefly.thread;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 /**
- * @author 刘建鑫
  * 泛型接口Callable<T> 与Runnable接口类似，通过重写其中call方法来使线程执行其中内容
  * 此方法与run方法不同，它具有返回值，返回值类型与泛型一致
  * 但是此接口的实现实例不能直接放进Thread中去执行，因为它不是Runnable接口的子接口。
@@ -16,6 +15,7 @@ import java.util.concurrent.FutureTask;
  * V get(long tiemout,timeUnti unit) 获取call方法的返回值，但是若在tiemou和unit指定时间内没有返回值，则会报错TimeOutException
  * boolean isCancelled() 如果在任务完成前被取消了，则返回true
  * boolean isDone() 如果任务完成则返回true
+ * @author 刘建鑫
  * */
 public class A2_FutureTask implements Callable<Integer>{
 

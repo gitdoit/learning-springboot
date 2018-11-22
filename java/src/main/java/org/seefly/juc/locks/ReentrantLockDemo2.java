@@ -1,10 +1,8 @@
-package org.seefly.thread;
+package org.seefly.juc.locks;
 
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author liujianxin
- * @date 2018-07-30 13:27
  * 描述信息：该类用来演示用lockInterruptibly解除死锁
  * 线程1先获得锁1，然后休眠。这时候线程2获得锁2，休眠
  * 线程1醒了之后去拿锁2，拿不到就挂起了。线程2醒了拿锁1也挂了
@@ -20,8 +18,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * 调用这个方法去获取锁时，如果没有拿到锁则跟其他方法一样，进入锁池等待。但是再等待期间
  * 如果当前线程中断位被置为true了，那么该线程则会抛出中断异常从而结束等待。该方法常用来防止死锁
  *
+ * @author liujianxin
+ * @date 2018-07-30 13:27
  **/
-public class C1_ReentrantLock1{
+public class ReentrantLockDemo2 {
 
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(new IntLock(1));

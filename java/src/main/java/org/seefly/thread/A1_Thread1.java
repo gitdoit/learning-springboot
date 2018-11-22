@@ -1,7 +1,6 @@
 package org.seefly.thread;
 
 /**
- * @author 刘建鑫
  * 经过多次测试，可能出现AB会出现最后票数相同，或者卖出负数的情况
  * 这种情况难以预料，发生概率很小，但是也会发生
  * <p>
@@ -27,6 +26,7 @@ package org.seefly.thread;
  * 1 明确哪些代码是多线程运行代码
  * 2 明确共享数据
  * 3 明确多线程运行代码中哪些语句时操作共享数据的
+ * @author 刘建鑫
  */
 public class A1_Thread1 {
     public static void main(String[] args) {

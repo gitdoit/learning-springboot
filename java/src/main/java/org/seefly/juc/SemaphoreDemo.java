@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.juc;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -26,7 +26,7 @@ import java.util.concurrent.*;
  * void release()
  * 释放资源，对于获得许可的线程，在执行完毕之后一定要释放。否则信号量会越来越少
  **/
-public class C3_Semaphore {
+public class SemaphoreDemo {
 
     public static void main(String[] args) {
         final Semaphore semp = new Semaphore(5);

@@ -3,13 +3,13 @@ package org.seefly.thread;
 import java.util.concurrent.*;
 
 /**
- * @author 刘建鑫
  * java通过Executors提供四种线程池
  * newCacheThreadPool创建一个可缓存的线程池，容量可灵活更改，若容量不够处理需要，则新开辟线程。若大于处理需要则回收。
  * newFixedThreadPool创建一个容量固定的线程池，可以限制线程最大并发量，超出的线程在队列中等待。
  * newScheduledThreadPool 创建一个容量固定的线程池，支持定时以及周期处理任务
  * newSingleThreadExecutors创建容量为1的线程池，使用这唯一的线程处理任务，保证所有任务按指定顺序执行任务(FIFO,LIFO,优先级)
  * http://cuisuqiang.iteye.com/blog/2019372
+ * @author 刘建鑫
  * */
 public class A5_ThreadPool {
 	public static void main(String[] args) {

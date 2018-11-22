@@ -1,7 +1,6 @@
 package org.seefly.thread;
 
 /**
- * @author 刘建鑫
  * Thread的定义：public class Thread extends Object implements Runnable
  * Thread构造方法:public Thread(Runnable target,String name)
  * 				public Thread(Runnable target)
@@ -15,6 +14,7 @@ package org.seefly.thread;
  *
  * 注意，若定义好一个线程对象之后，如果直接调用run方法，那么他就相当于没有开启线程，还是在主线程内执行，这就和普通的调用没有区别了
  * 只有调用start方法才能开启一个新线程
+ * @author 刘建鑫
  */
 public class A1_ThreadClass {
 	public static void main(String[] args){

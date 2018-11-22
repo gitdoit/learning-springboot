@@ -143,7 +143,6 @@ public class ThreadConfig {
      */
     @Bean
     public TaskScheduler taskExecutor() {
-
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setThreadPriority(Thread.MAX_PRIORITY);
         threadPoolTaskScheduler.setThreadNamePrefix("Scheduler-");
