@@ -59,7 +59,7 @@ public class StartStream {
     @Test
     public void testTransferStream(){
         //流转换为数组
-        Stream<String> stream1 = Stream.of(new String[]{"a", "b", "c"});
+        Stream<String> stream1 = Stream.of("a", "b", "c");
         String[] arr = stream1.toArray(String[]::new);
         //流转换为list
         Stream<String> stream2 = new ArrayList<String>().stream();
