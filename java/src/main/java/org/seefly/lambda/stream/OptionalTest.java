@@ -1,4 +1,4 @@
-package org.seefly.stream;
+package org.seefly.lambda.stream;
 
 import lombok.Data;
 import org.junit.Test;

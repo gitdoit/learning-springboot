@@ -1,4 +1,4 @@
-package org.seefly.stream;
+package org.seefly.lambda.stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
