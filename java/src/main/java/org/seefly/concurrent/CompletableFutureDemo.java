@@ -19,6 +19,7 @@ import static org.junit.Assert.fail;
 
 /**
  * 超大型工具类
+ * @see <a href="https://github.com/manouti/completablefuture-examples">来源</a>
  * @author liujianxin
  * @date 2018-11-23 11:13
  */
