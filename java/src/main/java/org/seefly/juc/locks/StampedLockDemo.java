@@ -1,7 +1,6 @@
 package org.seefly.juc.locks;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Test;
 
 import java.util.concurrent.locks.StampedLock;
 

@@ -15,5 +15,6 @@
         <module>java</module>
         <module>cache</module>
         <module>rocketmq</module>
+        <module>spring-web01</module>
     </modules>
 </project>
