@@ -1,8 +1,6 @@
-package org.seefly.quickstart.config;
+package org.seefly.springweb02.config;
 
-import org.seefly.quickstart.domain.BinderBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
+import org.seefly.springweb02.beans.BinderBean;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class ParamBindConfig {
-
 
     @Bean
     public BinderBean binderBean(ApplicationContext applicationContext){

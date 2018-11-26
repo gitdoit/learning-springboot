@@ -1,0 +1,12 @@
+param:
+  student:
+    name: jack
+    age: 12
+    birth: 2018/11/11
+    hobbies:
+      - eat
+      - drink
+    info: {key1: aa,key2: bb}
+binder:
+  name: binder
+  add: chinaanhui

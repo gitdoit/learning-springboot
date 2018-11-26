@@ -1,15 +1,11 @@
-package org.seefly.quickstart.controller;
+package org.seefly.springweb01.controller;
 
-import org.seefly.quickstart.anno.BoxMessage;
-import org.seefly.quickstart.anno.MyParamAnno;
-import org.seefly.quickstart.controller.request.BoxDataReq;
-import org.seefly.quickstart.domain.Dog;
+import org.seefly.springweb01.annotation.MyParamAnno;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
 
 /**
  * @author liujianxin
@@ -55,6 +51,8 @@ public class ParamController {
 
     /**
      * 演示从路径中绑定restful参数
+     * @param restful
+     * @return
      */
     @GetMapping("/restful/{id}")
     public String restful(@PathVariable("id") String restful){
@@ -65,6 +63,8 @@ public class ParamController {
 
     /**
      * 演示从请求体中接收参数
+     * @param json
+     * @return
      */
     @PostMapping(value = "/post",consumes = "!text/plain")
     public String requestBody(@RequestBody String json, HttpServletRequest request){
@@ -100,6 +100,8 @@ public class ParamController {
      * 测试自定义注解配合自定义消息解析器
      * 我自定义的消息解析器在检测到方法的参数上含有自定义注解@myParamAnno时会启用自定义
      * 消息转解析转换消息
+     * @param name
+     * @return
      */
     @RequestMapping(value = "/res",method = RequestMethod.GET)
     public String testCustom(@MyParamAnno String name){
@@ -110,31 +112,15 @@ public class ParamController {
     /**
      * 我们知道如果使用@RequestBody注解，那么将会启用RequestResponseBodyMethodProcessor
      * 进行消息处理，
+     * @return
      */
     @RequestMapping(value = "/body")
     public String testRequestBody(@RequestBody String body){
         return null;
     }
 
-    @RequestMapping(value = "/cvs")
-    public String testCvs(@BoxMessage String name){
-        System.out.println(name);
-        return "ok";
-    }
 
-    @RequestMapping(value = "/box")
-    public String test222(@BoxMessage List<BoxDataReq.BoxData> req){
-        System.out.println(req);
-        return "OK";
-    }
 
-    @RequestMapping(value = "msg")
-    public Dog param(String msg){
-        System.out.println(msg);
-        Dog dog = new Dog();
-        dog.setAge(11);
-        dog.setName("sdfsfd");
-        return dog;
-    }
+
 
 }

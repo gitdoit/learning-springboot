@@ -16,5 +16,6 @@
         <module>cache</module>
         <module>rocketmq</module>
         <module>spring-web01</module>
+        <module>spring-web02</module>
     </modules>
 </project>

@@ -1,4 +1,4 @@
-package org.seefly.quickstart.convert;
+package org.seefly.springweb01.convert;
 
 
 import org.springframework.core.convert.converter.Converter;
@@ -9,9 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * TODO 说明
  * @author liujianxin
  * @date 2018-07-06 00:00
- * 描述信息：
  **/
 @Component
 public class String2Date implements Converter<String,Date> {
