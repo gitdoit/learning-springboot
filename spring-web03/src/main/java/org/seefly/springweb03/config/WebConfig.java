@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
      * 现在自定义配置解析请求参数中的国际化参数来选择国际化配置
      * {@link WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#localeResolver()}
      */
-    //@Bean
+    @Bean
     public LocaleResolver localeResolver(){
         return new LocaleResolver() {
             @Override

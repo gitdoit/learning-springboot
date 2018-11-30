@@ -1,98 +1,96 @@
-package org.seefly.quickstart.config;
+package org.seefly.springbasic.config;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.annotation.*;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.util.ErrorHandler;
 
 import java.util.concurrent.*;
 
 /**
+ * spring推荐使用代码配置的方式代替xml
+ *
+ * 这些注解都是spring的东西
+ * {@link EnableAsync}开启异步执行，使@Async注解生效
+ * {@link EnableScheduling} 开启任务定时任务调度，使@Scheduled(cron = "20 34 17 * * ?") 注解生效
  * @author liujianxin
  * @date 2018-06-16 22:04
- * 描述信息：spring推荐使用代码配置的方式代替xml
- * @Configuration声明这是一个配置类
- * @Bean代替xmlz中的<bean><bean/>标签，作用在方法上 方法名就是这个bean的id，返回值就是需要向容器中注入的组件，需要手动new
- * 这些注解都是spring的东西
- * @EnableAsync 开启异步执行，使@Async注解生效
- * @EnableScheduling 开启任务定时任务调度，使@Scheduled(cron = "20 34 17 * * ?") 注解生效
  **/
 @EnableAsync
 @EnableScheduling
 @Configuration
-public class ThreadConfig {
+public class ThreadConfig implements AsyncConfigurer,SchedulingConfigurer{
+
+    /**
+     * 默认情况下，Spring将搜索关联的线程池定义：上下文中的唯一org.springframework.core.task.TaskExecutor bean，
+     * 否则为名为“taskExecutor”的java.util.concurrent.Executor bean。
+     * 如果两者都不可解析，则将使用org.springframework.core.task.SimpleAsyncTaskExecutor来处理异步方法调用。
+     * 此外，具有void返回类型的带注释的方法不能将任何异常发送回调用者。默认情况下，仅记录此类未捕获的异常。
+     * 要自定义所有这些，请实现AsyncConfigurer并通过getAsyncExecutor（）方法提供：您自己的Executor
+     * 并通过getAsyncUncaughtExceptionHandler（）方法提供您自己的AsyncUncaughtExceptionHandler
+     */
+    @Override
+    public Executor getAsyncExecutor() {
+        //这种线程池无法计划执行任务
+        ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+        //ThreadPoo
+        threadPool.setDaemon(false);
+        //设置核心线程数
+        threadPool.setCorePoolSize(10);
+        //设置最大线程数
+        threadPool.setMaxPoolSize(20);
+        //线程池所使用的缓冲队列
+        threadPool.setQueueCapacity(50);
+        //等待任务在关机时完成--表明等待所有线程执行完
+        threadPool.setWaitForTasksToCompleteOnShutdown(true);
+        // 等待时间 （默认为0，此时立即停止），并没等待xx秒后强制停止
+        threadPool.setAwaitTerminationSeconds(60);
+        //  线程名称前缀
+        threadPool.setThreadNamePrefix("MyAsync-");
+        // 初始化线程
+        threadPool.initialize();
+        return threadPool;
+    }
+
+    /**
+     * AsyncConfigurer的接口方法
+     */
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return (throwable, method, objects) -> {
+            System.out.println(throwable.getMessage() + "捕获到了");
+            System.out.println(method.getName() + "抛了异常");
+            System.out.println(objects);
+        };
+    }
+
+
+
+
 
 
     /**
-     * 配置异步执行处理器
-     * 配置了这个东西之后只要在需要异步执行的方法或者类上使用@Async注解之后
-     * 这个类或者方法就是异步执行了，很方便
+     *
+     * 若使用了{@link EnableScheduling}注解,spring会自动生成{@link ScheduledAnnotationBeanPostProcessor}实例，并在初始化
+     * 完成之后执行{@link ScheduledAnnotationBeanPostProcessor#postProcessAfterInitialization(java.lang.Object, java.lang.String)}
+     * 可以看到它会扫描所有组件上的所有方法，若有{@link Schedules}注解，都会被注册进来。然后使用默认的{@link ScheduledTaskRegistrar}来执行
+     * 在{@link ScheduledTaskRegistrar#afterPropertiesSet()}这里可以看到，它使用的是单线程的线程池。
+     * 我们实现{@link SchedulingConfigurer}，并向容器中注入该组件，它会在{@link ScheduledAnnotationBeanPostProcessor#onApplicationEvent(org.springframework.context.event.ContextRefreshedEvent)}
+     * 处替换掉默认的。
+     *
      */
-    @Bean
-    public AsyncConfigurer asyncConfigurer() {
-        AsyncConfigurer asyncConfigurer = new AsyncConfigurer() {
-            @Override
-            public Executor getAsyncExecutor() {
-                //这种线程池无法计划执行任务
-                ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
-                //ThreadPoo
-                threadPool.setDaemon(false);
-                //设置核心线程数
-                threadPool.setCorePoolSize(10);
-                //设置最大线程数
-                threadPool.setMaxPoolSize(20);
-                //线程池所使用的缓冲队列
-                threadPool.setQueueCapacity(50);
-                //等待任务在关机时完成--表明等待所有线程执行完
-                threadPool.setWaitForTasksToCompleteOnShutdown(true);
-                // 等待时间 （默认为0，此时立即停止），并没等待xx秒后强制停止
-                threadPool.setAwaitTerminationSeconds(60);
-                //  线程名称前缀
-                threadPool.setThreadNamePrefix("MyAsync-");
-                // 初始化线程
-                threadPool.initialize();
-                return threadPool;
-            }
-
-            /**
-             * 异步未捕获异常处理
-             * @return
-             */
-            @Override
-            public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-                return (throwable, method, objects) -> {
-                    System.out.println(throwable.getMessage() + "捕获到了");
-                    System.out.println(method.getName() + "抛了异常");
-                    System.out.println(objects);
-                };
-            }
-        };
-
-        return asyncConfigurer;
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        //设置任务执行器，替换默认的单线程执行器
+        taskRegistrar.setScheduler(taskExecutor());
     }
 
-
-    /**
-     * 自定义定时任务调度器
-     * 之前使用定时任务功能是在某个方法上加上@Scheduled(fixedDelay = 5000)注解，并使用@EnableAsync开启定时任务功能
-     * 但是这样做有一些弊端就是，有多个定时任务同时执行时默认只会使用同一个线程来处理，所以他们就是串行的了
-     * 现在我们通过实现SchedulingConfigurer类来自定义任务调度器，以更加细粒度的方式处理任务调度
-     */
-    @Bean
-    public SchedulingConfigurer schedulingConfigurer() {
-        return (taskRegistrar) -> {
-            //设置任务执行器，替换默认的单线程执行器
-            taskRegistrar.setScheduler(taskExecutor());
-        };
-    }
 
     /**
      * 1. ThreadPoolExecutor 该类为java.util.concurrent包下
@@ -157,4 +155,6 @@ public class ThreadConfig {
         threadPoolTaskScheduler.setDaemon(false);
         return threadPoolTaskScheduler;
     }
+
+
 }
