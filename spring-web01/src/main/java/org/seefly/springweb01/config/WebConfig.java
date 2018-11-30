@@ -206,29 +206,5 @@ public class WebConfig implements WebMvcConfigurer {
         };
     }
 
-    /**
-     * 国际化,这里自动配置
-     * 自动配置的国际化解析器是根据请求头中的Accept-Language来选择的
-     * 现在自定义配置解析请求参数中的国际化参数来选择国际化配置
-     * {@link WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#localeResolver()}
-     */
-    @Bean
-    public LocaleResolver localeResolver(){
-        return new LocaleResolver() {
-            @Override
-            public Locale resolveLocale(HttpServletRequest request) {
-                String local = request.getParameter("l");
-                if(StringUtils.isEmpty(local)){
-                    return request.getLocale() == null ? request.getLocale() : Locale.getDefault();
-                }
-                String[] params = local.split("_");
-                return new Locale(params[0],params[1]);
-            }
 
-            @Override
-            public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
-
-            }
-        };
-    }
 }

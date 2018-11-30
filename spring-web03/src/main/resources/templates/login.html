@@ -1,10 +1,38 @@
 <!DOCTYPE html>
+<!-- saved from url=(0051)https://getbootstrap.com/docs/4.1/examples/sign-in/ -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon"  href="https://getbootstrap.com/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="./login_files/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" href="./login_files/signin.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="text-center">
+<form class="form-signin">
+    <img class="mb-4" th:src="@{/svg/bootstrap-solid.svg}" src="./login_files/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please sign in</h1>
+    <label for="inputEmail" class="sr-only" th:text="#{tip.username}">Email address</label>
+    <input type="email" id="inputEmail" class="form-control" th:placeholder="#{tip.username}" placeholder="Email address" required="" autofocus="">
+    <label for="inputPassword" class="sr-only" th:text="#{tip.password}">Password</label>
+    <input type="password" id="inputPassword" class="form-control" th:placeholder="#{tip.password}" placeholder="Password" required="">
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox"  value="remember-me"> [[#{login.rem}]]
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{login.btn}">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+</form>
+
 
 </body>
 </html>

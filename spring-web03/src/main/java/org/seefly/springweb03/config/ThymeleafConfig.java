@@ -40,7 +40,7 @@ public class ThymeleafConfig {
         resolver.setSuffix(".html");
         // 设置模板类型，并强制使用
         resolver.setTemplateMode(TemplateMode.HTML);
-        //resolver.setForceTemplateMode(true);
+        resolver.setForceTemplateMode(true);
         // 以指定编码解析模板
         resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         // 开发阶段，不缓存。修改完HTML之后不用重启项目，idea上ctrl+f9实时刷新
@@ -74,6 +74,7 @@ public class ThymeleafConfig {
         viewResolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
         // 开发阶段不缓存，相当于设置viewResolver.setCacheLimit(0)
         viewResolver.setCache(false);
+        viewResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         return viewResolver;
     }
 
