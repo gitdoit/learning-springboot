@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver #指定驱动
+    type: com.alibaba.druid.pool.DruidDataSource #指定数据源类型
+    schema: classpath:db/schema-h2.sql #指定初始化ddl
+    data: classpath:db/data-h2.sql #指定初始化dml
+    initialization-mode: never #sql语句初始化策略
+    initial-size: 5
+    min-idle: 1
+    max-active: 50
+    max-wait: 30000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    pool-prepared-statements: false
+    filters: [stat,wall,log4j]
+    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+logging:
+  level:
+    com.devloper.joker: debug

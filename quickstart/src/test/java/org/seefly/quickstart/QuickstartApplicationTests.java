@@ -15,9 +15,7 @@ import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seefly.quickstart.domain.PeoPor;
-import org.seefly.quickstart.mapper.MacMapper;
 import org.seefly.quickstart.model.MacInfo;
-import org.seefly.quickstart.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -41,16 +39,7 @@ public class QuickstartApplicationTests {
     private ApplicationContext ioc;
     @Autowired
     private PeoPor pp;
-    @Autowired
-    private AsyncTaskService service;
-    @Autowired
-    private MacMapper macMapper;
 
-    @Test
-    public void testhhh(){
-        List<MacInfo> macInfos = macMapper.selectByNum(1, 10);
-        System.out.println(macInfos.size());
-    }
 
 
 
@@ -114,14 +103,6 @@ public class QuickstartApplicationTests {
     }
 
 
-
-    @Test
-    public void testAsync(){
-        for(int i = 0;i < 10; i++){
-            service.executeAsyncTask(i);
-            service.executeAsyncTaskPlus(i+1);
-        }
-    }
 
 
 
