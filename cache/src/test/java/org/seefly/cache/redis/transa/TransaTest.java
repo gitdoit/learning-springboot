@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -28,14 +29,15 @@ public class TransaTest extends BaseOps {
         List<Object> execute = stringTemplate.execute(new SessionCallback<List<Object>>() {
             @Override
             public List<Object> execute(RedisOperations ops) throws DataAccessException {
+                StringRedisTemplate template = (StringRedisTemplate)ops;
                 //开启一个事务，必须在exec之前使用
-                stringTemplate.multi();
+                template.multi();
                 //这三条命令并不是批量发送过去，也是一次请求一次响应
-                stringTemplate.boundValueOps("trans:key1").set("aaaaaaaaaaa");
+                template.boundValueOps("trans:key1").set("aaaaaaaaaaa");
                 //stringTemplate.boundValueOps("trans:key1").increment(1L);
-                stringTemplate.boundValueOps("trans:key2").set("bbbbbbbbbbbbbbbbbbbbbbb");
+                template.boundValueOps("trans:key2").set("bbbbbbbbbbbbbbbbbbbbbbb");
                 //提交事务，返回执行结果
-                return stringTemplate.exec();
+                return template.exec();
             }
         });
         //返回命令执行的结果
@@ -74,6 +76,7 @@ public class TransaTest extends BaseOps {
 
     /**
      * spring对redis的事务也有支持
+     * 但是必须配置一个事务管理器
      * 直接使用@Transactional注解就可以了
      * 但不管成功还是失败，单元测试中的事务，都不会提交
      *
@@ -86,9 +89,9 @@ public class TransaTest extends BaseOps {
         BoundValueOperations<String, String> user2 = stringTemplate.boundValueOps("trans:user2");
         // 更新操作，使用@Transactional注解并不会立即执行
         user1.set("500");
+        //int i = 1 / 0;
         user2.set("500");
         //模拟异常
-        int i = 1 / 0;
 
     }
 
@@ -106,18 +109,18 @@ public class TransaTest extends BaseOps {
         //开始一人500块
         user1.set("500");
         user2.set("500");
-        stringTemplate.setEnableTransactionSupport(true);
         List<Object> execute = stringTemplate.execute(new SessionCallback<List<Object>>() {
             @Override
             public List<Object> execute(RedisOperations ops) throws DataAccessException {
-                stringTemplate.watch(Arrays.asList("watch:user1","watch:user2"));
+                StringRedisTemplate transOps = (StringRedisTemplate)ops;
+                transOps.watch(Arrays.asList("watch:user1","watch:user2"));
                 //开启事务
-                stringTemplate.multi();
+                transOps.multi();
                 //转账
                 user1.increment(-500);
                 user2.increment(500);
                 //提交事务
-                return stringTemplate.exec();
+                return transOps.exec();
             }
         });
         //打印命令执行结果

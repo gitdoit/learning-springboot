@@ -3,6 +3,7 @@ package org.seefly.springmybaits;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.seefly.springmybaits.entity.ArUser;
 import org.seefly.springmybaits.entity.User;
 import org.seefly.springmybaits.enums.AgeEnum;
 import org.seefly.springmybaits.enums.GenderEnum;
@@ -40,6 +41,17 @@ public class SpringMybaitsApplicationTests {
         user.setGender(GenderEnum.MALE);
         user.setEmail("123@123.com");
         System.out.println(userMapper.insert(user));
+    }
+
+    @Test
+    public void testArInsert(){
+        ArUser user = new ArUser();
+        user.setName("test");
+        user.setAge(AgeEnum.ONE);
+        user.setGrade(GradeEnum.HIGH);
+        user.setGender(GenderEnum.MALE);
+        user.setEmail("123@123.com");
+        System.out.println(user.insert());
     }
 
 }

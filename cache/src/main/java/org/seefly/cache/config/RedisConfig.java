@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.OxmSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
 
 /**
  * @author liujianxin
@@ -26,10 +28,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Slf4j
 @Configuration
 @PropertySource("classpath:privateConfig.properties")
+@ConfigurationProperties(prefix = "redis")
 public class RedisConfig {
-
-    @Autowired
-    private Environment env;
+    private Integer port;
+    private Integer database;
+    private String host;
 
     /**
      * 连接池
@@ -38,9 +41,9 @@ public class RedisConfig {
     @Bean("jedisConnectionFactory")
     public JedisConnectionFactory factory() {
         RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration();
-        conf.setDatabase(Integer.valueOf(env.getProperty("redis.database")));
-        conf.setPort(Integer.valueOf(env.getProperty("redis.port")));
-        conf.setHostName(env.getProperty("redis.host"));
+        conf.setDatabase(database);
+        conf.setPort(port);
+        conf.setHostName(host);
         return new JedisConnectionFactory(conf);
     }
 
@@ -83,16 +86,24 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    //@Bean
-    public RedisTemplate<String,String> lettcRedisTemplate(LettuceConnectionFactory factory){
+    @Bean
+    public StringRedisTemplate lettcRedisTemplate(JedisConnectionFactory jedisConnectionFactory){
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-        stringRedisTemplate.setConnectionFactory(factory);
+        stringRedisTemplate.setEnableTransactionSupport(true);
+        stringRedisTemplate.setConnectionFactory(jedisConnectionFactory);
         //将数据以UTF-8的编码方式转换为字节数据
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        stringRedisTemplate.setValueSerializer(stringRedisSerializer);
         return stringRedisTemplate;
     }
 
 
+    /**
+     * 为了使spring支持redis注解形式的事务声明，这里需要添加一个事务管理器
+     * @param dataSource
+     * @return
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 
 }

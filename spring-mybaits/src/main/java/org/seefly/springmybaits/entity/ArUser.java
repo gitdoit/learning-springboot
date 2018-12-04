@@ -1,22 +1,23 @@
 package org.seefly.springmybaits.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.seefly.springmybaits.enums.AgeEnum;
 import org.seefly.springmybaits.enums.GenderEnum;
 import org.seefly.springmybaits.enums.GradeEnum;
 
+import java.io.Serializable;
+
 /**
- * <p>
- * 用户实体对应表 user
- * </p>
- *
- * @author hubin
- * @since 2018-08-11
+ * @author liujianxin
+ * @date 2018-12-01 21:30
  */
 @Data
-@Accessors(chain = true)
-public class User extends BaseEntity {
+@TableName("user")
+public class ArUser extends Model<ArUser> {
+
+    private Integer id;
 
     private Integer roleId;
 
@@ -40,4 +41,8 @@ public class User extends BaseEntity {
      */
     private GradeEnum grade;
 
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
 }
