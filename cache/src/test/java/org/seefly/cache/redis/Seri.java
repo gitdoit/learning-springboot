@@ -82,6 +82,7 @@ public class Seri extends BaseOps {
         objTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         BoundValueOperations<String, Object> ops = objTemplate.boundValueOps("ser:GenericObject");
         User o = (User)ops.get();
+        System.out.println("sdfsdfsdf");
         System.out.println(o);
     }
 
