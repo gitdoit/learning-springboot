@@ -15,10 +15,11 @@
         <module>java</module>
         <module>cache</module>
         <module>rocketmq</module>
+        <module>spring-basic</module>
         <module>spring-web01</module>
         <module>spring-web02</module>
         <module>spring-web03</module>
-        <module>spring-mybaits</module>
-        <module>spring-basic</module>
+        <module>spring-mybatis</module>
+        <module>spring-mybatisplus</module>
     </modules>
 </project>

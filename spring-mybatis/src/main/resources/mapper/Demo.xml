@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.seefly.springmybatis.dao.Demo">
+	<select id="selectById" parameterType="java.lang.Integer" resultType="org.seefly.springmybatis.entity.User">
+		select * from user where id = #{id}
+	</select>
+
+    <insert id="insert" parameterType="org.seefly.springmybatis.entity.User">
+        insert into user(name,role_id) values (#{name},#{roleId})
+    </insert>
+</mapper>
