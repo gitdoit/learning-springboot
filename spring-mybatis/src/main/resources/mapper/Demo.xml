@@ -11,4 +11,8 @@
     <insert id="insert" parameterType="org.seefly.springmybatis.entity.User">
         insert into user(name,role_id) values (#{name},#{roleId})
     </insert>
+
+	<select id="selectByCondition" resultType="org.seefly.springmybatis.entity.User">
+		select * from  user where id = #{id} and role_id = #{roleId}
+	</select>
 </mapper>
