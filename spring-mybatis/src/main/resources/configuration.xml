@@ -4,11 +4,53 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="privateConfig.properties"/>
-    <plugins>
+
+    <!--mybatis的全局配置源码：org.apache.ibatis.builder.xml.XMLConfigBuilder.settingsElement-->
+    <settings>
+        <!--下划线转驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+
+    <typeAliases>
+        <!--单独为指定类取别名-->
+        <typeAlias type="org.seefly.springmybatis.entity.User" alias="user"/>
+        <!--为指定包下所有类及子包子类...取别名，别名为小写类名-->
+        <package name="org.seefly.springmybatis.entity"/>
+    </typeAliases>
+
+
+    <!--插件配置-->
+    <!--<plugins>
         <plugin interceptor="org.seefly.springmybatis.intercepts.UpdateParamInterceptor"/>
-    </plugins>
-    <environments default="development">
-        <environment id="development">
+    </plugins>-->
+
+
+    <!--
+        环境配置，可以根据开发环境、生产环境快速的切换不同的数据源，事务管理等
+        default指定当前使用哪个环境
+    -->
+    <environments default="dev">
+        <!--单个环境配置，必须指定id-->
+        <environment id="dev">
+            <!--使用：JdbcTransactionFactory 事务管理，这里可以使用别名-->
+            <transactionManager type="JDBC"/>
+            <!--数据源
+                dataSource：数据源;
+					type:数据源类型;UNPOOLED(UnpooledDataSourceFactory)
+								|POOLED(PooledDataSourceFactory)
+								|JNDI(JndiDataSourceFactory)
+					自定义数据源：实现DataSourceFactory接口，type是全类名
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${datasource.driver}"/>
+                <property name="url" value="${datasource.url}"/>
+                <property name="username" value="${datasource.username}"/>
+                <property name="password" value="${datasource.password}"/>
+            </dataSource>
+        </environment>
+        <!--生产环境配置示例-->
+        <environment id="prd">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="${datasource.driver}"/>
@@ -18,7 +60,28 @@
             </dataSource>
         </environment>
     </environments>
+    <!--
+         databaseIdProvider：支持多数据库厂商的；
+		 type="DB_VENDOR"：VendorDatabaseIdProvider
+		 	作用就是得到数据库厂商的标识(驱动getDatabaseProductName())，mybatis就能根据数据库厂商标识来执行不同的sql;
+		 	MySQL，Oracle，SQL Server,xxxx
+	  -->
+    <databaseIdProvider type="DB_VENDOR">
+        <!-- 为不同的数据库厂商起别名 -->
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+        <property name="SQL Server" value="sqlserver"/>
+    </databaseIdProvider>
     <mappers>
+        <!--
+            一个mapper标签只能指定一个资源，不能用例如带 * 的匹配形式
+            mapper标签属性:
+                resource:指定一个类路径下的xml文件
+                url：引用网路路径或者磁盘路径下的sql映射文件
+                class:指定mapper接口，此时接口和xml文件需要同名且在同一个包下，或者没有xml文件，所有sql都是用注解写在接口上
+        -->
         <mapper resource="mapper/Demo.xml"/>
+        <!--批量注册接口-->
+        <!--<package name="org.seefly.springmybatis.dao"/>-->
     </mappers>
 </configuration>

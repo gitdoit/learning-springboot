@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/private")
 public class ResourceController {
 
-    @GetMapping("/photo/{id}")
-    public String phone(@PathVariable String id){
-        return "private photo:"+id;
+    @GetMapping("/photo")
+    public String phone(){
+        return "private photo";
     }
 }

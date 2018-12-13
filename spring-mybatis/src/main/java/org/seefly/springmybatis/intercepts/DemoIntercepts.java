@@ -1,5 +1,6 @@
 package org.seefly.springmybatis.intercepts;
 
+import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
@@ -56,9 +57,8 @@ public class DemoIntercepts implements Interceptor {
     }
 
     /**
-     * 设置参数
-     *
-     * @param properties
+     * 设置参数,在{@link XMLConfigBuilder#pluginElement}这里可以看见，插件实例化完毕之后
+     * 会调用这个方法，设置一下你在xml中写的参数
      */
     @Override
     public void setProperties(Properties properties) {

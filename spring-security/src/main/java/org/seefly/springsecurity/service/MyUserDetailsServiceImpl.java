@@ -1,7 +1,9 @@
 package org.seefly.springsecurity.service;
 
+import org.apache.commons.lang3.StringUtils;
+import org.seefly.springsecurity.entity.Authority;
+import org.seefly.springsecurity.mapper.AuthorityMapper;
 import org.seefly.springsecurity.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -9,9 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * user.isAccountNonExpired() 账号没有过期 true
@@ -24,19 +29,24 @@ import java.util.HashSet;
  */
 @Service
 public class MyUserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
     private UserMapper userMapper;
+    private AuthorityMapper authorityMapper;
+    public MyUserDetailsServiceImpl(UserMapper userMapper,AuthorityMapper authorityMapper){
+        this.userMapper = userMapper;
+        this.authorityMapper = authorityMapper;
+    }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
-        if ("admin".equals(username)) {
-            Collection<GrantedAuthority> authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority("admin"));
-            return new User("admin", "admin", authorities);
+        if (StringUtils.isEmpty(username)) {return null;}
+        org.seefly.springsecurity.entity.User user = userMapper.selectByUserName(username);
+        if(Objects.isNull(user)){return null;}
+        List<Authority> authoritys = authorityMapper.selectAuthoritysByUserName(user.getUsername());
+        Collection<GrantedAuthority> authorities =null;
+        if(!CollectionUtils.isEmpty(authoritys)){
+            authorities = authoritys.stream().map(au ->new SimpleGrantedAuthority(au.getName())).collect(Collectors.toSet());
         }
-        return null;
+        return new User(user.getUsername(), user.getPassword(), authorities);
     }
 }

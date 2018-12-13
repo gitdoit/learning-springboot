@@ -15,4 +15,21 @@
 	<select id="selectByCondition" resultType="org.seefly.springmybatis.entity.User">
 		select * from  user where id = #{id} and role_id = #{roleId}
 	</select>
+
+	<select id="selectByDto" resultType="org.seefly.springmybatis.entity.User">
+		select * from user where  id = #{id} and role_id = #{roleId}
+	</select>
+
+    <select id="selectByMap" resultType="org.seefly.springmybatis.entity.User">
+		select * from user where  id = #{id} and role_id = #{roleId}
+	</select>
+
+    <select id="selectByIds" resultType="org.seefly.springmybatis.entity.User">
+        select * from  user
+        <where>
+            <foreach collection="ids" open=" id in(" item="id" separator="," close=")" >
+                #{id}
+            </foreach>
+        </where>
+    </select>
 </mapper>

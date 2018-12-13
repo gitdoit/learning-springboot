@@ -1,6 +1,7 @@
 package org.seefly.springsecurity.mapper;
 
 import org.apache.ibatis.annotations.Select;
+import org.seefly.springsecurity.entity.Authority;
 
 import java.util.List;
 
@@ -10,6 +11,6 @@ import java.util.List;
  */
 public interface AuthorityMapper {
 
-    @Select("select a.authority as authority  from user_authority as ua left join authority as a on as.authority = a.authority where as.username = #{userName}")
-    List<AuthorityMapper> selectAuthoritysByUserName(String userName);
+    @Select("SELECT a.name FROM user_authority ua , authority a  WHERE ua.username = #{userName} AND ua.authority = a.name")
+    List<Authority> selectAuthoritysByUserName(String userName);
 }

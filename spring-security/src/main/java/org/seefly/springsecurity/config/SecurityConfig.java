@@ -70,8 +70,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/private/**").authenticated();
-        http.httpBasic();
+        http.formLogin().permitAll();
+        //http.formLogin().loginPage("/login").failureForwardUrl("/");
 
+        // logout登出，清空session并重定向到 / login？success，登出请求必须未post
+        http.logout().logoutSuccessUrl("/login");
 
         // 对 "/oauth/**","/login/**","/logout/**","/abc/**" 路径进行配置，不影响除此之外的其他路径
         /*http.

@@ -22,13 +22,17 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.seefly.springmybatis.dao.Demo;
+import org.seefly.springmybatis.dto.DemoQueryDto;
 import org.seefly.springmybatis.entity.User;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@link SqlSessionFactory}的生命周期和应用相同，作用于应为整个应用，且为单例。
@@ -38,7 +42,7 @@ import java.util.List;
  *    1、首先会根据传入的MyBatis的配置文件生成一个{@link XMLConfigBuilder},然后使用这个类对configuration节点进行解析
  *    {@link XMLConfigBuilder#parseConfiguration}
  *    2、将所有子节点的属性全部解析完成之后放入{@link Configuration}中，其中在解析到mapper子节点的时候会进入到这个方法
- *       {@link XMLConfigBuilder#mapperElement}
+ *  *       {@link XMLConfigBuilder#mapperElement}
  *    3、这个方法用来解析Mapper.xml文件，他会调用{@link XMLMapperBuilder#parse()}方法来将这个mapper文件的所有节点进行解析
  *    4、在解析mapper文件的时候，最主要的是{@link XMLMapperBuilder#buildStatementFromContext}方法
  *       它将解析文件中定义的所有增删改查的sql语句节点，并将这些节点使用{@link XMLStatementBuilder#parseStatementNode()}进行解析
@@ -155,6 +159,35 @@ public class NoSpringTest {
             Demo mapper = sqlSession.getMapper(Demo.class);
             List<User> users = mapper.selectByCondition(1, 3);
         }
+    }
 
+    @Test
+    public void testSelectByDto(){
+        try(SqlSession sqlSession =sqlSessionFactory.openSession()){
+            DemoQueryDto dto = new DemoQueryDto();
+            dto.setId(1);
+            dto.setRoleId(3);
+            Demo mapper = sqlSession.getMapper(Demo.class);
+            List<User> users = mapper.selectByDto(dto);
+        }
+    }
+
+    @Test
+    public void testSelectByMap(){
+        try(SqlSession sqlSession =sqlSessionFactory.openSession()){
+            Demo mapper = sqlSession.getMapper(Demo.class);
+            Map<String,Integer> params = new HashMap<>();
+            params.put("id",1);
+            params.put("roleId",3);
+            List<User> users = mapper.selectByMap(params);
+        }
+    }
+
+    @Test
+    public void testSelectByIds(){
+        try(SqlSession sqlSession =sqlSessionFactory.openSession()){
+            Demo mapper = sqlSession.getMapper(Demo.class);
+            List<User> users = mapper.selectByIds(Arrays.asList(1, 2, 3));
+        }
     }
 }
