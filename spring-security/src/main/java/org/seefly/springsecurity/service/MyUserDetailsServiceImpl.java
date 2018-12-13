@@ -1,5 +1,7 @@
 package org.seefly.springsecurity.service;
 
+import org.seefly.springsecurity.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -22,10 +24,14 @@ import java.util.HashSet;
  */
 @Service
 public class MyUserDetailsServiceImpl implements UserDetailsService {
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
         if ("admin".equals(username)) {
             Collection<GrantedAuthority> authorities = new HashSet<>();
             authorities.add(new SimpleGrantedAuthority("admin"));
