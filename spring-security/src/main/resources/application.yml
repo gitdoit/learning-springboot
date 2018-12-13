@@ -1,0 +1,15 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+logging:
+  level:
+    org.springframework.security: DEBUG
+spring:
+  application:
+    name: oauth-server
+security:
+  oauth2:
+    resource:
+      serviceId: ${PREFIX:}resource
+      filter-order: 3
