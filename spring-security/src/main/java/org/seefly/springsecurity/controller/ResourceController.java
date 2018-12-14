@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/private")
 public class ResourceController {
 
-    @GetMapping("/photo")
-    public String phone(){
-        return "private photo";
+    @GetMapping("/vip1")
+    public String vip1(){
+        return "private vip1权限";
+    }
+
+    @GetMapping("/vip2")
+    public String vip2(){
+        return "private vip2权限";
     }
 }

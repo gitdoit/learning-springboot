@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,10 +22,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * 并使用{@link EnableWebSecurity}注解开启Spring Security
  * 如果应用是一个 spirng mvc应用 则可以使用{@link EnableWebMvcSecurity},此时处理方法可以使用{@link AuthenticationPrincipal}注解获得认证用户的principal
  *
+ * 关于{@link EnableWebSecurity}
+ * 这个注解中引入了{@link WebSecurityConfiguration}，而{@link WebSecurityConfiguration#setFilterChainProxySecurityConfigurer}方法上
+ * 使用了自动注入注解，并配合{@value}注入所有实现了{@link WebSecurityConfigurer}接口的配置类，然后通过他们的Order级别顺序对它们的配置进行应用
+ * 就是调用这个{@link AbstractConfiguredSecurityBuilder#apply}
+ *
+ *
+ * 本类为WebSecurityConfigurer接口的一个实现类，它的order=100，而 ResourceServerConfig 是oauth的一个配置类也实现了同样的接口，它的order=3；
+ * 疑问就是不是order越小优先级越高吗？debug看过去为什么先使用了ResourceServerConfig的配置，然后再使用了这个类的配置。这样优先级低的这个类的配置
+ * 不就覆盖了优先级高的了吗？网上看了一下，说就是这样的，oauth的配置如果相同就是会被覆盖
+ *
+ *
+ *
  * 关于requestMatchers的使用说明
  * <a href="https://stackoverflow.com/questions/38527723/what-is-the-reason-to-use-requestmatchers-antmatchers-without-a-verb-in-spri"/>
  */
-@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -70,11 +83,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/private/**").authenticated();
+        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.formLogin().permitAll();
         //http.formLogin().loginPage("/login").failureForwardUrl("/");
 
         // logout登出，清空session并重定向到 / login？success，登出请求必须未post
-        http.logout().logoutSuccessUrl("/login");
+        http.logout().logoutSuccessUrl("/");
 
         // 对 "/oauth/**","/login/**","/logout/**","/abc/**" 路径进行配置，不影响除此之外的其他路径
         /*http.

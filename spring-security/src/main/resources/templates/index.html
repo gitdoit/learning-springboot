@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,18 +8,22 @@
 <body>
 <h1 align="center">权限学习OK</h1>
 
-<div >
-    <h2 align="center">你没有登陆，请<a th:href="@{/login}">登录</a></h2>
+<div sec:authorize="!isAuthenticated()">
+    <h2  align="center">你没有登陆，请<a th:href="@{/login}" >登录</a></h2>
 </div>
 
-<div sec:authentication="isAuthenticated()">
-    <h2 align="center">欢迎<span sec:authentication="name"></span>，你有权限<span sec:authentication="principal.authorities"></span>>。</h2>
+<div sec:authorize="isAuthenticated()">
+    <h2 align="center">欢迎<span sec:authentication="name"></span>，你有权限<span sec:authentication="principal.authorities"></span>。</h2>
     <form method="post" action="/logout">
-        <input type="submit" value="注销">
-    </form>
+        <input type="submit" value="注销"></form>
 </div>
-<hr>
-<h3><a th:href="@{/private/photo}">个人照片</a></h3>
-<br>
+<div sec:authorize="hasAnyAuthority('VIP1','ALL')">
+    <hr>
+    <h3><a th:href="@{/private/vip1}">vip1权限</a></h3>
+</div>
+<div sec:authorize="hasAnyAuthority('VIP2','ALL')">
+    <hr>
+    <h3><a th:href="@{/private/vip2}">vip2权限</a></h3>
+</div>
 </body>
 </html>

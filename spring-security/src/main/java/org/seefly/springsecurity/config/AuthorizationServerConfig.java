@@ -51,7 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(tokenStore());
     }
 
-    @Override
+    /*@Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         oauthServer
                 //code授权添加
@@ -60,5 +60,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 //allow check token
                 .checkTokenAccess("isAuthenticated()")
                 .allowFormAuthenticationForClients();
-    }
+    }*/
 }

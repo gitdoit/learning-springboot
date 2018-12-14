@@ -8,23 +8,21 @@ import org.springframework.security.web.authentication.AbstractAuthenticationTar
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author liujianxin
  * @date 2018-12-13 19:48
  */
 @Component
-public class LoginSuccessHandle extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
+public class LogoutSuccessHandle extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
     private static final String BEARER_AUTHENTICATION = "Bearer ";
     private static final String HEADER_AUTHORIZATION = "authorization";
     @Autowired
     private TokenStore tokenStore;
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {
         String token = request.getHeader(HEADER_AUTHORIZATION);
         if (token!=null&&token.startsWith(BEARER_AUTHENTICATION)){
             OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token.split(" ")[0]);
