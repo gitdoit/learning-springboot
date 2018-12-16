@@ -83,7 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/private/**").authenticated();
-        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.formLogin().permitAll();
         //http.formLogin().loginPage("/login").failureForwardUrl("/");
 

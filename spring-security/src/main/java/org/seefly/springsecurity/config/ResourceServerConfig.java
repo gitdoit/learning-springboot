@@ -45,7 +45,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .and().authorizeRequests()
             .antMatchers("/users/**")
             .authenticated();
-        // 401处理，登出处理
+        //匿名用户访问无权限资源处理，登出处理
         http
             .exceptionHandling().authenticationEntryPoint(EntryPoint)
             .and().logout().logoutUrl("/oauth/logout").logoutSuccessHandler(logoutSuccessHandle);
