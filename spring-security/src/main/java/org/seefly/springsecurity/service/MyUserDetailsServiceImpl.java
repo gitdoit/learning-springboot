@@ -41,7 +41,10 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (StringUtils.isEmpty(username)) {return null;}
         org.seefly.springsecurity.entity.User user = userMapper.selectByUserName(username);
-        if(Objects.isNull(user)){return null;}
+        if(Objects.isNull(user)){
+            // 接口规范，找不到抛异常。为什么
+            throw new UsernameNotFoundException("没有该用户");
+        }
         List<Authority> authoritys = authorityMapper.selectAuthoritysByUserName(user.getUsername());
         Collection<GrantedAuthority> authorities =null;
         if(!CollectionUtils.isEmpty(authoritys)){
