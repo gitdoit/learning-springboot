@@ -10,10 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @author liujianxin
  * @date 2018-12-18 23:58
  */
-public class ConfigStart {
-    public static void main(String[] args) {
-
-    }
+public class AnnotationConfigApplicationTest {
 
     @Test
     public void test(){
