@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body><h1>OAuth Approval</h1>
+<p>Do you authorize "client1" to access your protected resources?</p>
+<form id="confirmationForm" name="confirmationForm" action="/oauth/authorize" method="post"><input
+        name="user_oauth_approval" value="true" type="hidden"/>
+    <ul>
+        <li>
+            <div class="form-group">scope.delete: <input type="radio" name="scope.delete" value="true">Approve</input>
+                <input type="radio" name="scope.delete" value="false" checked>Deny</input></div>
+        </li>
+    </ul>
+    <label><input name="authorize" value="Authorize" type="submit"/></label></form>
+</body>
+</html>

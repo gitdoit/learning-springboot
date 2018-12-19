@@ -75,10 +75,21 @@ public class OAuthSecurityConfig {
 
         }
 
+        /**
+         * /oauth/authorize：授权端点
+         * /oauth/token：令牌端点
+         * /oauth/confirm_access：用户确认授权提交端点
+         * /oauth/error：授权服务错误信息端点
+         * /oauth/check_token：用于资源服务访问的令牌解析端点
+         * /oauth/token_key：提供公有密匙的端点，如果你使用JWT令牌的话
+         * @param endpoints
+         * @throws Exception
+         */
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
             endpoints.authenticationManager(authenticationManager)
                     .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(tokenStore());
+            //endpoints.pathMapping("/oauth/confirm_access","/oauth/my_confirm_access");
         }
 
     @Override
@@ -86,9 +97,11 @@ public class OAuthSecurityConfig {
         oauthServer
                 //code授权添加
                 .realm("oauth2-resources")
+                //允许所有资源服务器访问公钥端点（/oauth/token_key）
                 .tokenKeyAccess("permitAll()")
-                //allow check token
+                //只允许验证用户访问令牌解析端点（/oauth/check_token）
                 .checkTokenAccess("isAuthenticated()")
+                // 允许客户端发送表单来进行权限认证来获取令牌
                 .allowFormAuthenticationForClients();
     }
     }

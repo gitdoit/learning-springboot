@@ -89,7 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**").authenticated()
                 .and()
                 .formLogin().permitAll();
-        http.authorizeRequests().antMatchers("/private/**").authenticated();
     }
 
    /* IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {
