@@ -37,6 +37,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "你没有认证！");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "请先登陆，再访问该资源！");
     }
 }

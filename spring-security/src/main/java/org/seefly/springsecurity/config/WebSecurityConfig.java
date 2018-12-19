@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //auth.inMemoryAuthentication().withUser("admin").password("admin").authorities("ADMIN");
 
         // 基于jdbc的验证，并可以重写查询用户及权限的语句,设置密码加密，数据库中存储加密后的密码，前端密码传入后加密进行比较
         // auth.jdbcAuthentication().dataSource().usersByUsernameQuery().authoritiesByUsernameQuery().passwordEncoder()
@@ -68,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
 
         // 这个比上面的高级，这个直接就指定了一个AuthenticationProvider(包含获取用户+用户匹配)
-        auth.authenticationProvider(new IpAuthenticationProvider());
+        //auth.authenticationProvider(new IpAuthenticationProvider());
     }
 
 
@@ -82,21 +83,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 默认启用防跨域攻击，这里可以禁用
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/private/**").hasAnyAuthority("SUPER_MAN");
-        http.authorizeRequests().antMatchers("/ip/**").authenticated();
-        //
-        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ipLogin")).accessDeniedPage("/403");
-        // 在UsernamePasswordAuthenticationFilter前面加一个过滤器
-        http.addFilterBefore(ipAuthenticationProcessingFilter(),UsernamePasswordAuthenticationFilter.class);
-
+        http.requestMatchers().antMatchers("/oauth/**","/login/**","/logout/**")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/oauth/**").authenticated()
+                .and()
+                .formLogin().permitAll();
+        http.authorizeRequests().antMatchers("/private/**").authenticated();
     }
 
-    IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {
+   /* IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {
         IpAuthenticationProcessingFilter filter = new IpAuthenticationProcessingFilter();
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/badmima"));
         return filter;
-    }
+    }*/
 
 
 
