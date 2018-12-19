@@ -22,6 +22,7 @@
         <module>spring-mybatis</module>
         <module>spring-mybatisplus</module>
         <module>spring-security</module>
+        <module>spring-annotation</module>
     </modules>
 
 
