@@ -1,5 +1,7 @@
 package org.seefly.springsecurity.config;
 
+import org.seefly.springsecurity.config.domorule.IpAuthenticationProcessingFilter;
+import org.seefly.springsecurity.config.domorule.IpAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 向容器中添加任意一个实现了{@link WebSecurityConfigurer}的接口的bean
@@ -35,9 +40,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * 关于requestMatchers的使用说明
  * <a href="https://stackoverflow.com/questions/38527723/what-is-the-reason-to-use-requestmatchers-antmatchers-without-a-verb-in-spri"/>
+ * @author liujianxin
  */
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -57,8 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 等同于下面，因为 roles()方法会自动添加前缀ROLE_
         // auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER");
 
-        // 这种方式可以提供一个service，实现一个根据用户名查询用户信息的接口，具体的如何获取用户信息逻辑自己实现
+        // 这种方式可以提供一个service，实现一个根据用户名查询用户信息的接口
+        // 这个service只负责查询用户，而对用户进行校验匹配则是在DaoAuthenticationProvider中
         auth.userDetailsService(userDetailsService);
+
+        // 这个比上面的高级，这个直接就指定了一个AuthenticationProvider(包含获取用户+用户匹配)
+        auth.authenticationProvider(new IpAuthenticationProvider());
     }
 
 
@@ -72,8 +82,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 默认启用防跨域攻击，这里可以禁用
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/private/**").authenticated();
+        http.authorizeRequests().antMatchers("/private/**").hasAnyAuthority("SUPER_MAN");
+        http.authorizeRequests().antMatchers("/ip/**").authenticated();
+        //
+        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ipLogin")).accessDeniedPage("/403");
+        // 在UsernamePasswordAuthenticationFilter前面加一个过滤器
+        http.addFilterBefore(ipAuthenticationProcessingFilter(),UsernamePasswordAuthenticationFilter.class);
 
+    }
+
+    IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {
+        IpAuthenticationProcessingFilter filter = new IpAuthenticationProcessingFilter();
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/badmima"));
+        return filter;
     }
 
 
@@ -133,11 +155,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutSuccessUrl("/");
     }
 
+
+
+
+    /**
+     * 覆盖父类的这个方法，你可以把AuthenticationManager注册到容器中
+     */
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

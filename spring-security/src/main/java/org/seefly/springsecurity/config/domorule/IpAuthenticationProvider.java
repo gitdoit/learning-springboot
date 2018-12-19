@@ -19,7 +19,7 @@ public class IpAuthenticationProvider implements AuthenticationProvider {
     final static Map<String, SimpleGrantedAuthority> IP_USER = new ConcurrentHashMap<>();
 
     static {
-       // IP_USER.put("127.0.0.1",new SimpleGrantedAuthority("ADMIN"));
+        IP_USER.put("127.0.0.1",new SimpleGrantedAuthority("ADMIN"));
     }
 
 
