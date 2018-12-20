@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
+import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
@@ -94,7 +95,8 @@ public class OAuthSecurityConfig {
         }
 
         /**
-         *  配置AuthorizationServer安全认证的相关信息，创建ClientCredentialsTokenEndpointFilter核心过滤器
+         *  配置AuthorizationServer安全认证的相关信息
+         *  创建{@link ClientCredentialsTokenEndpointFilter}核心过滤器,用来拦截令牌申请，即 /oauth/token
          */
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -160,7 +162,6 @@ public class OAuthSecurityConfig {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/users/**").authenticated();
-
             //匿名用户访问无权限资源处理，登出处理
             http.exceptionHandling().authenticationEntryPoint(EntryPoint).accessDeniedPage("/oauth/403");
         }
