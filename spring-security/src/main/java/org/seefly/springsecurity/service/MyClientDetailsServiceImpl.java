@@ -30,7 +30,7 @@ public class MyClientDetailsServiceImpl implements ClientDetailsService {
             details.setClientId("client");
             details.setClientSecret("123");
             details.setScope(Arrays.asList("read","delete"));
-            details.setAuthorizedGrantTypes(Arrays.asList("clientcredentials","refresh_token"));
+            details.setAuthorizedGrantTypes(Arrays.asList("client_credentials","refresh_token"));
         }else if("client1".equals(clientId)){
             details = new BaseClientDetails();
             details.setClientId("client1");
