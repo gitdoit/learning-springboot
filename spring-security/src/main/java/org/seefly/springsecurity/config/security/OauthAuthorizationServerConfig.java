@@ -1,5 +1,6 @@
 package org.seefly.springsecurity.config.security;
 
+import org.seefly.springsecurity.custom.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +14,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import java.util.Arrays;
 
 /**
  * Oauth的授权服务器配置
@@ -69,14 +74,21 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
      *
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        // 一个组合的token增强链
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager)
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(tokenStore())
                 // 令牌存储方式
                 .tokenStore(tokenStore())
-                // 令牌
-                .accessTokenConverter(jwtAccessTokenConverter());
+                // jwt方式
+                .accessTokenConverter(jwtAccessTokenConverter())
+                // 添加token的额外信息
+                .tokenEnhancer(tokenEnhancerChain);
+
+
         //endpoints.pathMapping("/oauth/confirm_access","/oauth/my_confirm_access");
     }
 
@@ -90,7 +102,12 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
         return converter;
     }
     /**
-     * 自定义token存储方式
+     * TokenStore实现，只从令牌本身读取数据。它不是真正的存储，因为它永远不会存储存任何东西。
+     * getAccessToken（OAuth2Authentication）等方法总是返回null。
+     * 但它仍然是一个有用的工具，因为它将访问令牌转换为身份验证和从身份验证转换。
+     * 在需要TokenStore的任何地方使用它，但是记住使用与令牌被铸造时使用的相同的JwtAccessTokenConverter实例（或具有相同验证器的实例）
+     *
+     * 也就是说授权服务器的accessTokenConverter和资源服务器的accessTokenConverter要一样
      */
     @Bean(name="authTokenStore")
     public TokenStore tokenStore() {
@@ -98,10 +115,21 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
+    /**
+     * 创建额外的令牌信息
+     */
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 
     /**
+     *
      * 配置AuthorizationServer安全认证的相关信息
      * 创建{@link ClientCredentialsTokenEndpointFilter}核心过滤器,用来拦截令牌申请，即 /oauth/token
+     *  Doc:
+     *      OAuth2令牌端点的过滤器和身份验证终结点。允许客户端使用请求参数进行身份验证（如果包含为安全筛选器），如规范所允许（但不推荐）。
+     *      规范建议您允许客户端进行HTTP基本身份验证，而根本不使用此过滤器
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
