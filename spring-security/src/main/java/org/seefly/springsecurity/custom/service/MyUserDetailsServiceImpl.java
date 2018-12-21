@@ -1,4 +1,4 @@
-package org.seefly.springsecurity.service;
+package org.seefly.springsecurity.custom.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.seefly.springsecurity.entity.Authority;

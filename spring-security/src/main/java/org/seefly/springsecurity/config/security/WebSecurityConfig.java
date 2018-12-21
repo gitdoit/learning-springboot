@@ -1,9 +1,8 @@
-package org.seefly.springsecurity.config;
+package org.seefly.springsecurity.config.security;
 
-import org.seefly.springsecurity.config.domorule.IpAuthenticationProcessingFilter;
-import org.seefly.springsecurity.config.domorule.IpAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,9 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 向容器中添加任意一个实现了{@link WebSecurityConfigurer}的接口的bean
@@ -83,12 +79,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 默认启用防跨域攻击，这里可以禁用
         http.csrf().disable();
-        http.requestMatchers().antMatchers("/oauth/**","/login/**","/logout/**")
+        // 禁用session管理，不注册SessionManagementFilter
+        http.sessionManagement().disable();
+        // 不添加响应标头:[Cache-Control →no-cache, no-store, max-age=0, must-revalidate]
+        http.headers().cacheControl().disable();
+        http.requestMatchers().antMatchers("/oauth/**","/login/**","/logout/**","/private/**")
                 .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/**").authenticated()
+                    .authorizeRequests()
+                    .antMatchers("/oauth/**").authenticated()
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/private/**").authenticated()
                 .and()
                 .formLogin().permitAll();
+        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+            response.setContentType(MediaType.TEXT_HTML_VALUE);
+            response.getOutputStream().print("fuck off!");
+        });
     }
 
    /* IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {

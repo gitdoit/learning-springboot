@@ -1,4 +1,4 @@
-package org.seefly.springsecurity.service;
+package org.seefly.springsecurity.custom.service;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -14,6 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ *
+ * clientId：客户端标识 ID
+ * secret：客户端安全码
+ * scope：客户端访问范围，默认为空则拥有全部范围
+ * authorizedGrantTypes：客户端使用的授权类型，默认为空
+ * authorities：客户端可使用的权限
  * @author liujianxin
  * @date 2018-12-12 15:14
  */

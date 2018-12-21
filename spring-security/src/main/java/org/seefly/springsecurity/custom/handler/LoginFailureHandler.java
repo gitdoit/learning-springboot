@@ -1,4 +1,4 @@
-package org.seefly.springsecurity.handle;
+package org.seefly.springsecurity.custom.handler;
 
 /**
  * @author liujianxin

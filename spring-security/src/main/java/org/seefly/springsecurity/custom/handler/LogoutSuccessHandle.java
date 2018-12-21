@@ -1,4 +1,4 @@
-package org.seefly.springsecurity.handle;
+package org.seefly.springsecurity.custom.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationTar
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LogoutSuccessHandle extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
     private static final String BEARER_AUTHENTICATION = "Bearer ";
     private static final String HEADER_AUTHORIZATION = "authorization";
-    @Autowired
+    @Resource
     private TokenStore tokenStore;
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {

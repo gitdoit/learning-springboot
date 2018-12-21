@@ -1,4 +1,4 @@
-package org.seefly.springsecurity.handle;
+package org.seefly.springsecurity.custom.entrypoint;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
