@@ -2,6 +2,8 @@ package org.seefly.springsecurity.custom.entrypoint;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -29,6 +31,13 @@ import java.nio.charset.StandardCharsets;
  * · 200 OK，表示从客户端发来的请求在服务器端被正确处理
  * · 204 No content，表示请求成功，但响应报文不含实体的主体部分
  * · 206 Partial Content，进行范围请求
+ *
+ *
+ *
+ *  默认情况下用户在访问受限资源但没有登陆时会抛出一个{@link AuthenticationException}异常，并在
+ *  {@link ExceptionTranslationFilter}处被捕获，然后调用默认的{@link LoginUrlAuthenticationEntryPoint}进入认证端点
+ *
+ *
  * @author liujianxin
  * @date 2018-12-14 11:29
  */

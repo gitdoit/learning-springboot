@@ -16,6 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 
 /**
  * 向容器中添加任意一个实现了{@link WebSecurityConfigurer}的接口的bean
@@ -89,13 +91,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/oauth/**").authenticated()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/private/**").authenticated()
-                .and()
-                .formLogin().permitAll();
-        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                    .antMatchers("/private/**").authenticated();
+        http.formLogin().permitAll();
+        /*http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
             response.setContentType(MediaType.TEXT_HTML_VALUE);
             response.getOutputStream().print("fuck off!");
-        });
+            response.flushBuffer();
+        });*/
     }
 
    /* IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter() throws Exception {

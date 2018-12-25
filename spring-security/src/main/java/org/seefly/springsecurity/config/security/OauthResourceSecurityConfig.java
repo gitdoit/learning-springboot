@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 /**
  * 资源服务配置
  * <p>
- * {@link ResourceServerConfigurerAdapter} 是spring security下 oauth模块的配置，主要用于定制oauth的规则
+ * {@link ResourceServerConfigurerAdapter} 是spring security下 oauth模块的配置，用于对资源进行保护
  * {@link WebSecurityConfigurerAdapter}则是spring security的配置
  *
  * 这里的tokenServices是用来根据客户端访问资源时携带的Token字符串获取客户端信息，以及完整的令牌信息的

@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface AuthorityMapper {
 
-    @Select("SELECT a.name FROM user_authority ua , authority a  WHERE ua.username = #{userName} AND ua.authority = a.name")
+    @Select("SELECT a.`name` FROM user u ,realetionship r,authority a WHERE u.username = #{userName}  AND r.type = 'user_auth' AND u.id = r.from_id AND r.to_id = a.id")
     List<Authority> selectAuthoritysByUserName(String userName);
 }

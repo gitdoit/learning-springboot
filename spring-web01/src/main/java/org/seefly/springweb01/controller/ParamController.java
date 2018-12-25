@@ -1,8 +1,10 @@
 package org.seefly.springweb01.controller;
 
 import org.seefly.springweb01.annotation.MyParamAnno;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
@@ -48,6 +50,16 @@ import java.util.Enumeration;
 @RestController
 @RequestMapping
 public class ParamController {
+    @Value("${my.name}")
+    private String name;
+    @Value("${my.age}")
+    private Integer age;
+
+    @PostConstruct
+    public void init(){
+        System.out.println(name);
+        System.out.println(age);
+    }
 
     /**
      * 演示从路径中绑定restful参数

@@ -27,6 +27,7 @@ public class IpAuthenticationToken extends AbstractAuthenticationToken {
 
     /**
      * 认证之后的构造器
+     *
      * @param authorities 权限
      * @param ip ip地址
      */
