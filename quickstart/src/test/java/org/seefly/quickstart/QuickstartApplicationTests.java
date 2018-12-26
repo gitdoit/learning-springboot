@@ -19,17 +19,20 @@ import org.seefly.quickstart.model.MacInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 @Slf4j
 public class QuickstartApplicationTests {
 
@@ -49,7 +52,7 @@ public class QuickstartApplicationTests {
         List<MacInfo> list = macInfo.selectAll();
         for(int i = 0 ; i < 10 ; i ++){
             String mac = list.get(i).getSource();
-            getResult(getMac(mac));
+            //getResult(getMac(mac));
         }
 
     }
@@ -69,7 +72,8 @@ public class QuickstartApplicationTests {
         return  StringUtils.removeEnd(sb.toString(), ":");
     }
 
-    public void getResult(String mac) throws Exception {
+    @Test
+    public void getResult() throws Exception {
 
 
 
@@ -78,11 +82,10 @@ public class QuickstartApplicationTests {
         HttpPost post = new HttpPost();
         post.setHeader("Accept", "application/json, text/javascript, */*; q=0.01");
         post.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        post.setURI(new URI("http://baidu.com"));
+        post.setURI(new URI("127.0.0.1/parser/rsa/encode"));
 
         List<NameValuePair> nvps = new ArrayList<>();
-        nvps.add(new BasicNameValuePair("token", ""));
-        nvps.add(new BasicNameValuePair("macs", ""));
+        nvps.add(new BasicNameValuePair("phone", "13665581111"));
         post.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
         CloseableHttpResponse response = client.execute(post);
 
@@ -108,7 +111,23 @@ public class QuickstartApplicationTests {
 
     @Test
     public void printa(){
-        System.out.println(pp);
+        RestTemplate restTemplate = new RestTemplate();
+        /*HttpHeaders httpHeaders = new HttpHeaders();
+        MultiValueMap<String, String> body= new LinkedMultiValueMap();
+        body.add("phone","13665581111");
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<MultiValueMap> httpEntity = new HttpEntity<>(body,httpHeaders);
+
+
+
+        //String map = restTemplate.exchange("http://127.0.0.1/parser/rsa/encode",httpEntity,String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange("http://127.0.0.1/parser/rsa/encode", HttpMethod.POST, httpEntity, String.class);
+        String body1 = exchange.getBody();
+        System.out.println(body1);*/
+        Map<String,String> s = restTemplate.postForObject("http://127.0.0.1/parser/rsa/batch-encode", Arrays.asList("sdfdsf","sdfsdf"), Map.class);
+        System.out.println();
+        System.out.println();
     }
 
     /**

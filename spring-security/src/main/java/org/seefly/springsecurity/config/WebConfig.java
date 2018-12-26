@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author liujianxin
  * @date 2018-12-13 23:12
  */
-//@Configuration
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -17,7 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/403").setViewName("/403");
         registry.addViewController("/oauth/403").setViewName("/oauth/403");
         registry.addViewController("/oauth/401").setViewName("/oauth/401");
-        registry.addViewController("/badmima").setViewName("/badmima");
+        registry.addViewController("/admin").setViewName("/admin");
+        registry.addViewController("/user").setViewName("/user");
         //registry.addViewController("/login").setViewName("login");
     }
 }

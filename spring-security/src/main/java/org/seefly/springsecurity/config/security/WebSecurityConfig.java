@@ -1,5 +1,7 @@
 package org.seefly.springsecurity.config.security;
 
+import org.seefly.springsecurity.custom.handler.LoginFailureHandler;
+import org.seefly.springsecurity.custom.handler.MyLoginSuccessHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
@@ -92,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/private/**").authenticated();
-        http.formLogin().permitAll();
+        http.formLogin().successHandler(new MyLoginSuccessHandle()).failureHandler(new LoginFailureHandler()).permitAll();
         /*http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
             response.setContentType(MediaType.TEXT_HTML_VALUE);
             response.getOutputStream().print("fuck off!");
@@ -123,7 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/abc/**").anonymous().antMatchers("/private/**").hasAnyAuthority("CHECK","DELETE");
 
         //4. SPeL表达式，允许指定IP访问，并且必须具有指定角色。
-        http.authorizeRequests().antMatchers("/abc/**").access("hasRole('ROLE_USER') and hasIpAddress('192.168.6.*')");
+        http.authorizeRequests().antMatchers("/abc/**").access("hasRole('USER') and hasIpAddress('192.168.6.*')");
 
         //5. 【错误用法】 第一个规则范围大于第二个，第一个规则不管校验成功还是失败，都不会执行第二个校验规则
         http.authorizeRequests().antMatchers("/**").hasRole("USER").antMatchers("/admin/**").hasRole("ADMIN");
