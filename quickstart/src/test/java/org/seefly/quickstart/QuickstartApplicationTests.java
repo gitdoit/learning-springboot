@@ -125,7 +125,7 @@ public class QuickstartApplicationTests {
         ResponseEntity<String> exchange = restTemplate.exchange("http://127.0.0.1/parser/rsa/encode", HttpMethod.POST, httpEntity, String.class);
         String body1 = exchange.getBody();
         System.out.println(body1);*/
-        Map<String,String> s = restTemplate.postForObject("http://127.0.0.1/parser/rsa/batch-encode", Arrays.asList("sdfdsf","sdfsdf"), Map.class);
+        Map<String,String> s = restTemplate.postForObject("http://127.0.0.1:8092/parser/sha/encode", "13665555555", Map.class);
         System.out.println();
         System.out.println();
     }
