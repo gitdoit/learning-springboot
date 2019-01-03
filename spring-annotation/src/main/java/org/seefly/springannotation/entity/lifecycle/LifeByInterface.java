@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.entity.lifecycle;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.InitializingBean;
  * @author liujianxin
  * @date 2018-12-23 21:57
  */
-public class Flower implements InitializingBean, DisposableBean {
+public class LifeByInterface implements InitializingBean, DisposableBean {
 
-    public Flower() {
+    public LifeByInterface() {
         System.out.println("我种了一朵花....");
     }
 

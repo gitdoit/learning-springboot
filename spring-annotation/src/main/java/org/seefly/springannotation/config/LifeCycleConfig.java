@@ -1,12 +1,17 @@
 package org.seefly.springannotation.config;
 
-import org.seefly.springannotation.entity.Flower;
-import org.seefly.springannotation.entity.Tree;
+import org.seefly.springannotation.entity.lifecycle.LifeBeanPost;
+import org.seefly.springannotation.entity.lifecycle.LifeByInterface;
+import org.seefly.springannotation.entity.lifecycle.LifeByBean;
+import org.seefly.springannotation.entity.lifecycle.LifeByJSR;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * bean的生命周期学习。
@@ -19,15 +24,20 @@ import org.springframework.context.annotation.Import;
  *  1、bean通过实现{@link InitializingBean}接口来指定在实例初始化时候的逻辑
  *  2、bean通过实现{@link DisposableBean}接口来指定实例在销毁时的逻辑
  *
+ *  JSR250注解方式
+ *  1、{@link PostConstruct} 初始化
+ *  2、{@link PreDestroy} 销毁  这俩都是javax中的，不是spring的
+ *
+ *  实现
  * @author liujianxin
  * @date 2018-12-23 21:36
  */
 @Configuration
-@Import(Flower.class)
+@Import({LifeByInterface.class, LifeByJSR.class, LifeBeanPost.class})
 public class LifeCycleConfig {
 
     @Bean(initMethod = "init",destroyMethod = "destroy")
-    public Tree tree(){
-        return new Tree();
+    public LifeByBean tree(){
+        return new LifeByBean();
     }
 }

@@ -1,13 +1,13 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.entity.lifecycle;
 
 /**
  * 用来演示bean的生命周期
  * @author liujianxin
  * @date 2018-12-23 21:38
  */
-public class Tree {
+public class LifeByBean {
 
-    public Tree() {
+    public LifeByBean() {
         System.out.println("我种了一棵树.....");
     }
 
