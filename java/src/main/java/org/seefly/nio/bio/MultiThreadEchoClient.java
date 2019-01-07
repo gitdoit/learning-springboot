@@ -1,4 +1,4 @@
-package org.seefly.nio.oio;
+package org.seefly.nio.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
