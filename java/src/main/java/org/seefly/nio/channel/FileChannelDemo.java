@@ -24,12 +24,14 @@ import java.nio.channels.FileChannel;
  */
 public class FileChannelDemo {
 
-    public static void main(String[] args) throws IOException {
+
+    @Test
+    public void testWrite() throws IOException {
         RandomAccessFile raf = new RandomAccessFile("E:\\test\\nio.txt", "rw");
         //通过RandomAccessFile对象的getChannel()方法。FileChannel是抽象类。
         FileChannel channel = raf.getChannel();
         // 创建缓存区
-       ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer readBuffer = ByteBuffer.allocate(1024);
         // 读入数据到缓存
         int read = channel.read(readBuffer);
         // 创建写缓存
@@ -38,18 +40,10 @@ public class FileChannelDemo {
         // 切换读写模式，限制=位置 位置=0;注意这里，实际上就是改变了一下这几个参数，其他没有任何变化，就是逻辑上的切换。
         writeBuffer.flip();
         channel.write(writeBuffer);
-
-        /*while (read != -1){
-            System.out.println("read  "+read);
-            readBuffer.flip();
-            while (readBuffer.hasRemaining()){
-                System.out.print((char) readBuffer.get());
-            }
-            readBuffer.clear();
-            read = channel.read(readBuffer);
-        }*/
         raf.close();
+
     }
+
 
 
     /**
@@ -58,26 +52,52 @@ public class FileChannelDemo {
     @Test
     public void testRead() throws IOException {
         RandomAccessFile aFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
-        FileChannel inChannel = aFile.getChannel();
-        ByteBuffer buf = ByteBuffer.allocate(9);
-        // 从管道中读取数据放入缓存，返回读取的字节数。-1为已读取到文件末尾
-        int bytesRead = inChannel.read(buf);
-        // 判断是否读取到文件末尾
-        while (bytesRead != -1) {
-            // 打印读取的字节数
-            System.out.println("Read " + bytesRead);
-            // 从写模式转换到读模式，limit 交换  position , position=0
-            buf.flip();
-            // position < limit ?
-            while(buf.hasRemaining()){
-                // position++
-                System.out.print((char) buf.get());
-            }
-            System.out.println();
-            // position = 0 ,limit = capacity
-            buf.clear();
-            bytesRead = inChannel.read(buf);
-        }
-        aFile.close();
+        FileChannel channel = aFile.getChannel();
+        ByteBuffer buf = ByteBuffer.allocate(48);
+        buf.put("hello world!".getBytes());
+        // 反转一下
+        buf.flip();
+        System.out.println("before write:"+buf);
+        channel.write(buf);
+        System.out.println("after write:"+buf);
+        channel.close();
     }
+
+
+    /**
+     * 将一个管道中读取的数据分散到不同的缓存中
+     * 还有一个反向操作的不演示了
+     */
+    @Test
+    public void testScatter() throws IOException {
+        RandomAccessFile aFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
+        FileChannel channel = aFile.getChannel();
+        ByteBuffer a = ByteBuffer.allocate(6);
+        ByteBuffer b = ByteBuffer.allocate(6);
+        ByteBuffer[] array = {a,b};
+        // 文件内容12个字节[hello world!]，这里分散成俩
+        channel.read(array);
+        b.flip();
+        // 读后面的
+        while (b.hasRemaining()){
+            System.out.print((char)b.get());
+        }
+    }
+
+
+    /**
+     * 俩管道桥接一下
+     */
+    @Test
+    public void testTransfer() throws IOException {
+        RandomAccessFile sourceFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
+        RandomAccessFile targetFile = new RandomAccessFile("E:\\test\\to.txt", "rw");
+        FileChannel sourceFileChannel = sourceFile.getChannel();
+        FileChannel targetFileChannel = targetFile.getChannel();
+        sourceFileChannel.transferTo(0,12,targetFileChannel);
+        sourceFile.close();
+        targetFile.close();
+    }
+
+
 }

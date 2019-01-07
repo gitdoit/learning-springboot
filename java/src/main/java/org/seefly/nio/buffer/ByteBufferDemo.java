@@ -1,9 +1,7 @@
 package org.seefly.nio.buffer;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
