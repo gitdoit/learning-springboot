@@ -2,7 +2,6 @@ package org.seefly.nio.channel;
 
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
