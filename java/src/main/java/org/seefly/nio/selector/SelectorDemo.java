@@ -87,7 +87,7 @@ public class SelectorDemo {
      * selector.selectedKeys()
      * 一旦select()方法表明有一个或多个通道就绪之后，可以调用此方法。
      * 问题：返回值是这个Selector中所有注册的Channel还是准备好的那些？？
-     * 是已经准备好的那些
+     *  是已经准备好的那些
      */
     public void selectInfo(Selector selector) throws IOException {
         // 阻塞到至少有一个通道在你注册的事件上就绪了。

@@ -53,5 +53,8 @@ public class AsyncTaskDemo {
         return caffe;
     }
 
-
+    public void testInvokeBySelf(){
+    }
 }
+
+

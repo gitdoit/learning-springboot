@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 
 /**
  * java NIO Channel通道和流非常相似，区别如下
@@ -23,9 +24,52 @@ import java.nio.channels.FileChannel;
  */
 public class FileChannelDemo {
 
+    /**
+     * 从管道中读取数据
+     * 和原来的IO相比，
+     */
+    @Test
+    public void testRead() throws IOException, InterruptedException {
+        RandomAccessFile aFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
+        FileChannel channel = aFile.getChannel();
+        ByteBuffer buf = ByteBuffer.allocate(64);
+        int read = channel.read(buf);
+        Thread.sleep(20000);
+        // 关闭通道
+        channel.close();
+        buf.flip();
+        System.out.println(new String(buf.array(), StandardCharsets.UTF_8));
+    }
 
+
+
+
+
+
+
+
+    /**
+     * 测试向管道流中写入数据
+     */
     @Test
     public void testWrite() throws IOException {
+        RandomAccessFile aFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
+        FileChannel channel = aFile.getChannel();
+        ByteBuffer buf = ByteBuffer.allocate(48);
+        buf.put("hello world!".getBytes());
+        // 反转一下
+        buf.flip();
+        System.out.println("before write:"+buf);
+        channel.write(buf);
+        System.out.println("after write:"+buf);
+        channel.close();
+    }
+
+    /**
+     * 利用一同一个管道进行读和写
+     */
+    @Test
+    public void testReadAndWrite() throws IOException {
         RandomAccessFile raf = new RandomAccessFile("E:\\test\\nio.txt", "rw");
         //通过RandomAccessFile对象的getChannel()方法。FileChannel是抽象类。
         FileChannel channel = raf.getChannel();
@@ -41,25 +85,6 @@ public class FileChannelDemo {
         channel.write(writeBuffer);
         raf.close();
 
-    }
-
-
-
-    /**
-     * 测试从管道流中读取数据
-     */
-    @Test
-    public void testRead() throws IOException {
-        RandomAccessFile aFile = new RandomAccessFile("E:\\test\\nio.txt", "rw");
-        FileChannel channel = aFile.getChannel();
-        ByteBuffer buf = ByteBuffer.allocate(48);
-        buf.put("hello world!".getBytes());
-        // 反转一下
-        buf.flip();
-        System.out.println("before write:"+buf);
-        channel.write(buf);
-        System.out.println("after write:"+buf);
-        channel.close();
     }
 
 
