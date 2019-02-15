@@ -37,6 +37,7 @@ public class OauthResourceSecurityConfig  extends ResourceServerConfigurerAdapte
      * 用户未登录时访问受限资源的接入点
      */
     @Autowired
+
     private  CustomAuthenticationEntryPoint EntryPoint;
     @Autowired
     private  LogoutSuccessHandle logoutSuccessHandle;
