@@ -28,6 +28,16 @@ public class SocketController {
         return "/client";
     }
 
+    @RequestMapping("socket")
+    public String socket(){
+        return "socket";
+    }
+
+    @RequestMapping("/real")
+    public String realTimeAudio(){
+        return "/realtime";
+    }
+
     /**
      * 用来接受客户端发送的webSocket请求
      * 管理员使用webSocket请求该接口(/app/change-notice)，然后将管理员发送的信息推送到所有订阅/topic/notice的客户端

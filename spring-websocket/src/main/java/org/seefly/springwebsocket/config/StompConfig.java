@@ -17,7 +17,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
  */
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebConfig extends AbstractWebSocketMessageBrokerConfigurer {
+public class StompConfig extends AbstractWebSocketMessageBrokerConfigurer {
     /**
      * 添加一个服务端点，来接收客户端的连接。
      */

@@ -1,6 +1,7 @@
 package org.seefly.springwebsocket.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author liujianxin
  * @date 2019-02-15 15:38
  */
+@Component
 @Slf4j
 public class SocketHandle implements WebSocketHandler {
 
@@ -27,7 +29,7 @@ public class SocketHandle implements WebSocketHandler {
         log.info("用户{}已连接",session.getId());
         userMap.put(session.getId(),session);
         // 广播新用户上线
-
+        sendMsgForAll(session.getId()+"上线");
     }
 
     /**
