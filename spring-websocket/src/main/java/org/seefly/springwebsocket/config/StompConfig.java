@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 /**
  * stomp和WebSocket的关系
@@ -32,4 +33,9 @@ public class StompConfig extends AbstractWebSocketMessageBrokerConfigurer {
         //指服务端接收地址的前缀，意思就是说客户端给服务端发消息的地址的前缀
         registry.setApplicationDestinationPrefixes("/app");
     }
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setMessageSizeLimit(50000);
+    }
+
 }

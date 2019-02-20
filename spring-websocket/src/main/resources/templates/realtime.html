@@ -41,6 +41,7 @@
             ws.send('实时音频接收开始！');
         };
         ws.onclose = function (ev) {
+            console.log(ev);
             console.log("关闭连接")
         };
         ws.onerror = function (ev) {
@@ -49,9 +50,11 @@
         ws.onmessage = function(e) {
             receive(e.data);
         };
-        // 开始录音
-        gRecorder.run();
         door = true;
+        window.setTimeout(function () {
+            // 开始录音
+            gRecorder.run();
+        },500);
         window.setInterval(function () {
             ws.send(gRecorder.getAndClear());
             console.log("音频数据已发送！")
@@ -133,6 +136,7 @@
                 var sampleBits = Math.min(this.inputSampleBits, this.oututSampleBits);
                 var bytes = this.compress();
                 var dataLength = bytes.length * (sampleBits / 8);
+                console.log(dataLength+"sdfsdfsdfsd")
                 var buffer = new ArrayBuffer(44 + dataLength);
                 var data = new DataView(buffer);
 
@@ -213,7 +217,9 @@
         }
 
         recorder.onaudioprocess = function (e) {
-            audioData.input(e.inputBuffer.getChannelData(0));
+            var data = e.inputBuffer.getChannelData(0);
+            console.log(data.length);
+            audioData.input(data);
         }
     };
 
