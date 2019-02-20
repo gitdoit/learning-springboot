@@ -3,6 +3,8 @@ package org.seefly.springwebsocket.service;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -22,6 +24,11 @@ public class RealTimeAudioHandle implements WebSocketHandler {
             BinaryMessage bm =  (BinaryMessage)message;
             ByteBuffer payload = bm.getPayload();
             byte[] array = payload.array();
+            File file = new File("D:\\audio"+System.currentTimeMillis()+".wav");
+            file.createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(array);
+            fileOutputStream.close();
             System.out.println(array.length);
         }else if (message instanceof TextMessage){
             TextMessage bm =  (TextMessage)message;

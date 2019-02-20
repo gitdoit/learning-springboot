@@ -35,7 +35,7 @@
             gRecorder = rec;
         });
         // 创建WebSocket连接
-        ws = new WebSocket("ws://192.168.6.49:8080/audio");
+        ws = new WebSocket("ws://localhost:8080/audio");
         ws.onopen = function() {
             console.log('握手成功');
             ws.send('实时音频接收开始！');
