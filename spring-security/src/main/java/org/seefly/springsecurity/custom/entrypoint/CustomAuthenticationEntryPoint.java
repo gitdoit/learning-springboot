@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 配置401未认证时的响应信息
  * · 500 internal sever error，表示服务器端在执行请求时发生了错误
- * · 503 service unavailable，表明服务器暂时处于超负载或正在停机维护，无法处理请求
+ * · 503 handle unavailable，表明服务器暂时处于超负载或正在停机维护，无法处理请求
 
  * · 400 bad request，请求报文存在语法错误
  * · 401 unauthorized，表示发送的请求需要有通过 HTTP 认证的认证信息

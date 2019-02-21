@@ -6,7 +6,7 @@ package org.seefly.mybatisplus.Enum;
  * 描述：
  */
 public enum PolicyEnum {
-    MOBILE("mobile"),SERVICE("service");
+    MOBILE("mobile"),SERVICE("handle");
     private final String value;
     PolicyEnum(String value){
         this.value = value;
@@ -28,7 +28,7 @@ public enum PolicyEnum {
     }
 
     public static void main(String[] args){
-        PolicyEnum service = PolicyEnum.getValue("service");
+        PolicyEnum service = PolicyEnum.getValue("handle");
         System.out.println();
     }
 

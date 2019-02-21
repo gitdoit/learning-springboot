@@ -1,11 +1,13 @@
 package org.seefly.springwebsocket.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
  * stomp和WebSocket的关系
@@ -13,12 +15,22 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
  *
  * stomp简单教程
  * https://www.jianshu.com/p/60799f1356c5
+ *
+ *
+ * StompSubProtocolHandler
  * @author liujianxin
  * @date 2019-02-15 13:55
  */
 @Configuration
 @EnableWebSocketMessageBroker
 public class StompConfig extends AbstractWebSocketMessageBrokerConfigurer {
+
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
+
+
     /**
      * 添加一个服务端点，来接收客户端的连接。
      */
@@ -37,5 +49,7 @@ public class StompConfig extends AbstractWebSocketMessageBrokerConfigurer {
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         registration.setMessageSizeLimit(50000);
     }
+
+
 
 }

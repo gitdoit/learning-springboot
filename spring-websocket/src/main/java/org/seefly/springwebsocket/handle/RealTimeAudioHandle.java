@@ -1,4 +1,4 @@
-package org.seefly.springwebsocket.service;
+package org.seefly.springwebsocket.handle;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
@@ -40,7 +40,7 @@ public class RealTimeAudioHandle implements WebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-
+        exception.printStackTrace();
     }
 
     @Override

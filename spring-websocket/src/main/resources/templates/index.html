@@ -52,6 +52,11 @@
         var value = document.getElementById('name').value;
         stompClient.send("/app/change-notice", {}, value);
     }
+
+    function sendByte() {
+        var value = document.getElementById('name').value;
+        stompClient.send("/app/audioMessage", {}, value);
+    }
     connect();
 </script>
 </body>

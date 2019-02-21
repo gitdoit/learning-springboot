@@ -5,6 +5,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.WebSocketMessage;
 
 import javax.annotation.Resource;
 
@@ -14,7 +16,7 @@ import javax.annotation.Resource;
  * @date 2019-02-15 13:59
  */
 @Controller
-public class SocketController {
+public class StompSocketController {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
@@ -46,6 +48,16 @@ public class SocketController {
     public void greeting(String value){
         // 使用‘MessageConverter’进行包装转化成一条消息，发送到指定的目标
         this.simpMessagingTemplate.convertAndSend("/topic/notice", value);
+    }
+
+    @MessageMapping("/audioMessage")
+    public void byteArray(WebSocketMessage<?> message){
+        if(message instanceof BinaryMessage){
+            BinaryMessage m = (BinaryMessage)message;
+            System.out.println("sdfsdfsd");
+            System.out.println(m.getPayload().array().length);
+        }
+        System.out.println(message.getClass());
     }
 
     /**

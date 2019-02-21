@@ -17,7 +17,7 @@ import org.springframework.context.annotation.PropertySource;
  *          选择这个应用所依赖的组件，并将他们配置好。
  */
 /**
- * 这个注解的作用是导入自定义的组件配置文件，就像一开始学spring的时候写的那些application-service.xml一样
+ * 这个注解的作用是导入自定义的组件配置文件，就像一开始学spring的时候写的那些application-handle.xml一样
  * 然后在这里指定一下配置文件的位置就可以了。
  * 但是spring现在推荐使用代码配置的方式...
  * @ImportResource(locations = {"classpath:beans.xml"})
