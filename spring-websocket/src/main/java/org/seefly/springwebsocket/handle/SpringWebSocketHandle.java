@@ -5,17 +5,20 @@ import org.springframework.web.socket.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.Map;
 
 /**
  * @author liujianxin
  * @date 2019-02-20 15:04
  */
 @Component
-public class RealTimeAudioHandle implements WebSocketHandler {
+public class SpringWebSocketHandle implements WebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
+        Map<String, Object> attributes = session.getAttributes();
     }
 
     @Override
@@ -32,7 +35,18 @@ public class RealTimeAudioHandle implements WebSocketHandler {
             System.out.println(array.length);
         }else if (message instanceof TextMessage){
             TextMessage bm =  (TextMessage)message;
-            System.out.println(bm.getPayload());
+            if("play".equals(bm.getPayload())){
+                System.out.println(bm.getPayload());
+                RandomAccessFile aFile = new RandomAccessFile("E:\\voice\\konghao\\lian_tong_kong_hao.wav", "rw");
+                FileChannel channel = aFile.getChannel();
+                ByteBuffer buf = ByteBuffer.allocate((int)aFile.length());
+                channel.read(buf);
+                channel.close();
+                buf.flip();
+                BinaryMessage msg = new BinaryMessage(buf);
+                session.sendMessage(msg);
+            }
+
         }else {
             System.out.println(message.getClass());
         }

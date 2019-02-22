@@ -4,13 +4,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.socket.BinaryMessage;
-import org.springframework.web.socket.WebSocketMessage;
 
 import javax.annotation.Resource;
 
 /**
+ *
+ * /socket端口
+ *  https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#websocket-fallback
  * 用来模拟使用webSocket实时的推送公告
  * @author liujianxin
  * @date 2019-02-15 13:59
@@ -20,25 +20,6 @@ public class StompSocketController {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @RequestMapping("/helloSocket")
-    public String index(){
-        return "/index";
-    }
-
-    @RequestMapping("/client")
-    public String client(){
-        return "/client";
-    }
-
-    @RequestMapping("socket")
-    public String socket(){
-        return "socket";
-    }
-
-    @RequestMapping("/real")
-    public String realTimeAudio(){
-        return "/realtime";
-    }
 
     /**
      * 用来接受客户端发送的webSocket请求
@@ -51,13 +32,8 @@ public class StompSocketController {
     }
 
     @MessageMapping("/audioMessage")
-    public void byteArray(WebSocketMessage<?> message){
-        if(message instanceof BinaryMessage){
-            BinaryMessage m = (BinaryMessage)message;
-            System.out.println("sdfsdfsd");
-            System.out.println(m.getPayload().array().length);
-        }
-        System.out.println(message.getClass());
+    public void byteArray(byte[] data){
+            System.out.println(data.length);
     }
 
     /**
