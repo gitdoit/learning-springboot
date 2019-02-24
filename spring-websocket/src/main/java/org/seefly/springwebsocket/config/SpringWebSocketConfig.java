@@ -9,12 +9,16 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
+import org.springframework.web.socket.server.support.AbstractHandshakeHandler;
 
 /**
  * Spring框架实现WebSocket
  *
  * doc: https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#websocket
  *
+ * 在处理握手的时候，在{@link AbstractHandshakeHandler#doHandshake}的281行，会调用一个认证信息方法。
+ * 我觉得Http转WebSocket的用户信息可以通过这种方式来做，把Http中的认证信息放到WebSocketSession中就很Nice。
+ * 我们实现一下这个抽象类，替代原有默认的
  * @author liujianxin
  * @date 2019-02-20 09:54
  */
@@ -34,7 +38,9 @@ public class SpringWebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(springWebSocketHandle,"/audio").setAllowedOrigins("*");
+
+        // HttpSessionHandshakeInterceptor 用来在握手时将HttpSession 中的属性复制到 WebSocketSession
+        registry.addHandler(springWebSocketHandle,"/audio").addInterceptors(interceptor).setAllowedOrigins("*");
     }
 
     @Bean

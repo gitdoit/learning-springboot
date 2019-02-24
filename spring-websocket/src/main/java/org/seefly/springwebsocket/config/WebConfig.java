@@ -19,5 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("spsocket").setViewName("websocket/socket");
         registry.addViewController("real").setViewName("realtime");
         registry.addViewController("stomp").setViewName("stomp/stompaudio");
+        registry.addViewController("nstomp").setViewName("stomp/client");
+        registry.addViewController("test").setViewName("websocket/test");
     }
 }

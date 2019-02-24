@@ -18,7 +18,8 @@ import java.util.List;
  * stomp简单教程
  * https://www.jianshu.com/p/60799f1356c5
  *
- *
+ * webstomp.min.js
+ *  https://www.jsdelivr.com/package/npm/webstomp-client
  * StompSubProtocolHandler
  * @author liujianxin
  * @date 2019-02-15 13:55

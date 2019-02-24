@@ -24,6 +24,7 @@
         <module>spring-security</module>
         <module>spring-annotation</module>
         <module>spring-network</module>
+        <module>spring-websocket</module>
     </modules>
 
 

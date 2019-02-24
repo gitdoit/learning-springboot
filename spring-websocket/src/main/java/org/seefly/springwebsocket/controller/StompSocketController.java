@@ -6,6 +6,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -27,8 +28,15 @@ public class StompSocketController {
      */
     @MessageMapping("/change-notice")
     public void greeting(String value){
+        System.out.println(value);
         // 使用‘MessageConverter’进行包装转化成一条消息，发送到指定的目标
         this.simpMessagingTemplate.convertAndSend("/topic/notice", value);
+    }
+
+    @MessageMapping("/bytes")
+    public void binary(byte[] bytes){
+        String s = new String(bytes, StandardCharsets.UTF_8);
+        System.out.println(bytes.length + s);
     }
 
     @MessageMapping("/audioMessage")
