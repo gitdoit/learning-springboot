@@ -1,5 +1,6 @@
 package org.seefly.springwebsocket.handle;
 
+import org.seefly.springwebsocket.context.WebSocketSessionHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
@@ -8,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Map;
 
 /**
  * @author liujianxin
@@ -18,7 +18,7 @@ import java.util.Map;
 public class SpringWebSocketHandle implements WebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        Map<String, Object> attributes = session.getAttributes();
+        WebSocketSessionHolder.putSession(session.getId(),session);
     }
 
     @Override

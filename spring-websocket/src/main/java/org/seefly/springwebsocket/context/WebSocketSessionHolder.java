@@ -12,15 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketSessionHolder {
     private static final ConcurrentHashMap<String, WebSocketSession> CONTEXT = new ConcurrentHashMap<>();
 
-    public boolean putSession(String sessionId,WebSocketSession socketSession){
+    public static boolean putSession(String sessionId,WebSocketSession socketSession){
         return  CONTEXT.put(sessionId,socketSession) != null;
     }
 
-    public WebSocketSession getSession(String sessionId){
+    public static WebSocketSession getSession(String sessionId){
         return CONTEXT.get(sessionId);
     }
 
-    public boolean remove(String sessionId){
+    public static boolean remove(String sessionId){
         return CONTEXT.remove(sessionId) != null;
+    }
+
+    public static WebSocketSession getAny(){
+        return CONTEXT.entrySet().stream().findAny().get().getValue();
     }
 }

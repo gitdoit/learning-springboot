@@ -18,6 +18,9 @@ import java.util.List;
  * stomp简单教程
  * https://www.jianshu.com/p/60799f1356c5
  *
+ * stomp官方实例
+ * https://spring.io/guides/gs/messaging-stomp-websocket/
+ *
  * webstomp.min.js
  *  https://www.jsdelivr.com/package/npm/webstomp-client
  * StompSubProtocolHandler
@@ -42,7 +45,7 @@ public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer 
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket").withSockJS();
+        registry.addEndpoint("/socket");
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {

@@ -36,7 +36,7 @@ public class StompSocketController {
     @MessageMapping("/bytes")
     public void binary(byte[] bytes){
         String s = new String(bytes, StandardCharsets.UTF_8);
-        System.out.println(bytes.length + s);
+        System.out.println(s);
     }
 
     @MessageMapping("/audioMessage")

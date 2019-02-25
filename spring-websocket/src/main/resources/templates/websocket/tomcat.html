@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tomcat后端+原生Websocket上传音频</title>
+</head>
+<body>
+<button id="b">开始</button>
+<button id="c">停止</button>
+<script  th:src="@{/myaudio.js}"></script>
+<script>
+    var timOutId = null;
+    var start =document.getElementById("b");
+    var stop = document.getElementById("c");
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+
+    var gRecorder = null;
+    var door = false;
+    var ws = null;
+
+    start.onclick = function() {
+        if(door){
+            alert("已经启动！")
+            return false;
+        }
+        door = true;
+        if(!navigator.getUserMedia) {
+            alert('抱歉您的设备无法语音聊天');
+            return false;
+        }
+        // 开始监听麦克风
+        SRecorder.get(function (rec) {
+            gRecorder = rec;
+        });
+        // 创建WebSocket连接
+        ws = new WebSocket("ws://localhost:8080/websocket");
+        ws.onopen = function() {
+            console.log('握手成功');
+            ws.send('实时音频接收开始！');
+        };
+        ws.onclose = function (ev) {
+            console.log(ev);
+            console.log("关闭连接")
+        };
+        ws.onerror = function (ev) {
+            console.log("连接异常关闭")
+        };
+        ws.onmessage = function(e) {
+            receive(e.data);
+        };
+        door = true;
+        window.setTimeout(function () {
+            // 开始录音
+            gRecorder.run();
+        },500);
+        timOutId = window.setInterval(function () {
+            ws.send(gRecorder.getAndClear());
+            console.log("音频数据已发送！")
+        }, 3000);
+    }
+
+    // 停止
+    stop.onclick = function() {
+        if(!door){
+            alert("还没启动！")
+        }else if(ws) {
+            ws.send(gRecorder.getAndClear());
+            gRecorder.stop();
+            ws.close();
+            door = false;
+            clearInterval(timOutId);
+        }
+    }
+
+</script>
+</body>
+</html>

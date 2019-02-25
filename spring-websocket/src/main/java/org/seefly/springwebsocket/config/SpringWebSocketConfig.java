@@ -1,5 +1,6 @@
 package org.seefly.springwebsocket.config;
 
+import org.seefly.springwebsocket.handle.NewWebSocketHandle;
 import org.seefly.springwebsocket.handle.SpringWebSocketHandle;
 import org.seefly.springwebsocket.handle.SocketHandle;
 import org.seefly.springwebsocket.interceptor.HandshakeInterceptor;
@@ -40,7 +41,8 @@ public class SpringWebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 
         // HttpSessionHandshakeInterceptor 用来在握手时将HttpSession 中的属性复制到 WebSocketSession
-        registry.addHandler(springWebSocketHandle,"/audio").addInterceptors(interceptor).setAllowedOrigins("*");
+       // registry.addHandler(springWebSocketHandle,"/audio").addInterceptors(interceptor).setAllowedOrigins("*");
+        registry.addHandler(new NewWebSocketHandle(),"/audio").addInterceptors(interceptor).setAllowedOrigins("*");
     }
 
     @Bean

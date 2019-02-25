@@ -2,30 +2,50 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Stomp_client传送二进制数据</title>
 </head>
 <body>
+<p>SockJs不能发送二进制，所以不能使用Stomp_client+SockJs来处理音频数据，这里使用原生WebSocket+Stomp_client开发</p>
 <button id="b">开始</button>
-<script  th:src="@{https://cdn.bootcss.com/sockjs-client/1.3.0/sockjs.min.js}"></script>
+<button id="c">结束</button>
+<button id="d">获取并播放</button>
 <script  th:src="@{/webstomp.min.js}"></script>
+<script  th:src="@{/myaudio.js}"></script>
 <script>
-    var start =document.getElementById("b");
-    // Stomp.over(new SockJS('/socket'),{binary:true});
-    //webstomp.client('ws://localhost:8080/socket',{binary:true});
-    var stompClient =  webstomp.over((new SockJS('/socket')));
-
-    stompClient.connect({}, function () {
-        console.log("stomp连接成功！")
-    },function () {
-        console.log("stomp连接失败！")
+    //API https://github.com/JSteunou/webstomp-client
+    var gRecorder = null;
+    var timOutId;
+    SRecorder.get(function (rec) {
+        gRecorder = rec;
     });
+
+    var start =document.getElementById("b");
+    var end =document.getElementById("c");
+    // webstomp.client('ws://localhost:8080/socket',{binary:true});
+    var stompClient =  webstomp.client('ws://localhost:8080/socket',{binary:true});
+    stompClient.connect({}, function () {console.log("stomp连接成功！") },function () {console.log("stomp连接失败！")});
+    // 开始发送录音
     start.onclick = function () {
-        // des body headers
-        //stompClient.isBinary = false;
-        var debug = {hello: "world"};
-        var blob = new Blob([JSON.stringify(debug, null, 2)],
-            {type : 'text/plain'});
-        stompClient.send("/app/bytes", blob,{});
+        // 延时0.5秒开始录音
+        window.setTimeout(function () {gRecorder.run();},500);
+        // 每3秒发送一次录音
+        timOutId = window.setInterval(function () {
+            // Base64 编码
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // destination, body, headers
+                stompClient.send("/app/change-notice",reader.result,{'content-type':'text/plain'});
+                console.log("音频数据已发送！");
+            };
+            reader.readAsDataURL(gRecorder.getAndClear());
+        }, 3000);
+    };
+    // 结束发送
+    end.onclick = function (ev) {
+        gRecorder.stop();
+        stompClient.close();
+        door = false;
+        clearInterval(timOutId);
     }
 </script>
 </body>

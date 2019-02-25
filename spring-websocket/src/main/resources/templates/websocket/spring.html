@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>原生websocket发送音频数据</title>
+</head>
+<body>
+<button id="b">开始</button>
+<button id="c">停止</button>
+<button id="d">给我播放录音</button>
+<script  th:src="@{/myaudio.js}"></script>
+<script>
+
+    // 握手 ws://localhost:8080/audio   可以上传音频、发送音频
+    var timOutId = null;
+    var start =document.getElementById("b");
+    var stop = document.getElementById("c");
+    var play = document.getElementById("d");
+    var context;
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    var gRecorder = null;
+    var door = false;
+    var ws = null;
+
+
+    play.onclick = function (ev) {
+      if(!door){
+          alert("还没启动！")
+          return false;
+      }
+      ws.send("play")
+    };
+    start.onclick = function() {
+        if(door){
+            alert("已经启动！");
+            return false;
+        }
+        door = true;
+        if(!navigator.getUserMedia) {
+            alert('抱歉您的设备无法语音聊天');
+            return false;
+        }
+        // 开始监听麦克风
+        SRecorder.get(function (rec) {
+            gRecorder = rec;
+        });
+        // 创建WebSocket连接
+        ws = new WebSocket("ws://localhost:8080/audio");
+
+        ws.onmessage = function(e) {
+            var data = e.data;
+            if(data.constructor == String){
+                console.log("服务端数据:"+data);
+                // 业务逻辑
+            }else if(data.constructor == Blob){
+                console.log("收到音频文件:"+e.data.size);
+                // 音频播放
+                playAudio(e.data);
+            }else{
+                console.warn("数据类型不能处理！")
+            }
+        };
+
+        var playAudio = function(blob){
+            // Blob to ArrayBuffer
+            var fileReader = new FileReader();
+            fileReader.onload = function(event) {
+                console.log(event);
+                //arrayBuffer = fileReader.result;
+                //创建一个音频源 相当于是装音频的容器
+                var source = context.createBufferSource();
+                context.decodeAudioData(fileReader.result,function (buffer) {
+                    //  告诉音频源 播放哪一段音频
+                    source.buffer = buffer;
+                    // 连接到输出源
+                    source.connect(context.destination);
+                    //开始播放
+                    source.start(0);
+                });
+            };
+            fileReader.readAsArrayBuffer(blob);
+        }
+
+        ws.onopen = function() {
+            console.log('握手成功');
+            ws.send('实时音频接收开始！');
+        };
+        ws.onclose = function (ev) {
+            console.log(ev);
+            console.log("关闭连接")
+        };
+        ws.onerror = function (ev) {
+            console.log("连接异常关闭")
+        };
+        door = true;
+        window.setTimeout(function () {
+            // 开始录音
+            gRecorder.run();
+        },500);
+        timOutId = window.setInterval(function () {
+            ws.send(gRecorder.getAndClear());
+            console.log("音频数据已发送！")
+        }, 3000);
+    }
+
+    // 停止
+    stop.onclick = function() {
+        if(!door){
+            alert("还没启动！")
+        }else if(ws) {
+            ws.send(gRecorder.getAndClear());
+            gRecorder.stop();
+            ws.close();
+            door = false;
+            clearInterval(timOutId);
+        }
+    }
+</script>
+</body>
+</html>

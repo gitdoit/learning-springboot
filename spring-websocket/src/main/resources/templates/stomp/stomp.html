@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stomp传送二进制数据</title>
+</head>
+<body>
+<p>SockJs不能发送二进制，所以不能使用Stomp_client+SockJs来处理音频数据，这里使用原生WebSocket+Stomp_client开发</p>
+<button id="b">开始</button>
+<script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+<script>
+
+    // API http://jmesnil.net/stomp-websocket/doc/
+    var start =document.getElementById("b");
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(new WebSocket('ws://localhost:8080/socket'));
+    stompClient.connect(
+        {},
+        function connectCallback (frame) {
+            console.log('已连接【' + frame + '】');
+            stompClient.subscribe('/topic/notice', function (response) {
+                console.log("服务器:"+response.body);
+            });
+        },
+        function errorCallBack (error) {
+            console.log('连接失败【' + error + '】');
+        }
+    );
+    start.onclick = function () {
+        var debug = {hello: "world"};
+        var blob = new Blob([JSON.stringify(debug, null, 2)],
+            {type : 'text/plain'});
+        stompClient.send("/app/change-notice", {},blob);
+
+        /*var fileReader = new FileReader();
+        fileReader.onload = function(event) {
+            var uint8ArrayNew  = new Uint8Array(fileReader.result);
+            // des body headers
+            stompClient.send("/app/bytes", uint8ArrayNew);
+        };
+        // Blob -> Uint8Array
+        fileReader.readAsArrayBuffer(blob);*/
+    }
+</script>
+</body>
+</html>

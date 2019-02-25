@@ -13,13 +13,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("helloSocket").setViewName("index");
+        // tomcat 实现原生Websocket + 前端原生Websocket = 音频上传
+        registry.addViewController("tomcat").setViewName("websocket/tomcat");
+        // spring 实现原生WebSocket + 前端原生WebSocket = 音频上传、音频接收及播放
+        registry.addViewController("spring").setViewName("websocket/spring");
+        // spring 实现Stomp + 前端Stomp_client = 音频上传、音频接收及播放  开发中
+        registry.addViewController("stomp-client").setViewName("stomp/client");
+        // spring 实现Stomp + 前端Stomp = 开发中
+        registry.addViewController("stomp").setViewName("stomp/stomp");
+        // tomcat 实现原生WebSocket + 前端sockJs = 发送文字 未完成
         registry.addViewController("client").setViewName("client");
-        // spring实现webSocket
-        registry.addViewController("spsocket").setViewName("websocket/socket");
-        registry.addViewController("real").setViewName("realtime");
-        registry.addViewController("stomp").setViewName("stomp/stompaudio");
-        registry.addViewController("nstomp").setViewName("stomp/client");
-        registry.addViewController("test").setViewName("websocket/test");
+
     }
 }
