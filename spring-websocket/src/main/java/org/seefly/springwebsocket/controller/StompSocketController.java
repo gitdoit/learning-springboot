@@ -1,55 +1,73 @@
 package org.seefly.springwebsocket.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 
 /**
  *
- * /socket端口
- *  https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#websocket-fallback
+ * 官方文档：
+ *      https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#websocket-fallback
+ * 注解说明:
+ *      @Payload : 用于MessageMapping标注的方法的参数中，用于提取负载中的参数转换到指定类型。
+ *                  如果只有一个参数，则不需要标注即默认使用
+ *      @Header  ：用于获取标头信息
+ *      @Headers ：用于获取所有标头
+ *      @DestinationVariable ： 用于获取目的地变量
+ *  参数说明：
+ *      Message ： 完整消息
+ *      MessageHeaders ： 标头
+ *      MessageHeaderAccessor，SimpMessageHeaderAccessor，StompHeaderAccessor ： 。。。
+ *      java.security.Principal ： 用户认证信息
  * 用来模拟使用webSocket实时的推送公告
  * @author liujianxin
  * @date 2019-02-15 13:59
  */
 @Controller
 public class StompSocketController {
+    /**前端订阅 接收音频文件流*/
+    private static final String AUDIO_BYTES = "/audio/stream";
+    /**前端订阅 接收该音频文件流的文字翻译*/
+    private static final String AUDIO_TEXT = "/audio/text";
+
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
 
     /**
-     * 用来接受客户端发送的webSocket请求
-     * 管理员使用webSocket请求该接口(/app/change-notice)，然后将管理员发送的信息推送到所有订阅/topic/notice的客户端
+     * 接收二进制信息，需要配置该类型参数的消息转换器，默认已经配好了
      */
-    @MessageMapping("/change-notice")
-    public void greeting(String value){
-        System.out.println(value);
-        // 使用‘MessageConverter’进行包装转化成一条消息，发送到指定的目标
-        this.simpMessagingTemplate.convertAndSend("/topic/notice", value);
-    }
-
     @MessageMapping("/bytes")
     public void binary(byte[] bytes){
         String s = new String(bytes, StandardCharsets.UTF_8);
         System.out.println(s);
     }
 
-    @MessageMapping("/audioMessage")
-    public void byteArray(byte[] data){
-            System.out.println(data.length);
+    /**
+     *  1、接收自定义消息 ByteBuffer,需要自定义消息转换器
+     *  2、单点发送convertAndSendToUser，客户端需要订阅 /user/../..，然后在发送的时候指定用户名称
+     *      这个用户名称需要手动配置，即在握手阶段配置
+     */
+    @MessageMapping("/audioStream")
+    public void byteArray(ByteBuffer data, Principal principal){
+        System.out.println(data.array().length);
+        this.simpMessagingTemplate.convertAndSendToUser(principal.getName(),"/topic/info",data.array().length);
     }
 
-    /**
-     * 另一种方式完成同样的功能
-     */
-    @MessageMapping("/change-notice2")
-    @SendTo("/topic/notice")
-    public String greeting2(String value) {
-        return value;
+    @MessageMapping("/init")
+    public void init(String robotId){
+        // 去初始化
+        System.out.println("初始化命令:"+robotId);
     }
+
+
+
+
+
+
 }

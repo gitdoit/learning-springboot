@@ -1,27 +1,30 @@
 package org.seefly.springwebsocket.converter;
 
-import org.seefly.springwebsocket.model.SessionData;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
 import org.springframework.util.MimeType;
 
-import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * @author liujianxin
  * @date 2019-02-25 20:48
  */
 public class CustomMessageConverter extends AbstractMessageConverter {
-    protected CustomMessageConverter(MimeType supportedMimeType) {
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
+
+
+    public CustomMessageConverter() {
      super(new MimeType("text", "plain", StandardCharsets.UTF_8));
     }
 
     @Override
     protected boolean supports(Class<?> clazz) {
-        return SessionData.class.isAssignableFrom(clazz);
+        return ByteBuffer.class.isAssignableFrom(clazz);
     }
 
 
@@ -30,8 +33,15 @@ public class CustomMessageConverter extends AbstractMessageConverter {
      */
     @Override
     protected Object convertFromInternal(Message<?> message, Class<?> targetClass, @Nullable Object conversionHint) {
+        // Base64 -> byte
         Object payload = message.getPayload();
-        return (payload instanceof String ? payload : new String((byte[]) payload, StandardCharsets.UTF_8));
+        String base64 = (payload instanceof String ? (String) payload : new String((byte[]) payload, StandardCharsets.UTF_8));
+        // data:audio/wav;base64,UklGRnktAABXQVZFZ...   去头
+        String substring = base64.substring(base64.indexOf(",")+1);
+        // 解码
+        byte[] decode = DECODER.decode(substring);
+        // 封装
+        return  ByteBuffer.wrap(decode);
     }
 
     /**

@@ -12,20 +12,47 @@
 <script  th:src="@{/webstomp.min.js}"></script>
 <script  th:src="@{/myaudio.js}"></script>
 <script>
+    // 开始训练，初始化
+    var send_init = "/app/init";
+    // 发送录音流
+    var send_audio = "/app/audioStream";
+    // 接收录音文件
+    var get_audio_byte = "/user/audio/stream";
+    // 接收录音文本翻译
+    var get_audio_text = "/user/audio/text";
+
     //API https://github.com/JSteunou/webstomp-client
     var gRecorder = null;
     var timOutId;
     SRecorder.get(function (rec) {
         gRecorder = rec;
     });
-
     var start =document.getElementById("b");
     var end =document.getElementById("c");
     // webstomp.client('ws://localhost:8080/socket',{binary:true});
-    var stompClient =  webstomp.client('ws://localhost:8080/socket',{binary:true});
-    stompClient.connect({}, function () {console.log("stomp连接成功！") },function () {console.log("stomp连接失败！")});
+    var stompClient =  webstomp.client('ws://localhost:8080/socket');
+
+    // 向服务器发起Stomp链接
+    stompClient.connect({}, function () {
+        // 订阅录音流
+        stompClient.subscribe(get_audio_byte,function (msg) {
+            // 处理音频流
+        }
+        // 订阅录音文本翻译
+        stompClient.subscribe(get_audio_text,function (msg) {
+            // 处理录音文本翻译:机器人、客户
+        });
+
+    },function () {console.warn("stomp连接失败！")});
+
+
+
     // 开始发送录音
     start.onclick = function () {
+        // 初始化训练命令
+        stompClient.send(send_init,"123456",{});
+
+
         // 延时0.5秒开始录音
         window.setTimeout(function () {gRecorder.run();},500);
         // 每3秒发送一次录音
@@ -34,18 +61,96 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 // destination, body, headers
-                stompClient.send("/app/change-notice",reader.result,{'content-type':'text/plain'});
+                stompClient.send(send_audio,reader.result,{'content-type':'text/plain'});
                 console.log("音频数据已发送！");
             };
             reader.readAsDataURL(gRecorder.getAndClear());
         }, 3000);
     };
-    // 结束发送
+    // 结束训练
     end.onclick = function (ev) {
         gRecorder.stop();
         stompClient.close();
         door = false;
         clearInterval(timOutId);
+    }
+
+    // 处理音频流
+    var processAudioStream = function (stream) {
+        // Base64 -> ArrayBuffer
+        var data = _base64ToArrayBuffer(stream);
+        // 放入音频缓冲区
+        var buffer = [];
+        buffer.push(data);
+        // 播放
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(event) {
+            console.log(event);
+            //arrayBuffer = fileReader.result;
+            //创建一个音频源 相当于是装音频的容器
+            var source = context.createBufferSource();
+
+            context.decodeAudioData(fileReader.result,function (buffer) {
+                //  告诉音频源 播放哪一段音频
+                source.buffer = buffer;
+                // 连接到输出源
+                source.connect(context.destination);
+                //开始播放
+                source.start(0);
+            });
+        };
+        fileReader.readAsArrayBuffer(blob);
+
+    }
+
+    // 处理音频文本
+    var processAudioText = function (text) {
+        // 己方翻译  对方翻译
+    }
+
+
+    // base64 -> ArrayBuffer
+    function _base64ToArrayBuffer(base64) {
+        var binary_string =  window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array( len );
+        for (var i = 0; i < len; i++)        {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+
+    /**
+     * 后端音频数据分块发送，这里接到一段音频的各个分块进行组装并连续播放
+     * @param _buffers 音频分块数组
+     * @returns {AudioBuffer | WebGLBuffer}
+     */
+    function concatBuffer(_buffers) {
+        // _buffers[] is an array containig our audiobuffer list
+        var buflengh = _buffers.length;
+        var channels = [];
+        var totalDuration = 0;
+
+        for(var a=0; a<buflengh; a++){
+            channels.push(_buffers[a].numberOfChannels);// Store all number of channels to choose the lowest one after
+            totalDuration += _buffers[a].duration;// Get the total duration of the new buffer when every buffer will be added/concatenated
+        }
+
+        var numberOfChannels = channels.reduce(function(a, b) { return Math.min(a, b); });;// The lowest value contained in the array channels
+        var tmp = context.createBuffer(numberOfChannels, context.sampleRate * totalDuration, context.sampleRate);// Create new buffer
+
+        for (var b=0; b<numberOfChannels; b++) {
+            var channel = tmp.getChannelData(b);
+            var dataIndex = 0;
+
+            for(var c = 0; c < buflengh; c++) {
+                channel.set(_buffers[c].getChannelData(b), dataIndex);
+                dataIndex+=_buffers[c].length;// Next position where we should store the next buffer values
+            }
+        }
+        return tmp;
     }
 </script>
 </body>
