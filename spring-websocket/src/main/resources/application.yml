@@ -2,3 +2,5 @@ debug: false
 spring:
   thymeleaf:
     cache: false
+server:
+  port: 80

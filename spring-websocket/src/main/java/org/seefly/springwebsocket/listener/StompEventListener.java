@@ -1,9 +1,13 @@
 package org.seefly.springwebsocket.listener;
 
+import org.seefly.springwebsocket.context.WebSocketSessionHolder;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
+
+import java.security.Principal;
 
 /**
  * Stomp事件的监听
@@ -23,5 +27,10 @@ public class StompEventListener {
     public void handleSessionConnectedEvent(SessionConnectedEvent event) {
         // Get Accessor
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
+        Principal user = event.getUser();
+        MessageHeaders headers = event.getMessage().getHeaders();
+        MessageHeaders messageHeaders = sha.getMessageHeaders();
+
+        WebSocketSessionHolder.id = user.getName();
     }
 }

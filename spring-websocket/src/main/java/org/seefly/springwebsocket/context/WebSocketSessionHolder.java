@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019-02-22 17:47
  */
 public class WebSocketSessionHolder {
+    public static String id;
     private static final ConcurrentHashMap<String, WebSocketSession> CONTEXT = new ConcurrentHashMap<>();
 
     public static boolean putSession(String sessionId,WebSocketSession socketSession){

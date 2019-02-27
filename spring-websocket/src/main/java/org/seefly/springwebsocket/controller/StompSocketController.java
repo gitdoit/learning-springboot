@@ -30,10 +30,6 @@ import java.security.Principal;
  */
 @Controller
 public class StompSocketController {
-    /**前端订阅 接收音频文件流*/
-    private static final String AUDIO_BYTES = "/audio/stream";
-    /**前端订阅 接收该音频文件流的文字翻译*/
-    private static final String AUDIO_TEXT = "/audio/text";
 
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -56,14 +52,14 @@ public class StompSocketController {
     @MessageMapping("/audioStream")
     public void byteArray(ByteBuffer data, Principal principal){
         System.out.println(data.array().length);
-        this.simpMessagingTemplate.convertAndSendToUser(principal.getName(),"/topic/info",data.array().length);
+        //this.simpMessagingTemplate.convertAndSendToUser(principal.getName(),"/topic/info",data.array().length);
     }
 
     @MessageMapping("/init")
     public void init(String robotId){
         // 去初始化
-        System.out.println("初始化命令:"+robotId);
     }
+
 
 
 

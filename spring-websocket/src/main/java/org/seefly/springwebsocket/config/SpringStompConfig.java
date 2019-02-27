@@ -7,16 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
+import org.springframework.messaging.handler.invocation.HandlerMethodReturnValueHandler;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.config.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,11 +42,27 @@ import java.util.UUID;
  */
 @Configuration
 @EnableWebSocketMessageBroker
-public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
+public class SpringStompConfig implements WebSocketMessageBrokerConfigurer {
 
     /**
-     * 消息转换
+     * 配置从服务器发送到客户端时的管道
+     */
+    @Override
+    public void configureClientOutboundChannel(ChannelRegistration registration) {
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+
+    }
+
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
+
+    }
+
+    /**
+     * 消息转换，从Message中的负载转换为指定的数据
      */
     @Override
     public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
@@ -56,7 +71,7 @@ public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer 
     }
 
     /**
-     * 客户端绑定管道时的操作
+     * 配置从客户端接到消息时的管道
      */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
@@ -69,6 +84,7 @@ public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer 
              *
              * 给每个连接分配一个‘用户’ 的操作也可以通过自定义握手处理器然后覆盖determineUser 方法来实现
              *
+             * http://w3cgeek.com/simple-convertandsendtouser-where-do-i-get-a-username.html
              */
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -86,8 +102,6 @@ public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer 
 
 
 
-
-
     /**
      * 添加一个服务端点，来接收客户端的连接。
      */
@@ -98,12 +112,13 @@ public class SpringStompConfig extends AbstractWebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //表示客户端订阅地址的前缀信息，也就是客户端接收服务端消息的地址的前缀信息
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic","/audio");
         //指服务端接收地址的前缀，意思就是说客户端给服务端发消息的地址的前缀
         registry.setApplicationDestinationPrefixes("/app");
     }
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        // 消息最大 1MB
         registration.setMessageSizeLimit(1024*1024);
     }
 
