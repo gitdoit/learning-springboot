@@ -2,6 +2,7 @@ package org.seefly.springbasic.scheduler;
 
 import org.seefly.springbasic.utils.ThreadUtil;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
@@ -50,6 +51,7 @@ public class AsyncTaskDemo {
             ThreadUtil.RandomSleep();
             return p + " LATTE";
         });
+        //java.util.concurrent.Future
         return caffe;
     }
 

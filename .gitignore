@@ -51,3 +51,4 @@ logs/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 **/privateConfig.properties
+/spring-websocket/src/main/resources/templates/stomp/sip.html
