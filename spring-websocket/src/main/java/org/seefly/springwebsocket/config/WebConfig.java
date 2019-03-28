@@ -29,6 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("stomp-client").setViewName("stomp/client");
         // spring 实现Stomp + 前端Stomp = 开发中
         registry.addViewController("stomp").setViewName("stomp/stomp");
+        // SIP 服务
+        registry.addViewController("sip").setViewName("stomp/sip");
         // tomcat 实现原生WebSocket + 前端sockJs = 发送文字 未完成
         registry.addViewController("client").setViewName("client");
 

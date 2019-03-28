@@ -1,13 +1,18 @@
 package org.seefly.springwebsocket.controller;
 
+import org.seefly.springwebsocket.model.SessionData;
+import org.seefly.springwebsocket.model.WebSocketRequest;
+import org.seefly.springwebsocket.model.WebSocketResponse;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -31,8 +36,14 @@ import java.security.Principal;
 @Controller
 public class StompSocketController {
 
+    /**客户端订阅地址*/
+    private static final String CLIENT_SUBSCRIBE = "/message/sub";
+    @Resource(name = "websocketContextSessionHolder")
+    private ConcurrentHashMap<String,String> websocketContextSessionHolder;
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
+    private static String TEXT = "/audio/text";
+    private static String AUDIO = "/audio/stream";
 
 
     /**
@@ -52,18 +63,39 @@ public class StompSocketController {
     @MessageMapping("/audioStream")
     public void byteArray(ByteBuffer data, Principal principal){
         System.out.println(data.array().length);
-        //this.simpMessagingTemplate.convertAndSendToUser(principal.getName(),"/topic/info",data.array().length);
+        this.simpMessagingTemplate.convertAndSendToUser(principal.getName(),TEXT,"from Server=本次录音共:"+data.array().length+"字节");
     }
 
-    @MessageMapping("/init")
-    public void init(String robotId){
-        // 去初始化
+    @MessageMapping("/object")
+    public void get(SessionData data){
+        System.out.println(data);
     }
 
 
+    @MessageMapping("/order")
+    public void init(WebSocketRequest request, Principal principal){
+        // 初始化模板
+        if("init".equals(request.getType())){
+            WebSocketResponse response;
+            String robotId = request.getRobotId();
+            if(StringUtils.isEmpty(robotId)){
+                response =  new WebSocketResponse().setType("exception").setContent("话术模板不能为空！").setStatus("10001");
+            }else {
+                response = new WebSocketResponse().setType("init").setStatus("200");
+            }
+            simpMessagingTemplate.convertAndSendToUser(principal.getName(),CLIENT_SUBSCRIBE,response);
+        }
+        // 建立WebSocket和语音网关的会话映射
+        else if("sessionId".equals(request.getType())){
+            websocketContextSessionHolder.put(principal.getName(),request.getSessionId());
+        }
+        //TODO 去获取训练结果
+        else if("end".equals(request.getType())){
 
-
-
-
+        }else {
+            WebSocketResponse response = new WebSocketResponse().setType("exception").setContent("未知命令类型！").setStatus("1000");
+            simpMessagingTemplate.convertAndSendToUser(principal.getName(),CLIENT_SUBSCRIBE,response);
+        }
+    }
 
 }

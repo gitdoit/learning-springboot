@@ -1,8 +1,8 @@
 package org.seefly.springwebsocket.config;
 
-import org.apache.catalina.User;
 import org.seefly.springwebsocket.converter.CustomMessageConverter;
 import org.seefly.springwebsocket.model.MyUser;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -19,6 +19,7 @@ import org.springframework.web.socket.config.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * stomp和WebSocket的关系
@@ -44,6 +45,13 @@ import java.util.UUID;
 @EnableWebSocketMessageBroker
 public class SpringStompConfig implements WebSocketMessageBrokerConfigurer {
 
+    /**
+     * webSocket会话上下文控制
+     */
+    @Bean
+    public ConcurrentHashMap<String,String> websocketContextSessionHolder(){
+        return new ConcurrentHashMap<>();
+    }
     /**
      * 配置从服务器发送到客户端时的管道
      */
@@ -91,8 +99,6 @@ public class SpringStompConfig implements WebSocketMessageBrokerConfigurer {
                 StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    // access authentication header(s)
-                    // Authentication user = SecurityContextHolder.getContext().getAuthentication();
                     accessor.setUser(new MyUser(UUID.randomUUID().toString()));
                 }
                 return message;
@@ -107,12 +113,12 @@ public class SpringStompConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket");
+        registry.addEndpoint("/training").setAllowedOrigins("*");
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //表示客户端订阅地址的前缀信息，也就是客户端接收服务端消息的地址的前缀信息
-        registry.enableSimpleBroker("/topic","/audio");
+        registry.enableSimpleBroker("/topic","/audio","/message");
         //指服务端接收地址的前缀，意思就是说客户端给服务端发消息的地址的前缀
         registry.setApplicationDestinationPrefixes("/app");
     }

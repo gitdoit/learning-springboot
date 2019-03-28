@@ -1,5 +1,5 @@
 // 开始训练，初始化
-var send_init = "/app/init";
+var send_init = "/app/object";
 // 发送录音流
 var send_audio = "/app/audioStream";
 // 接收录音文件
@@ -17,10 +17,13 @@ var start =document.getElementById("b");
 var end =document.getElementById("c");
 // webstomp.client('ws://localhost:8080/socket',{binary:true});
 
-var stompClient =  webstomp.client('wss://seefly.mynatapp.cc/socket');
+var stompClient =  webstomp.client('ws://localhost/socket');
 
 // 向服务器发起Stomp链接
 stompClient.connect({}, function () {
+    stompClient.send(send_init,JSON.stringify({robotId:1}),{});
+
+
     // 订阅录音流
     stompClient.subscribe(get_audio_byte,function (msg) {
         console.log("收到音频流");
