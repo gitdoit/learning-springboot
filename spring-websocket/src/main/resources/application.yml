@@ -3,4 +3,8 @@ spring:
   thymeleaf:
     cache: false
 server:
-  port: 80
+  port: 8443
+  ssl:
+    key-store: classpath:tomcat.key
+    key-store-password: 123456
+    key-store-type: JKS

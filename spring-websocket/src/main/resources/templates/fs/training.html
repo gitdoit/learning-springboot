@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>sip demo</title>
+    <!--sip-->
+    <script type="text/javascript" th:src="@{/jssip.js}" ></script>
+    <script type="text/javascript" th:src= "@{/WebSipClient.js}"></script>
+    <script type="text/javascript" th:src="@{/webstomp.min.js}"></script>
+    <!--stopm-->
+    <script  th:src="@{/webstomp.min.js}"></script>
+</head>
+<body>
+<button onclick="dial()">拨号</button>
+<button onclick="hangup()">挂断</button>
+<form action="https://geeker.worken.test.cn/login.action" method="post">
+    <input type="text" name="loginName" value="admin">
+    <input type="text" name="loginPwd" value="111111">
+    <input type="text" name="type" value="0">
+    <input type="submit" value="sdsd">
+</form>
+
+<script type="text/javascript">
+// 服务器连接地址
+    var webSocketUrl = "wss://geeker.worken.test.cn/training";
+    var ws = null;
+    // 语音网关链接
+    var server = null;
+    var webSipClient = null;
+	var localDebug = "192.168.0.170:62001";
+    
+    //JsSIP.debug.enable('JsSIP:*');
+    if("https:"==location.protocol){
+        server = "hub.worken.cn/fs";
+    }else{
+        server = "192.168.0.31:5066";
+    }
+
+    /**
+     * 初始化websocket链接
+     * 服务器响应消息结构:
+     *      type:
+     *          robot ：机器人说话翻译
+     *          custom：客户说话翻译
+     *          init  : 初始化命令响应
+     *          exception: 命令执行异常
+     *          end：训练结束
+     *      content：消息内容
+     *      matchInfo：在type=custom时，表示客户说的话匹配信息
+     *      status：状态，200正常
+     *
+     *    e.g.
+     *      {type:robot,content:xxxx,status:200}
+     *
+     *  */
+    function dial() {
+		var sessionId = guid();
+        var robotId = "5bc460c2ffd745f7b430a4803419ea54"+":"+sessionId;
+        
+		ws = new WebSocket(webSocketUrl);
+        // 监听服务器消息
+        ws.onmessage = function(msg) {
+            var response = JSON.parse(msg.data.replace(/^\"|\"$/g,"'"));
+            //1、 初始化完成 去语音网关建立通话链接
+            if(response.type == "init" && response.status == "200"){
+                buildSipConnection(robotId);
+                // 向WebSocket发送前端和语音网关之间的会话ID
+                ws.send(JSON.stringify({sessionId:sessionId,type:'sessionId'}));
+            }
+            // 2、我方说话文本翻译
+            else if(response.type == "robot"){
+                console.error(response.content);
+            }
+            // 3、对方说话翻译
+            else if(response.type == "custom"){
+                console.error(response.content+"==="+response.matchInfo);
+            }
+            // 5、训练结束，显示训练结果。关闭WebSocket连接
+            else if(response.type == "end"){
+                console.error(response);
+                ws.close();
+            }
+            // 6、异常
+            else {
+                console.error(response.type+":"+response.content);
+            }
+        };
+		ws.onopen = function() {
+            console.error('握手成功');
+            ws.send(JSON.stringify({robotId:robotId,type:'init'}));
+        };
+		
+    }
+
+    /**
+     * 挂断
+     */
+    function hangup() {
+        // 语音网关挂断
+        webSipClient.hangup();
+    }
+
+    
+
+
+    /**
+     * 创建语音网关连接
+     */
+    function buildSipConnection(robotId) {
+        // 创建连接
+        webSipClient = new WebSipClient(server,{
+            "user":"1002",
+            "domain":"192.168.0.31",
+            "aiNumber":"7501234",
+            "ha1":"42c834ef9626dba5bf87c6aa79f55d76"
+        });
+        // 开始通话
+        webSipClient.callAi(robotId,'192.168.0.170:62001');
+        // 返回和语音网关之间的会话ID
+        return webSipClient.session.id;
+    }
+	
+	function guid() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		return v.toString(16);
+  });
+}
+ 
+
+</script>
+</body></html>

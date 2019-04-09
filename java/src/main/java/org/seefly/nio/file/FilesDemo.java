@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -30,8 +31,9 @@ public class FilesDemo {
     @Test
     public void testReadAllLines() throws IOException {
         // 更方便的API，但是丢失了每行的换行符，其他的几个方式也是这样啊。之前都没注意到这些问题
-        List<String> list = Files.readAllLines(Paths.get("E:\\test\\io.txt"), StandardCharsets.UTF_8);
-        list.forEach(System.out::print);
+        //List<String> list = Files.readAllLines(Paths.get("E:\\test\\io.txt"), StandardCharsets.UTF_8);
+        //list.forEach(System.out::print);
+        Files.write(Paths.get("E:\\test\\io12.txt"),"haha中".getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
     }
 
     /**
