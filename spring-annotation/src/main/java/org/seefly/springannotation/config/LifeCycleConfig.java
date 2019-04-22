@@ -1,5 +1,6 @@
 package org.seefly.springannotation.config;
 
+import org.seefly.springannotation.entity.aware.AwaresDemo;
 import org.seefly.springannotation.entity.lifecycle.LifeBeanPost;
 import org.seefly.springannotation.entity.lifecycle.LifeByInterface;
 import org.seefly.springannotation.entity.lifecycle.LifeByBean;
@@ -39,5 +40,10 @@ public class LifeCycleConfig {
     @Bean(initMethod = "init",destroyMethod = "destroy")
     public LifeByBean tree(){
         return new LifeByBean();
+    }
+
+    @Bean
+    public AwaresDemo awaresDemo(){
+        return new AwaresDemo();
     }
 }
