@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
  * @author liujianxin
  * @date 2018-11-30 10:48
  */
-@Component
+//@Component
 public class ScheduledDemo {
     @Autowired
     private AsyncTaskDemo asyncTaskDemo;
