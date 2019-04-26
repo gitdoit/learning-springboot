@@ -1,6 +1,6 @@
-package org.seefly.springweb01.component;
+package org.seefly.springweb01.spring.component;
 
-import org.seefly.springweb01.annotation.MyParamAnno;
+import org.seefly.springweb01.spring.annotation.MyParamAnno;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;

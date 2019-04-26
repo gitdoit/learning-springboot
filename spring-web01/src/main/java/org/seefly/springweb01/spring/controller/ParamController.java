@@ -1,6 +1,7 @@
-package org.seefly.springweb01.controller;
+package org.seefly.springweb01.spring.controller;
 
-import org.seefly.springweb01.annotation.MyParamAnno;
+import org.seefly.springweb01.log.AuditCut;
+import org.seefly.springweb01.spring.annotation.MyParamAnno;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,18 @@ public class ParamController {
     private String name;
     @Value("${my.age}")
     private Integer age;
+
+
+    @AuditCut(platform = "pc",funcName = "hahaha")
+    @GetMapping("/aaa")
+    public String test(){
+        return "LK";
+    }
+    @GetMapping("/bbb")
+    public String ssss(){
+        int i = 1 / 0;
+        return "LK";
+    }
 
     @PostConstruct
     public void init(){
@@ -133,6 +146,10 @@ public class ParamController {
 
 
 
+    @PostMapping("/form")
+    public String form(String name,String age){
+        return "OK";
+    }
 
 
 }

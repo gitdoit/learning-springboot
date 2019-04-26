@@ -1,2 +1,8 @@
 my:
   age: 11
+spring:
+  application:
+    name: web1
+logservice:
+  rocketmq:
+    namesrv-addr: 119.23.252.178:9876
