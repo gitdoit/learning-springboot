@@ -1,4 +1,4 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

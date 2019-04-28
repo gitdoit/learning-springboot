@@ -1,7 +1,7 @@
-package org.seefly.cache.redis.pipe;
+package org.seefly.springredis.pipeline;
 
 import org.junit.Test;
-import org.seefly.cache.redis.baseops.BaseOps;
+import org.seefly.springredis.api.BaseOps;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
@@ -10,10 +10,12 @@ import org.springframework.data.redis.core.RedisCallback;
 import java.util.List;
 
 /**
+ * redis的管道操作，类似jdbc的批量操作
+ * 批量处理数据提升应用性能。
  * @author liujianxin
  * @date 2018-11-01 17:25
  */
-public class PipeTest extends BaseOps {
+public class PipeOps extends BaseOps {
 
     @Test
     public void testPipe1(){

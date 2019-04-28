@@ -1,4 +1,4 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundListOperations;
@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author liujianxin
  * @date 2018-08-30 14:51
  */
-public class ListOpsTest extends BaseOps {
-
-
+public class ListOps extends BaseOps {
 
     /**
      * list类型基本push操作
@@ -77,5 +75,4 @@ public class ListOpsTest extends BaseOps {
         //将sourceKey列表中的最后一个元素弹出，放到destinationKey列表的最前面，然后返回该元素的值
         stringTemplate.opsForList().rightPopAndLeftPush("list:batchPush", "list:singlePush");
     }
-
 }

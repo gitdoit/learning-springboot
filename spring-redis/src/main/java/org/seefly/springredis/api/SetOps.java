@@ -1,4 +1,4 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -16,7 +16,8 @@ import java.util.Set;
  * @author liujianxin
  * @date 2018-08-31 11:15
  */
-public class SetOpsTest extends BaseOps {
+public class SetOps extends BaseOps {
+
 
     /**
      * 基本添加操作

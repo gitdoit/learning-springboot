@@ -1,21 +1,19 @@
-package org.seefly.cache.redis;
+package org.seefly.springredis.serialize;
 
 import org.junit.Test;
-import org.seefly.cache.model.User;
-import org.seefly.cache.redis.baseops.BaseOps;
+import org.seefly.springredis.api.BaseOps;
+import org.seefly.springredis.model.User;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.util.Objects;
-
 /**
+ * 演示使用不同序列化方式序列化对象的异同
  * @author liujianxin
  * @date 2018-10-25 15:04
  */
-public class Seri extends BaseOps {
+public class SerializeDemo extends BaseOps {
 
     /**
      * JDK序列化方式序列化字符串
@@ -41,7 +39,7 @@ public class Seri extends BaseOps {
      */
     @Test
     public void testSeriJ() {
-        objTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Objects.class));
+        objTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         objTemplate.boundValueOps("ser:JacksonString").set("Jackson2JsonRedisSerializer");
     }
 
@@ -50,7 +48,7 @@ public class Seri extends BaseOps {
      */
     @Test
     public void testSerJacksonString(){
-        objTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Objects.class));
+        objTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         User u = new User("1","redis",9);
         objTemplate.boundValueOps("ser:JacksonObject").set(u);
     }

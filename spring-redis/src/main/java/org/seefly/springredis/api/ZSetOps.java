@@ -1,9 +1,10 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.*;
 
 import java.util.Set;
+
 
 /**
  * 有序集合<br>
@@ -21,8 +22,7 @@ import java.util.Set;
  * @author liujianxin
  * @date 2018-08-31 14:00
  */
-
-public class ZSetOpsTest extends BaseOps {
+public class ZSetOps extends BaseOps{
 
     /**
      * 基本添加操作
@@ -152,5 +152,4 @@ public class ZSetOpsTest extends BaseOps {
             System.out.println(scan.next().getValue());
         }
     }
-
 }

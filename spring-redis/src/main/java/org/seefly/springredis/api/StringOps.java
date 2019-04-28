@@ -1,4 +1,4 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.Test;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -18,9 +18,7 @@ import java.util.Map;
  * @author liujianxin
  * @date 2018-08-30 13:11
  */
-
-public class StringOpsTest extends BaseOps {
-
+public class StringOps extends BaseOps {
     /**
      * 基本字符串操作
      */
@@ -120,5 +118,4 @@ public class StringOpsTest extends BaseOps {
         opsForValue.setBit("string:bit",7,true);
         System.out.println(opsForValue.get("string:bit"));
     }
-
 }

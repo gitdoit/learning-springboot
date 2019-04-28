@@ -1,7 +1,7 @@
-package org.seefly.cache.redis.baseops;
+package org.seefly.springredis.api;
 
 import org.junit.Test;
-import org.seefly.cache.model.User;
+import org.seefly.springredis.model.User;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author liujianxin
  * @date 2018-08-30 17:14
  */
-public class HashOpsTest extends BaseOps {
+public class HashOps extends BaseOps {
 
 
     /**

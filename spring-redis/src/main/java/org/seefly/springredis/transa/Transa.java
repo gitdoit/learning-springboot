@@ -1,7 +1,7 @@
-package org.seefly.cache.redis.transa;
+package org.seefly.springredis.transa;
 
 import org.junit.Test;
-import org.seefly.cache.redis.baseops.BaseOps;
+import org.seefly.springredis.api.BaseOps;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisOperations;
@@ -15,10 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * redis的事务操作
  * @author liujianxin
  * @date 2018-11-01 18:52
  */
-public class TransaTest extends BaseOps {
+public class Transa extends BaseOps {
 
     /**
      * 基本事务演示
