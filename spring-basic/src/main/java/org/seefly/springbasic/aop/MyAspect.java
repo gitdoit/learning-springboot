@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
  * @date 2019-04-22 21:02
  */
 @Aspect
-@Component
 public class MyAspect {
 
     /**

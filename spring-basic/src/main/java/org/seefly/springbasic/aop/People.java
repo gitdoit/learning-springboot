@@ -1,12 +1,9 @@
 package org.seefly.springbasic.aop;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author liujianxin
  * @date 2019-04-22 21:01
  */
-@Component
 public class People {
 
     public void sing(String songName){
