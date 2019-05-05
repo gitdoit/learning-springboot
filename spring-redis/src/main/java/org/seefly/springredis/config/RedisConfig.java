@@ -9,6 +9,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.*;
 
 /**
+ *
+ * 官方文档<a href="https://docs.spring.io/spring-data/data-redis/docs/current/reference/html/#get-started"></a>
+ *
  * @author liujianxin
  * @date 2018-08-30 11:07
  */
@@ -26,10 +29,10 @@ public class RedisConfig {
      * RedisTemplate默认采用的是JDK的序列化策略，保存的key和value都是采用此策略序列化保存的。<br>
      * <p/>
      * 序列化方式<br>
-     * {@link StringRedisSerializer} 用utf-8编/解码，只能处理类型为String的序列化<br>
-     * {@link JdkSerializationRedisSerializer} 用字节流序列化，处理的对象需要实现序列化接口<br>
-     * {@link Jackson2JsonRedisSerializer} 用json形式序列化，封装度较高<br>
-     * {@link OxmSerializer} 用xml形式序列化<br>
+     * StringRedisSerializer            用utf-8编/解码，只能处理类型为String的序列化<br>
+     * JdkSerializationRedisSerializer  用字节流序列化，处理的对象需要实现序列化接口<br>
+     * Jackson2JsonRedisSerializer      用json形式序列化，封装度较高<br>
+     * OxmSerializer                    用xml形式序列化<br>
      *
      * @param lettuceConnectionFactory 配置工厂
      * @return 模板
@@ -37,7 +40,12 @@ public class RedisConfig {
     @Bean("redisTemplate")
     public RedisTemplate<String, Object> createRedisTemplate(RedisConnectionFactory lettuceConnectionFactory) {
         //声明序列化
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer(){
+            @Override
+            public byte[] serialize(String string) {
+                return super.serialize("SOS:"+string);
+            }
+        };
         GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         //配置序列化
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

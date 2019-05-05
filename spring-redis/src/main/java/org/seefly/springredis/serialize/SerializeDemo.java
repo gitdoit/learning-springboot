@@ -29,7 +29,8 @@ public class SerializeDemo extends BaseOps {
      */
     @Test
     public void testStringSer(){
-        objTemplate.setValueSerializer(new StringRedisSerializer());
+        objTemplate.setKeySerializer(new StringRedisSerializer());
+        objTemplate.opsForValue().set("","");
         objTemplate.boundValueOps("ser:stringSer").set("StringRedisSerializer");
     }
 

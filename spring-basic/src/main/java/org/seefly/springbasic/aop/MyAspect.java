@@ -49,6 +49,9 @@ public class MyAspect {
      */
     @Before("pointCut()")
     public void beforeSing(JoinPoint joinPoint){
+        if(joinPoint.getTarget() instanceof Comparable){
+            System.out.println(joinPoint.getTarget());
+        }
         Object[] args = joinPoint.getArgs();
         if(args != null && args.length > 0){
             for(Object o : args){

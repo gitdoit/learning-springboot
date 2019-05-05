@@ -2,10 +2,10 @@ spring:
   redis:
     host: 47.99.73.15
     port: 6379
-    database: 0 #一个redis实例有16个库，默认使用第一个
-    lettuce: #springboot 2.0开始默认情况下，LettuceConnection由LettuceConnectionFactory共享创建的所有实例共享所有非阻塞和非事务操作的相同线程安全本机连接
-      pool: #注意，想要用这个东西的话，需要额外引common-pool2的依赖，否则就把这段配置删掉
-        max-active: 6 #同一时间内，创建最大连接数
-        max-wait: 30s #连接用尽时，最大等待时间。超时抛出异常。默认-1，表示无限期等待
-        max-idle: 8 #最大空闲连接
-        min-idle: 0 #最小空闲连接
+    database: 0
+    lettuce:
+      pool:
+        max-active: 6
+        max-wait: 30s
+        max-idle: 8
+        min-idle: 0
