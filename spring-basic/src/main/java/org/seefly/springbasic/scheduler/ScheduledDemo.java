@@ -32,7 +32,7 @@ public class ScheduledDemo {
     /**
      * 定时任务，调用异步执行方法
      */
-    //@Scheduled(fixedDelay = 3 * 1000)
+    @Scheduled(fixedDelay = 3 * 1000)
     public void scheduled2(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

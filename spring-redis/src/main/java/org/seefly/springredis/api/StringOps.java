@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 该类用来演示redis的String类型数据操作
@@ -19,6 +20,21 @@ import java.util.Map;
  * @date 2018-08-30 13:11
  */
 public class StringOps extends BaseOps {
+
+    @Test
+    public void testV(){
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("#REDIS:keyV:liu");
+        String s = ops.get();
+        System.out.println(s);
+    }
+
+    @Test
+    public void testGet(){
+        BoundValueOperations<String, String> ops = stringTemplate.boundValueOps("oioio:sdfs");
+        String s = ops.get();
+        System.out.println(s);
+    }
+
     /**
      * 基本字符串操作
      */

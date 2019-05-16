@@ -48,13 +48,13 @@ public class ValidateController {
      */
     @GetMapping("/bind")
     public String bindException(@Validated People people, BeanPropertyBindingResult result){
-        System.out.println(result);
+        System.out.println("参数不合法:["+result.getFieldError().getField()+":"+result.getFieldError().getDefaultMessage()+"]");
         return "OK";
     }
 
     @Data
     private static class People{
-        @Length(max = 3,message = "sdfsdfsd")
+        @Length(max = 3)
         private String name;
         private Integer age;
     }

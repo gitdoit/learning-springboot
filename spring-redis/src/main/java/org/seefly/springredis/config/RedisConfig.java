@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.*;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  *
@@ -16,7 +17,7 @@ import org.springframework.data.redis.serializer.*;
  * @date 2018-08-30 11:07
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class RedisConfig {
 
 
@@ -40,19 +41,15 @@ public class RedisConfig {
     @Bean("redisTemplate")
     public RedisTemplate<String, Object> createRedisTemplate(RedisConnectionFactory lettuceConnectionFactory) {
         //声明序列化
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer(){
-            @Override
-            public byte[] serialize(String string) {
-                return super.serialize("SOS:"+string);
-            }
-        };
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         //配置序列化
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
         //键序列化策略，若使用系统提供的字符串序列化方式，如果key为非string类型，会报错
         redisTemplate.setKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        // Hash结构的key序列化方式，也就是相当于 Map 里面key的序列话方式，不是这个Map的key的序列化方式
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         //值序列化策略，用json形式序列化数据
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);

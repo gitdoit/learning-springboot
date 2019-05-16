@@ -9,3 +9,7 @@ spring:
         max-wait: 30s
         max-idle: 8
         min-idle: 0
+  application:
+    name: redisB
+#debug: true
+

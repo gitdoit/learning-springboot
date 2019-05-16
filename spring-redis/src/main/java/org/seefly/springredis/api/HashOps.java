@@ -39,13 +39,13 @@ public class HashOps extends BaseOps {
         BoundHashOperations<String, Object, Object> ops = objTemplate.boundHashOps("hash:put");
         //hset hash:put name redisForMe
         ops.put("name", "redisForMe");
-        ops.put("info", "outMan");
+        /*ops.put("info", "outMan");
         ops.put("age", "15");
         //批量添加
         Map<String, String> map = new HashMap<>();
         map.put("add", "China");
         map.put("phone", "10010");
-        ops.putAll(map);
+        ops.putAll(map);*/
     }
 
     /**
