@@ -1,7 +1,6 @@
 package org.seefly.springbasic.aop;
 
 import org.junit.Before;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
@@ -10,6 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 
 /**
+ *
  * AOP初始化流程
  * 1、传入主配置类，创建IOC容器
  * 2、创建完成后调用{@link AbstractApplicationContext#refresh()}刷新容器
@@ -49,7 +49,7 @@ import org.springframework.context.support.AbstractApplicationContext;
  * @author liujianxin
  * @date 2019-05-04 20:16
  */
-public class Test {
+public class Test{
     private AnnotationConfigApplicationContext applicationContext;
 
     @Before
