@@ -1,6 +1,5 @@
 package org.seefly.rocketmq.Controller;
 
-import cn.worken.common.log.Audit;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.message.Message;
@@ -22,7 +21,6 @@ public class RocketMQController {
     private TransactionMQProducer transactionMQProducer;
 
 
-    @Audit(platform = "pc",funcName = "客户列表")
     @RequestMapping("/xiaoxi")
     public String msg(String str) throws Exception{
         Message msg = new Message("MICRO_WX_MSG_TASK_RESULT_TPOIC","TagA","OrderID00",str.getBytes());
