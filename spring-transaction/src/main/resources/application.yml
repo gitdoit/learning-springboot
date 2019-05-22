@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver #使用com.mysql.jdbc.Driver hikari提示找不到，用它爹可以
-    url: jdbc:mysql://localhost:3306/spring
+    url: jdbc:mysql://119.23.252.178:3306/spring
     username: root
     password: shang2010
     hikari:
@@ -12,7 +12,11 @@ spring:
       maximum-pool-size: 10 #最大连接数
       connection-init-sql: 'set names utf8mb4'
       connection-timeout: 30000 #连接等待最大时间
+      # transaction-isolation: TRANSACTION_REPEATABLE_READ #msql默认的是可重复读，-1 数据库默认 1未提交读 2读已提交 4可重复读 8串行化
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: 'classpath:mappers/*Mapper.xml'
+  global-config:
+    db-config:
+      id-type: auto

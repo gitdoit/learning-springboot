@@ -39,7 +39,7 @@ public class BaseTest {
     @Test
     public void testAr(){
         Student student = new Student();
-        student.setId("01");
+        student.setId(1);
         Student student1 = student.selectOne(Wrappers.lambdaQuery(student).eq(Student::getId, "01"));
         System.out.println(student1);
     }

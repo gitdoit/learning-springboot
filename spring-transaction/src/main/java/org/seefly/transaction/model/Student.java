@@ -16,7 +16,7 @@ import java.util.Date;
 public class Student extends Model<Student> {
 
   /** 学生ID **/
-  private String id;
+  private Integer id;
   /** 学生姓名 **/
   private String name;
   /** 年龄 **/
@@ -24,8 +24,10 @@ public class Student extends Model<Student> {
   /** 性别 **/
   private String sex;
 
+
+
   @Override
   protected Serializable pkVal() {
-    return null;
+    return id;
   }
 }
