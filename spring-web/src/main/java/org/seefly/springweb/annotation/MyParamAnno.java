@@ -1,4 +1,4 @@
-package org.seefly.springweb01.spring.annotation;
+package org.seefly.springweb.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

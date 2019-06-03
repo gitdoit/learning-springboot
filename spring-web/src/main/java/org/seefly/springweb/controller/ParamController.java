@@ -1,7 +1,6 @@
-package org.seefly.springweb01.spring.controller;
+package org.seefly.springweb.controller;
 
-import org.seefly.springweb01.log.AuditCut;
-import org.seefly.springweb01.spring.annotation.MyParamAnno;
+import org.seefly.springweb.annotation.MyParamAnno;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +56,6 @@ public class ParamController {
     private Integer age;
 
 
-    @AuditCut(platform = "pc",funcName = "hahaha")
     @GetMapping("/aaa")
     public String test(){
         return "LK";

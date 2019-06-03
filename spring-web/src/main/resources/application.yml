@@ -1,5 +1,6 @@
 my:
   age: 11
+  name: haha
 spring:
   application:
     name: web1

@@ -1,4 +1,4 @@
-package org.seefly.springweb01.spring.convert;
+package org.seefly.springweb.convert;
 
 
 import org.springframework.core.convert.converter.Converter;

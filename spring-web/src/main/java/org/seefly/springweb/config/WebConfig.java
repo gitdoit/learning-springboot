@@ -1,8 +1,8 @@
-package org.seefly.springweb01.spring.config;
+package org.seefly.springweb.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.seefly.springweb01.spring.component.AnnoArgumentResolver;
+import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;

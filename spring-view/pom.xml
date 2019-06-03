@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.seefly</groupId>
-    <artifactId>spring-web03</artifactId>
+    <artifactId>spring-view</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>spring-web03</name>
+    <name>spring-view</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

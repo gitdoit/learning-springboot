@@ -1,4 +1,4 @@
-package org.seefly.springweb01.spring.controller;
+package org.seefly.springweb.controller;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
