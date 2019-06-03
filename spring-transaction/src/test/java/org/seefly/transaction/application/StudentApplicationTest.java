@@ -23,13 +23,16 @@ public class StudentApplicationTest extends BaseTest {
         Student s1 = new Student();
         s1.setSex("男");
         s1.setAge(new Date());
-        s1.setName("joke");
+        s1.setName("A");
 
         Student s2 = new Student();
-        s1.setSex("女");
-        s1.setAge(new Date());
-        s1.setName("jane");
+        s2.setSex("女");
+        s2.setAge(new Date());
+        s2.setName("B");
 
-        studentApplication.batchInsertStudents(Arrays.asList(s1,s2));
+        //studentApplication.batchInsertStudents(Arrays.asList(s1,s2));
+        studentApplication.insertAB(Arrays.asList(s1,s2));
     }
+
+
 }

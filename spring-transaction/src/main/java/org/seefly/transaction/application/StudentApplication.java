@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2019-05-22 15:56
  */
 @Component
+@Transactional(rollbackFor = Throwable.class)
 public class StudentApplication {
     private final StudentService studentService;
 
@@ -21,7 +23,6 @@ public class StudentApplication {
     }
 
 
-    //@Transactional(rollbackFor = Throwable.class)
     public void batchInsertStudents(List<Student> students){
         if(!CollectionUtils.isEmpty(students)){
             for(Student student : students){
@@ -29,4 +30,22 @@ public class StudentApplication {
             }
         }
     }
+
+    public void insertAB(List<Student> students){
+        insertA(students.get(0));
+        insertB(students.get(1));
+    }
+
+    public void insertA(Student student){
+        studentService.insertAndGetKey(student);
+        System.out.println("A:"+student.getId());
+    }
+
+    public void insertB(Student student){
+        studentService.insertAndGetKey(student);
+        System.out.println("B"+student.getId());
+        int i = 1 / 0;
+    }
+
+
 }
