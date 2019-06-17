@@ -6,6 +6,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,13 +35,12 @@ public class FileUploadTest {
 
     /**
      * 但现在我的数据在内存中，没有对应的磁盘文件
-     * 之前的从磁盘读取文件的方式行不通了，如果要这样做 就必须把内存中的数据写到磁盘上，再从磁盘读到内存，这就是脱裤子放屁，多此一举
-     *
-     * 有没有这样一种方法，把内存数据直接通过RestTemplate传出去？
+     * 可以使用创建临时文件的方式，将内存数据写到临时文件里，再通过这个临时文件上传到接口
      */
     @Test
     public void testUploadFileByBuffer() throws IOException {
         String data = "内存数据";
+        // 就是创建一个临时文件，没有前后缀;临时文件存在这里 -> C:\Users\xiaoming\AppData\Local\Temp\70377211198031427.tmp
         Path tempFile = Files.createTempFile(null, null);
         Files.write(tempFile,data.getBytes());
         File file = tempFile.toFile();
@@ -50,7 +50,22 @@ public class FileUploadTest {
         param.add("file", resource);
 
         String s = restTemplate.postForObject("http://localhost:8080/file", param, String.class);
-        System.out.println(s);
+        // 需要主动删除
+        boolean delete = file.delete();
 
+        System.out.println(s+":"+delete);
     }
+
+    /**
+     * 能不能直接上传内存流，而不是一个文件
+     */
+    @Test
+    public void testBufferUpload() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write("haha".getBytes());
+    }
+
+
+
+
 }
