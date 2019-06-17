@@ -95,9 +95,14 @@ import org.springframework.context.support.AbstractApplicationContext;
  *
  *
  * 上面已经将对象增强了，这时候被增强的对象(已经成了一个CglibAopProxy)中已经含有被织入的切面方法了。
+ * 如果此时从容器中获取这个对象，那么它是被增强过的了。下面看一下被增强过的对象，调用它被增强的方法的调用过程
+ *
+ *
+ * 1、由于调用的是被增强后的方法，所以会执行到 CglibAopProxy.DynamicAdvisedInterceptor#intercept
+ *
  * 1、CglibAopProxy.DynamicAdvisedInterceptor#intercept
  *      // 创建连接器链
- *      -> List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+ *      -> List chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
  *             ->  // 这个在上面创建代理对象的时候，已经放入了
  *                 Advisor[] advisors = config.getAdvisors();
  *                 // 根据这个长度创建拦截器链列表
@@ -106,15 +111,51 @@ import org.springframework.context.support.AbstractApplicationContext;
  * 		            MethodInterceptor[] interceptors = {@link DefaultAdvisorAdapterRegistry#getInterceptors(org.springframework.aop.Advisor)}
  * 		                -> 判断是不是MethodInterceptor类型，是的话就直接放到返回数组里面
  * 		                -> 不是的话，就判断这个增强器是不是Before\AfterReturning\Throwing这种类型的增强器，是的话适配一下，放到返回值数组里。
- *      ->
- *          // 如果没有的话就直接调用目标方法
- *      ->
- *      // 如果有的话就创建一个下面这东西，其实每个通知方法都包装成一个方法拦截器，组装成一个方法拦截器链。
- *      // 执行目标方法的过程就是出发拦截器链的过程
- *      Object retVal = new CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();
  *
- *  2、
+ *      ->  // 如果没有的话就直接调用目标方法
  *
+ *      -> Object retVal = new CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();
+ *          // 如果有的话就创建一个下面这东西，其实每个通知方法都包装成一个方法拦截器，组装成一个方法拦截器链。
+ *          // 执行目标方法的过程就是出发拦截器链的过程
+ *  2、CglibMethodInvocation的proceed()方法调用过程。
+ *      1、CglibMethodInvocation的父类ReflectiveMethodInvocation实现了MethodInvocation接口的proceed方法，
+ *          所以它也是一个MethodInvocation实例，这就有意思了！！
+ *          上面创建的拦截器连，每个拦截器都是一个MethodInterceptor实例，这个接口只有一个抽象方法(Object invoke(MethodInvocation invocation) throws Throwable)
+ *          看到没有，这个抽象方法的参数就是MethodInvocation。
+ *      2、在CglibMethodInvocation.proceed()方法内，有一个计数器，每调用一次proceed方法就自增一次
+ *          调用第一个拦截器的.invoke(this)方法，把自己传进去。然后这个拦截器执行完自己的逻辑之后再调用CglibMethodInvocation.proceed
+ *          就这样环环相扣，遍历完所有的拦截器。这个套路是不是很熟悉啊，spring的web拦截器也是这个操作，spring security也是这个操作。这个东西
+ *          看起来跟递归好像，但是递归只能递归自己，这个能‘递归’其他东西，只要是实现了指定的接口就行。
+ *      3、示例之 AspectJAfterThrowingAdvice
+ *          随便拿一个拦截器来看看它的代码，很简单SB都能理解
+ *
+ *          public Object invoke(MethodInvocation mi) throws Throwable {
+ * 		        try {
+ * 		                // 直接调用下一个拦截器
+ * 			            return mi.proceed();
+ *                }
+ * 		        catch (Throwable ex) {
+ * 			        if (shouldInvokeOnThrowing(ex)) {
+ * 			            // 抛异常我就调用通知方法
+ * 				        invokeAdviceMethod(getJoinPointMatch(), null, ex);
+ *                 }
+ *                 // 然后抛出去
+ * 			        throw ex;
+ *             }
+ *           }
+ *
+ *
+ *   拦截器链调用总结
+ *   无非就是 MethodInvocation.proceed() 和 MethodInterceptor.invoke(MethodInvocation invocation) 他俩之间的链式调用
+ *   MethodInvocation的实例负责组装拦截器链以及维护调用顺序
+ *   MethodInterceptor的实例负责具体的逻辑也就是在适当的时候调用通知方法，和调用MethodInvocation.proceed()以推进拦截器链的前进
+ *
+ *   还有我们常用的通知方法对应的拦截器
+ *   1、ExposeInvocationInterceptor就是在ThreadLocal中放些参数，不知道干啥的
+ *   2、AspectJAfterThrowingAdvice异常通知，总是在前面，这样才能拦截到后面的所有异常，跟spring security的异常翻译器是不是一个道理?
+ *   3、AfterReturningAdviceInterceptor 返回通知
+ *   4、AspectJAfterAdvice 返回后通知
+ *   5、AspectJAroundAdvice 环绕通知
  *
  *
  *
@@ -138,6 +179,8 @@ public class AopInitFlow {
     @org.junit.Test
     public void test(){
         People bean = applicationContext.getBean(People.class);
+        bean.sing("sdf");
+        System.out.println("sdfsdf");
         bean.sing("sdf");
     }
 
