@@ -1,13 +1,17 @@
 package org.seefly.springweb.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * 文件上传接口
@@ -28,6 +32,20 @@ public class FileUploadController {
         String s = bufferedReader.readLine();
         System.out.println(s);
         return "OK";
+    }
+
+
+    @GetMapping("/download")
+    public void getFirmware(HttpServletResponse response, String box) {
+        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=yeye.txt");
+        try(FileInputStream in = new FileInputStream("C:\\Users\\hkdw232\\Desktop\\data\\yeye.txt");
+            ServletOutputStream os = response.getOutputStream()){
+            IOUtils.copy(in, os);
+            os.flush();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

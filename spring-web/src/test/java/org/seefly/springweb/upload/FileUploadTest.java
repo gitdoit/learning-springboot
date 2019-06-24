@@ -2,6 +2,7 @@ package org.seefly.springweb.upload;
 
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liujianxin
@@ -63,6 +66,18 @@ public class FileUploadTest {
     public void testBufferUpload() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write("haha".getBytes());
+    }
+
+    @Test
+    public void testDownload(){
+        HttpHeaders header = new HttpHeaders();
+        List<MediaType> list = new ArrayList<>();
+        list.add(MediaType.APPLICATION_OCTET_STREAM);
+        header.setAccept(list);
+        HttpEntity<byte[]> request = new HttpEntity<>(header);
+        ResponseEntity<byte[]> forEntity = this.restTemplate.exchange("http://localhost:8080/download", HttpMethod.GET, request, byte[].class);
+        String con = new String(forEntity.getBody());
+        System.out.println(con);
     }
 
 
