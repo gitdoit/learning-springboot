@@ -1,9 +1,9 @@
 spring:
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
+    type: com.zaxxer.hikari.HikariDataSource #这个是最快的CP
     driver-class-name: com.mysql.cj.jdbc.Driver #使用com.mysql.jdbc.Driver hikari提示找不到，用它爹可以
     url: jdbc:mysql://119.23.252.178:3306/spring
-    username: root
+    username: root #没办法
     password: shang2010
     hikari:
       idle-timeout: 600000 #最长闲置时间
