@@ -3,11 +3,13 @@ package org.seefly.nio.file;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
+import java.nio.file.attribute.DosFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -58,6 +60,56 @@ public class FilesDemo {
             stream.forEach(System.out::println);
         }
     }
+
+    /**
+     * 删除文件
+     */
+    @Test
+    public void testDelete() throws IOException {
+        // 若文件/文件夹 存在则删除。若为文件夹则文件夹不能非空
+        Files.deleteIfExists(Paths.get("E:\\test\\io.txt"));
+        // 同上，看名字
+        Files.delete(Paths.get("E:\\test\\io.txt"));
+
+
+    }
+
+    /**
+     * 万一能用到呢？
+     * 可以用来迭代删除一个未知深度的文件夹，window上一个delete的事情
+     *
+     * walk方法说它将给定路径作为根，进行深度优先遍历
+     * 跳过被安全管理器保护的文件，默认情况下也不会遍历文件链接。
+     * 也是弱引用的(可能是在遍历生成流的过程中某个文件被更新了，这里是察觉不到的)
+     * 可以指定最大深度，若为Integer.MAX，则无限深度。
+     * 流中元素为Path
+     *
+     * 若指定参数{@link FileVisitOption#FOLLOW_LINKS}，那么将会遍历符号连接，若符号连接到跟路径，则会抛出一个死循环的异常。
+     */
+    @Test
+    public void testIterate() throws IOException {
+        // 从根到叶开始遍历打印文件路径
+        Files.walk(Paths.get("F:\\LOG")).map(Path::toFile).forEach(System.out::println);
+
+        // 迭代删除，需要从叶到根开始删除，所以要对流中的元素进行反序排列
+        //Files.walk(Paths.get("E:\\test\\io.txt")).sorted(Comparator.reverseOrder()).map(Path::toFile) .peek(System.out::println).forEach(File::delete);
+    }
+
+    /**
+     * 简化的查找指定的文件
+     */
+    @Test
+    public void testFind() throws IOException {
+        Stream<Path> pathStream = Files.find(Paths.get("F:\\LOG"), 10, (a, b) -> {
+            String name = a.toFile().getName();
+            if(b instanceof DosFileAttributes){
+                DosFileAttributes attr = (DosFileAttributes)b;
+            }
+            return name.startsWith("c");
+        });
+        pathStream.forEach(System.out::println);
+    }
+
 
 
 

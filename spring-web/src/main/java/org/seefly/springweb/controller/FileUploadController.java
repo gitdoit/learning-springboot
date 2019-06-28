@@ -19,6 +19,8 @@ import java.io.*;
  * 应该配套一个HttpClient使用方法
  * 和一个 RestTemplate的文件上传使用方法
  * 还应该有一个RestTemplate的使用大全
+ * 测试类单元测试下面  FileUploadTest
+ *
  * @author liujianxin
  * @date 2019-06-03 13:29
  */

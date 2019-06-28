@@ -1,6 +1,7 @@
 package org.seefly.springweb.controller;
 
 import org.seefly.springweb.annotation.MyParamAnno;
+import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author liujianxin
@@ -54,23 +56,49 @@ public class ParamController {
     private String name;
     @Value("${my.age}")
     private Integer age;
+    @PostConstruct
+    public void init(){
+        System.out.println(name);
+        System.out.println(age);
+    }
 
 
     @GetMapping("/aaa")
     public String test(){
         return "LK";
     }
+
+
     @GetMapping("/bbb")
     public String ssss(){
         int i = 1 / 0;
         return "LK";
     }
 
-    @PostConstruct
-    public void init(){
-        System.out.println(name);
-        System.out.println(age);
+
+
+    /**
+     * 演示get请求接受数组，前端  localhost:8080/getArray?item=fff,sss,fff
+     * 不能用ArrayList接，只能数组。
+     * 另外这中传参方法是spring mvc的内部支持
+     */
+    @GetMapping("/getArray")
+    public String[] array(String[] item){
+        System.out.println(item);
+        return item;
     }
+
+    /**
+     * post请求接收数组，另外post请求不是必须要用请求体传参
+     * 也可以想get请求一样，在uri里面追加参数。神奇呢
+     */
+    @PostMapping("/postArray")
+    public String[] postArray(String[] item,@RequestBody String[] arr){
+        System.out.println(item);
+        return item;
+    }
+
+
 
     /**
      * 演示从路径中绑定restful参数
@@ -85,9 +113,8 @@ public class ParamController {
 
 
     /**
-     * 演示从请求体中接收参数
-     * @param json
-     * @return
+     * 演示直接从请求体中拿content-type:application/json类型的内容
+     * 直接用一个字符串来接收json串也是没有问题的
      */
     @PostMapping(value = "/post",consumes = "!text/plain")
     public String requestBody(@RequestBody String json, HttpServletRequest request){
@@ -122,9 +149,7 @@ public class ParamController {
     /**
      * 测试自定义注解配合自定义消息解析器
      * 我自定义的消息解析器在检测到方法的参数上含有自定义注解@myParamAnno时会启用自定义
-     * 消息转解析转换消息
-     * @param name
-     * @return
+     * 消息转解析转换消息{@link AnnoArgumentResolver}
      */
     @RequestMapping(value = "/res",method = RequestMethod.GET)
     public String testCustom(@MyParamAnno String name){
@@ -135,13 +160,11 @@ public class ParamController {
     /**
      * 我们知道如果使用@RequestBody注解，那么将会启用RequestResponseBodyMethodProcessor
      * 进行消息处理，
-     * @return
      */
     @RequestMapping(value = "/body")
     public String testRequestBody(@RequestBody String body){
-        return null;
+        return "OK";
     }
-
 
 
     @PostMapping("/form")

@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 
 /**
  * Web接口参数校验
+ *  TODO 组合校验
  * @author liujianxin
  * @date 2019-05-05 15:47
  */

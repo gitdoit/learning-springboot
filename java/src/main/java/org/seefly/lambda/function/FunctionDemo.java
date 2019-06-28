@@ -36,6 +36,7 @@ public class FunctionDemo {
         //一个输入，返回true false
         Predicate<String> predicate = str -> str.length() > 5;
         predicate.and(str -> str.length() < 10);
+
         //两个输入，返回true false
         BiPredicate<Integer,Integer> biPredicate = (a,b) -> a + b < 10;
         biPredicate.and((a,b) -> a - b < 3);

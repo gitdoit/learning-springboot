@@ -62,7 +62,6 @@ public class WebConfig implements WebMvcConfigurer {
      * resolveArgument    定义如何解析
      *
      * 对于普通的get请求，解析表单参数
-     * @param resolvers
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
