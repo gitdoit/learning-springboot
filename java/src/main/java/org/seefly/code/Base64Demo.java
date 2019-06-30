@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
+ * TODO sha256
  * @author liujianxin
  * @date 2019-02-25 17:19
  */

@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Stomp事件的监听
  * 1、从何处发生？
+ * 为啥我当时不debug一下?那肯定是我试过了，不好使
  *
  * 可监听的事件见：{@link org.springframework.web.socket.messaging}
  *

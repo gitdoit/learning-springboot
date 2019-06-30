@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 /**
  * @author liujianxin
  * @date 2018-07-27 16:23
- * 描述信息：
  **/
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

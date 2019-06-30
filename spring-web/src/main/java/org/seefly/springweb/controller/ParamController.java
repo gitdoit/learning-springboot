@@ -14,7 +14,8 @@ import java.util.List;
 /**
  * @author liujianxin
  * @date 2018-07-26 10:32
- * 描述信息：本类用来演示参数接收的问题
+ * 本类用来演示参数接收的问题
+ * 这个挺重要的，需要好好研究透，因为前后端分离。
  *
  * @RequestParam("name") 用来绑定请求路径中的参数
  *      注解中参数：required 指定路径中是否必须包含该参数，默认则是true。不包含则报错
