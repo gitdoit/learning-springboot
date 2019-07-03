@@ -13,7 +13,7 @@ import java.util.Date;
  * @author liujianxin
  * @date 2018-07-06 00:00
  **/
-@Component
+//@Component
 public class String2Date implements Converter<String,Date> {
 
 

@@ -86,7 +86,6 @@ public class WebConfig implements WebMvcConfigurer {
      *
      * 对于没有标注@RequestBody的参数(不是从请求体中读消息)，一般使用{@link RequestParamMapMethodArgumentResolver}进行参数绑定
      * 对于没有标注@ResponseBody的接口，那就需要视图解析器返回对应的视图了
-     * @param converters
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

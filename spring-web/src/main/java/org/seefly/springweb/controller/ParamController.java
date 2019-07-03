@@ -2,11 +2,15 @@ package org.seefly.springweb.controller;
 
 import org.seefly.springweb.annotation.MyParamAnno;
 import org.seefly.springweb.component.AnnoArgumentResolver;
+import org.seefly.springweb.convert.String2Date;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -74,6 +78,46 @@ public class ParamController {
     public String ssss(){
         int i = 1 / 0;
         return "LK";
+    }
+
+
+    /**
+     * 演示前端传入字符串：2019-02-03
+     * 在这里直接使用日期类型接收，而不用自定义转换器。
+     * 注意！！！
+     * 若自定义了一个{@link String2Date}，然后还要用这个注解的话
+     * 这个注解是不会起作用的，起作用的是上面那个。
+     */
+    @PostMapping("/format")
+    public String format(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(sdf.format(date));
+        return "OK";
+    }
+
+    /**
+     *
+     * 这个注解DateTimeFormat还能用在Fields上
+     * 使用Dto接收【表单】中的日期类型
+     * 另外还能像SimpleDateFormat一样，写表达式进行转换.
+     * Jackson不是也有这个注解实现这个功能的吗？
+     *  对的，他那个注解不能用于表单(废话) @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
+     *
+     */
+    @PostMapping("/dto-format")
+    public String formatDto(Request request){
+        System.out.println(request);
+        return "OK";
+    }
+
+    /**
+     * 用NumberFormat转换数字类型
+     * 像是转换金额: money = 1,234,456.89
+     */
+    @PostMapping("/num-format")
+    public String numberFormat(@NumberFormat(pattern = "#,###.##") Double money){
+        System.out.println(money);
+        return "OK";
     }
 
 
