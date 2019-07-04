@@ -9,11 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * TODO 说明
+ * 这个Converter不能解析被@RequestBody标注的参数
+ * 因为一旦被这个注解标注，那就使用Json来转了
  * @author liujianxin
  * @date 2018-07-06 00:00
  **/
-//@Component
+@Component
 public class String2Date implements Converter<String,Date> {
 
 

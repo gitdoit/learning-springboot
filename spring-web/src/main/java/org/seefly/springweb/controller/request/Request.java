@@ -1,6 +1,5 @@
-package org.seefly.springweb.controller;
+package org.seefly.springweb.controller.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 

@@ -2,6 +2,7 @@ package org.seefly.springweb.controller;
 
 import org.seefly.springweb.annotation.MyParamAnno;
 import org.seefly.springweb.component.AnnoArgumentResolver;
+import org.seefly.springweb.controller.request.Request;
 import org.seefly.springweb.convert.String2Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
 
 /**
  * @author liujianxin
@@ -51,6 +51,11 @@ import java.util.List;
  *          text/plain     --->  StringHttpMessageConverter
  *          application/json   --->  MappingJackson2HttpMessageConverter
  *
+ *  另外
+ *  content-type这标头
+ *  一般前后端交互大部分用的都是json传数据，这个很好理解，post请求+application/json就行
+ *  但对于表单上传数据，content-type就有两种许选择
+ *  1、multipart//form-data
  *
  **/
 
@@ -101,7 +106,7 @@ public class ParamController {
      * 使用Dto接收【表单】中的日期类型
      * 另外还能像SimpleDateFormat一样，写表达式进行转换.
      * Jackson不是也有这个注解实现这个功能的吗？
-     *  对的，他那个注解不能用于表单(废话) @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
+     *  对的，但是他那个注解不能用于接收参数表单(废话) @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
      *
      */
     @PostMapping("/dto-format")
