@@ -129,7 +129,7 @@ public class ParamController {
 
     /**
      * 演示get请求接受数组，前端  localhost:8080/getArray?item=fff,sss,fff
-     * 不能用ArrayList接，只能数组。
+     * 【【【【如果要直接接收数组，不用类包装，则只能用数组，不能用列表】】】】
      * 另外这中传参方法是spring mvc的内部支持
      */
     @GetMapping("/getArray")
@@ -140,13 +140,23 @@ public class ParamController {
 
     /**
      * post请求接收数组，另外post请求不是必须要用请求体传参
-     * 也可以想get请求一样，在uri里面追加参数。神奇呢
+     * 也可以像get请求一样，在uri里面追加参数。神奇呢
      */
     @PostMapping("/postArray")
     public String[] postArray(String[] item,@RequestBody String[] arr){
         System.out.println(item);
         return item;
     }
+
+    /**
+     * post请求，用类包装列表接收参数。请求方式和上面一样
+     */
+    @PostMapping("post-list")
+    public String postList(Request request){
+        System.out.println(request);
+        return "OK";
+    }
+
 
 
 

@@ -3,6 +3,7 @@ package org.seefly.springweb.controller.request;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class Request {
     private String string;
     private Integer integer;
     private String[] array;
+    private ArrayList<String> list;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
     private Map<String,String> map;
