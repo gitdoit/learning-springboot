@@ -1,43 +1,33 @@
 package org.seefly.springweb.convert;
 
-import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 
-import java.io.IOException;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.seefly.springweb.controller.request.UserRequest;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+
 
 /**
- * 将http请求体转换为java对象
+ * 由于标注的@Component注解，会被扫描装配到容器中。
+ * 然后{@link WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#addFormatters}
+ *
+ * 这个Converter不能解析被@RequestBody标注的参数
+ * 因为一旦被这个注解标注，那就使用Json来转了
  * @author liujianxin
- * @date 2019-07-04 23:17
- */
-public class String2UserConverter implements HttpMessageConverter<Object> {
-    @Override
-    public boolean canRead(Class<?> clazz, MediaType mediaType) {
-        return false;
-    }
+ * @date 2018-07-06 00:00
+ **/
+@Slf4j
+@Component
+public class String2UserConverter implements Converter<String, UserRequest> {
+
 
     @Override
-    public boolean canWrite(Class<?> clazz, MediaType mediaType) {
-        return false;
-    }
-
-    @Override
-    public List<MediaType> getSupportedMediaTypes() {
-        return null;
-    }
-
-    @Override
-    public Object read(Class<?> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
-        return null;
-    }
-
-    @Override
-    public void write(Object o, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-
+    public UserRequest convert(String source) {
+        log.info("String -> UserRequest [{}]",source);
+        String[] split = source.split("#");
+        String name = split[0];
+        Integer age = Integer.valueOf(split[1]);
+        return new UserRequest(name,age);
     }
 }

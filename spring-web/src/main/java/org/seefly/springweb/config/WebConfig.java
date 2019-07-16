@@ -21,6 +21,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -56,12 +57,15 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     /**
+     *
+     *
+     *
      * 添加自定义参数解析器，用于从请求中获取数据将之绑定到对应的接口参数中
      * 对于{@link HandlerMethodArgumentResolver}接口有两个方法
      * supportsParameter  定义能解析哪些参数
      * resolveArgument    定义如何解析
      *
-     * 对于普通的get请求，解析表单参数
+     * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -73,7 +77,7 @@ public class WebConfig implements WebMvcConfigurer {
      * supportsReturnType  定义能够解析哪种类型的返回值
      * handleReturnValue   定义如何解析
      *
-     * @param handlers
+     * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
      */
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
@@ -82,7 +86,8 @@ public class WebConfig implements WebMvcConfigurer {
     /**
      * 消息转换器，用来解析请求体中的消息，和向响应体中写入消息；
      * 对于标注了@RequestBody的参数，和@ResponseBody的响应，都会被{@link RequestResponseBodyMethodProcessor}处理
-     * 因为这个类实现了解析请求参数{@link HandlerMethodArgumentResolver}和处理返回值的接口{@link HandlerMethodReturnValueHandler}，且只处理标注了这两个注解的参数解析，和返回值处理，但是实际干活的还是这个消息转换器。
+     * 因为这个类实现了解析请求参数{@link HandlerMethodArgumentResolver}、{@link HandlerMethodReturnValueHandler}
+     * 且只处理标注了这两个注解的参数解析，和返回值处理，但是实际干活的还是这个消息转换器。
      *
      * 对于没有标注@RequestBody的参数(不是从请求体中读消息)，一般使用{@link RequestParamMapMethodArgumentResolver}进行参数绑定
      * 对于没有标注@ResponseBody的接口，那就需要视图解析器返回对应的视图了

@@ -3,7 +3,7 @@ package org.seefly.springweb.controller;
 import org.seefly.springweb.annotation.MyParamAnno;
 import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.seefly.springweb.controller.request.Request;
-import org.seefly.springweb.convert.String2Date;
+import org.seefly.springweb.convert.String2UserConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -61,7 +61,7 @@ import java.util.Enumeration;
 
 @RestController
 @RequestMapping
-public class ParamController {
+public class ParamReceiveController {
     @Value("${my.name}")
     private String name;
     @Value("${my.age}")
@@ -90,7 +90,7 @@ public class ParamController {
      * 演示前端传入字符串：2019-02-03
      * 在这里直接使用日期类型接收，而不用自定义转换器。
      * 注意！！！
-     * 若自定义了一个{@link String2Date}，然后还要用这个注解的话
+     * 若自定义了一个{@link String2UserConverter}，然后还要用这个注解的话
      * 这个注解是不会起作用的，起作用的是上面那个。
      */
     @PostMapping("/format")
@@ -116,6 +116,7 @@ public class ParamController {
     }
 
     /**
+     * 接收
      * 用NumberFormat转换数字类型
      * 像是转换金额: money = 1,234,456.89
      */
