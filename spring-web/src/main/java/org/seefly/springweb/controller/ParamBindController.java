@@ -2,14 +2,15 @@ package org.seefly.springweb.controller;
 
 import org.seefly.springweb.controller.request.UserRequest;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.ModelFactory;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestPartMethodArgumentResolver;
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
-import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
+import org.springframework.web.servlet.mvc.method.annotation.*;
+
+import java.util.List;
 
 /**
  * 参数绑定
@@ -41,6 +42,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHan
  *    那么参数解析器、返回值处理器和消息转换器有什么关系呢？？
  *    就我目前看来，消息转换器被组合到{@link RequestPartMethodArgumentResolver} {@link RequestResponseBodyMethodProcessor}里
  *
+ *  {@link ServletModelAttributeMethodProcessor} 这个东西就是用来绑定表单数据到javaBean的
+ *
+ *
  *
  * 
  * 
@@ -52,9 +56,33 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHan
 @RequestMapping
 public class ParamBindController {
 
+    /**
+     *
+     * 使用自定义的Converter来转换参数
+     * {@link ServletModelAttributeMethodProcessor}
+     *
+     *
+     */
     @RequestMapping("/date-converter")
     public String dateConverter(UserRequest request){
         System.out.println(request);
         return "OK";
     }
+
+
+    /**
+     * ModelAttribute 注解，在这里起作用{@link ModelFactory#getNameForParameter}
+     */
+    @RequestMapping("/converter")
+    public String converter(@ModelAttribute("request") UserRequest request){
+        System.out.println(request);
+        return "OK";
+    }
+
+    @RequestMapping("/converter-list")
+    public String converterList(List<UserRequest> requests) {
+        System.out.println(requests);
+        return "OK";
+    }
+
 }
