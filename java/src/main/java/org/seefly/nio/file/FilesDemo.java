@@ -25,6 +25,14 @@ public class FilesDemo {
 
 
 
+    @Test
+    public void testTempFile() throws IOException {
+        File file = Files.write(Files.createTempFile(null, ".txt"), "abc".getBytes()).toFile();
+        System.out.println(file.getName());
+        file.delete();
+    }
+
+
     /**
      * 通过Files工具类读取文本文件中所有的行
      * Files.readAllLines底层循环调用BufferedReader.readLine，把所有行放到List中
