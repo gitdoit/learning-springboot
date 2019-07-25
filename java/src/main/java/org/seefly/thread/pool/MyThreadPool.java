@@ -14,17 +14,32 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ *
+ * 注意，由于自定义线程池创建线程的时候默认的是加入当前线程组
+ * 也就是主线程组，那么main方法启动后，所有线程池内线程加入主线程组
+ * 由于线程组的销毁前提条件是组内所有线程必须停止，而线程池内的核心线程由于被阻塞
+ * 所以主线程组不会销毁，主线程也不会退出。
+ *
  * @author liujianxin
  * @date 2019-07-18 09:43
  */
 @Slf4j
 public class MyThreadPool {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         MyThreadPool pool = new MyThreadPool(3,5,5,TimeUnit.SECONDS,new ArrayBlockingQueue<>(4));
-        pool.execute(()->{
-            System.out.println(1);
-        });
-
+        for(int i = 0 ; i < 10 ; i++){
+            pool.execute(()->{
+                try {
+                    Thread.sleep(2000);
+                    System.out.println(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        System.out.println("主线程休眠前，线程池内活动线程数量"+pool.getWorkerCount());
+        Thread.sleep(10000);
+        System.out.println("主线程休眠后，线程池内活动线程数量"+pool.getWorkerCount());
 
     }
 
@@ -192,6 +207,7 @@ public class MyThreadPool {
          */
         @Override
         public void run(){
+            log.info("{}开始执行任务！",Thread.currentThread().getId());
             Runnable task = null;
             // 是新起的线程，就这样？为啥
             if(isNewTask){
@@ -214,6 +230,7 @@ public class MyThreadPool {
 
                 }
             }finally {
+                log.info("额外线程由于没有在指定时间内获取到任务，退出！");
                 // 额外的线程在指定时间内获取不到任务了
                 // 就把自己从线程池中移除
                 workers.remove(this);
@@ -224,12 +241,11 @@ public class MyThreadPool {
 
 
         public void startTask(){
-            log.info("开始执行任务...");
-            this.thread.start();
+            start();
         }
 
         public void close(){
-            this.thread.interrupt();
+            interrupt();
         }
 
     }
