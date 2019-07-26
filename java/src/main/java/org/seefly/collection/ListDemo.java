@@ -70,6 +70,9 @@ public class ListDemo {
         /**
          * 当添加第一个元素的时候，由于无参构造方法使用的是空数组作为容器
          * 所以这一步需要将空数组进行扩容，使用默认容量10来构造一个容量为10的数组
+         * 1、每次add元素之前调用ensureCapacityInternal()方法检查数组大小是否能够容纳新元素
+         * 2、如果数组容量不够，则会调用grow()方法进行扩容
+         * 3、由于初始的空数组不能容纳，则会扩容起始容量10
          */
         defaultList.add("");
         defaultList.add("");
@@ -89,6 +92,105 @@ public class ListDemo {
          *  elementData = Arrays.copyOf(elementData, 15)
          */
         defaultList.add("");
+    }
+
+
+    @Test
+    public void testArrayCopy(){
+        int[] a = new int[10];
+        a[0] = 0;
+        a[1] = 1;
+        a[2] = 2;
+        a[3] = 3;
+
+        //arg1 原数组
+        //arg2 起始位置索引(包括)
+        //arg3 目标位置
+        //arg4 目标位置索引(包括)
+        //arg5 从原数组复制的元素数量
+        //so，这个就是从数组索引为2的开始，复制一个元素，到目标素组中索引为4的位置
+        //效果就是，将2号索引元素复制一份到3号索引后面
+        //output->0 1 2 3 2 0 0 0 0 0 0
+        System.arraycopy(a,2,a,4,1);
+
+        for (int i : a) {
+            System.out.println(i);
+        }
+
+    }
+
+    /**
+     * Arrays.copyOf()底层调用的也是System.arraycopy
+     * 这个方法的目的就是为了方便的给数组扩容
+     */
+    @Test
+    public void testCopyOf(){
+        int[] old = {1,2,3};
+        // 寄居蟹一样，原来的家太小了，给放个大的
+        int[] newOne = Arrays.copyOf(old, 6);
+        System.out.println(newOne.length);
+    }
+
+
+    /**
+     * list.toArray方法很有意思
+     * 如果传入的参数数组容量足够大，那么将原列表中的元素复制一份到这个参数数组中
+     * 如果不够大，那么就根据参数列表类型创建一个新的数组，当作返回值返回回去。
+     *
+     * 所以一般都用list.toArray(new Integer[0]);然后取其返回值
+     */
+    @Test
+    public void testToArray(){
+        List<Integer> list = Arrays.asList(1, 2, 3);
+
+
+        Integer[] integers = list.toArray(new Integer[0]);
+        for (Integer integer : integers) {
+            System.out.println(integer);
+        }
+
+        Integer[] b = new Integer[3];
+        Integer[] c = list.toArray(b);
+        for (Integer integer : b) {
+            System.out.println(integer);
+        }
+
+        for (Integer integer : c) {
+            System.out.println(integer);
+
+        }
+
+    }
+
+
+    /**
+     *  arrayList.ensureCapacity(n);
+     *  这方法是给用户用的，目的就是让用户在添加大量数据前
+     *  能够手动扩容列表容量
+     *  避免列表自己一次次的扩容，提升效率。
+     */
+    @Test
+    public void testEnsureCapacity(){
+        ArrayList<Object> list = new ArrayList<Object>();
+        final int N = 10000000;
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < N; i++) {
+            list.add(i);
+        }
+        long endTime = System.currentTimeMillis();
+        // 使用ensureCapacity方法前：2555
+        System.out.println("使用ensureCapacity方法前："+(endTime - startTime));
+
+        list = new ArrayList<Object>();
+        long startTime1 = System.currentTimeMillis();
+        list.ensureCapacity(N);
+        for (int i = 0; i < N; i++) {
+            list.add(i);
+        }
+        long endTime1 = System.currentTimeMillis();
+        // 使用ensureCapacity方法后：751
+        System.out.println("使用ensureCapacity方法后："+(endTime1 - startTime1));
+
     }
 
 }
