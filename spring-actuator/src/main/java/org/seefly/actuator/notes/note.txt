@@ -1,0 +1,53 @@
+1、引入spring-boot-actuator-start启动器
+配置，开启所有actuator端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+访问 http://localhost/actuator 端点查看所有可以获取信息的路径
+
+日志等级动态修改
+spring-actuator可以动态的修改日志等级
+    post ->          http://localhost/actuator/loggers/root
+    body ->          { "configuredLevel": "DEBUG" } or
+    content-type->   application/json
+
+    1、可以get -> http://localhost/actuator/loggers 查看所有可操作的日志类
+    2、这种方式是全局的修改日志等级
+        http://localhost/actuator/loggers/root
+    3、这种是针对某个类具体的定制日志等级
+        http://localhost/actuator/loggers/org.seefly.actuator.schedul.ActuatorSchedul
+
+
+
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    env:
+      enabled: true
+    logfile:
+      enabled: true
+    loggers:
+      enabled: true
+    mappings:
+      enabled: true
+    configprops:
+      enabled: true
+    scheduledtasks:
+      enabled: true
+    metrics:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "*"
