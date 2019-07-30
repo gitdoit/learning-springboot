@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.seefly.thread.ThreadUtils;
 
 /**
- * 主要维度
+ * 线程组主要维度
  * 1、名称
  * 2、优先级
  *      关于优先级，线程组内的所有线程其优先级不能高于所属线程组的优先级
