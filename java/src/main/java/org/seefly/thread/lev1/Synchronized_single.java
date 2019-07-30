@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * 该类用来演示单例模式下的懒汉式和同步代码块的联系

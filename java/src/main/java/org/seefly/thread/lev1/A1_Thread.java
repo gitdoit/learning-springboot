@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  * 该类展示了Thread无法共享的缺点。
  * 实例A,C是Thread的子类，他们都在买票，但是剩余票数无法共享。

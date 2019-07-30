@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * 描述信息：Volatile关键字的作用

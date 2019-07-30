@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  * 后台线程又称为守护线程
  * 该线程有一个特点那就是，在主线程死亡后那么它也会死亡。

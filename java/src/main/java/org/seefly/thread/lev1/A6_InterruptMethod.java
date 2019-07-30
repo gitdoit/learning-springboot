@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  * 如果线程处于阻塞状态时调用该线程的interrupt方法，会使该线程出现异常，然后结束该线程。
  * @author 刘建鑫

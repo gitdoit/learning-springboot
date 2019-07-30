@@ -13,9 +13,9 @@ management:
 server:
   port: 80
 # INFO ENDPOINT CONFIGURATION
-# 可以访问http://localhost/actuator/info获取此处信息
-# 该端点主要是针对各个应用配置个性化信息
-# 扩展maven的表达式 https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html#howto-automatic-expansion
+# 鍙互璁块棶http://localhost/actuator/info鑾峰彇姝ゅ淇℃伅
+# 璇ョ鐐逛富瑕佹槸閽堝鍚勪釜搴旂敤閰嶇疆涓�у寲淇℃伅
+# 鎵╁睍maven鐨勮〃杈惧紡 https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html#howto-automatic-expansion
 info:
   app:
     name: @project.name@

@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  * wait：
  *      此方法只能使用在同步代码块中，当调用此方法时当前线程会释放手中的锁然后进入该锁的等待池。

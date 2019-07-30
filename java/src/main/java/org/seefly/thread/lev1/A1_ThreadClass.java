@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * Thread的定义：public class Thread extends Object implements Runnable

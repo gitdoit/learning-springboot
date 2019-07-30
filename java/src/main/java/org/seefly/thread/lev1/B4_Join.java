@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * 描述信息：本类用来演示join方法

@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  * 该类用来演示synchronized中锁的问题
  * 

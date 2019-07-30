@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * 描述信息：该类用来演示两个已经被废弃的方法为什么会被废弃 = =

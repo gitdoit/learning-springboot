@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 /**
  *一个线程死亡之后不能再通过star()方法试图使他再次运行。否则出现IllegalThreadStateException
  *一个线程在正常结束后，抛出一个未捕获的异常，调用stop后会死亡。

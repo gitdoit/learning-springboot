@@ -1,4 +1,4 @@
-package org.seefly.thread;
+package org.seefly.thread.lev1;
 
 /**
  * 经过多次测试，可能出现AB会出现最后票数相同，或者卖出负数的情况
