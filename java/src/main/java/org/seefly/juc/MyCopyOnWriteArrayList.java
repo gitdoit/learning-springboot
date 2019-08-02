@@ -1,4 +1,4 @@
-package org.seefly.concurrent;
+package org.seefly.juc;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
