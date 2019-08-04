@@ -28,21 +28,11 @@ public class A1_ThreadClass {
 		new Thread(B).start();
 
         //有参数构造。实例化匿名线程，在参数里直接实例化实参
-		new Thread(new Runnable(){
-		    @Override
-			public void run(){
-				System.out.print("匿名线程，匿名参数");
-			}
-		}).start();
+		new Thread(() -> System.out.print("匿名线程，匿名参数")).start();
 
 
         //无参构造，实例化的同时覆写其中run方法
-		new Thread(){
-		    @Override
-			public void run(){
-				System.out.println("匿名线程，复写run");
-			}
-		}.start();
+		new Thread(() -> System.out.println("匿名线程，复写run")).start();
 	}
 
 

@@ -48,7 +48,7 @@ public class AsyncTaskDemo {
     @Async
     public CompletableFuture returnWithFuture(){
         CompletableFuture<String> caffe = CompletableFuture.completedFuture("CAFFE").thenApplyAsync(p -> {
-            ThreadUtil.RandomSleep();
+            ThreadUtil.randomSleep();
             return p + " LATTE";
         });
         //java.util.concurrent.Future

@@ -2,7 +2,6 @@ package org.seefly.transaction.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
@@ -79,5 +78,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Configuration
 @MapperScan("org.seefly.transaction.mapper")
 public class DbConfig {
+
 
 }

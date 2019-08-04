@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *     线程的优先级不能超过该线程所属线程组的优先级，并且不要将业务逻辑依赖与线程优先级，因为线程优先级依赖于操作系统，所以它并不总是按照
  *     我们想要的方式去运行。
  * 线程状态
- *      {@link Thread.State}java线程有5种状态
+ *      {@link Thread.State}java线程有6种状态
  *      1、NEW           属于Thread被创建，但是还没有调用start()方法启动时的状态。
  *      2、RUNNABLE      处于可运行状态的某一线程正在 Java 虚拟机中运行，但它可能正在等待操作系统中的其他资源，比如处理器。
  *      3、BLOCKED       受阻塞并且正在等待监视器锁的某一线程的线程状态。处于受阻塞状态的某一线程正在等待进入一个同步的块/方法的监视器锁，

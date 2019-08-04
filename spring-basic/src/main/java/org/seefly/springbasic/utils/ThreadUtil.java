@@ -11,7 +11,7 @@ import java.util.Random;
 public class ThreadUtil {
     private ThreadUtil(){}
 
-    public static void RandomSleep(){
+    public static void randomSleep(){
         try {
             Thread.sleep(RandomUtils.nextLong(500,2000));
         } catch (InterruptedException e) {
