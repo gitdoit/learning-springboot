@@ -2,12 +2,16 @@ package org.seefly.springweb.controller;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.seefly.springweb.controller.response.Response;
+import org.seefly.springweb.controller.response.ResponseUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Web接口参数校验
@@ -18,6 +22,12 @@ import javax.validation.constraints.Max;
 @RestController
 @Validated
 public class ValidateController {
+
+    @PostMapping("/name")
+    public Response bindName(@NotBlank(message = "姓名不能为空！") String name){
+        System.out.println(name);
+        return ResponseUtils.success();
+    }
 
 
     /**
