@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>quickstart</module>
         <module>mybatisplus</module>
         <module>java</module>
         <module>cache</module>
@@ -24,7 +23,6 @@
         <module>spring-security</module>
         <module>spring-transaction</module>
         <module>spring-annotation</module>
-        <module>spring-network</module>
         <module>spring-websocket</module>
         <module>spring-actuator</module>
     </modules>
