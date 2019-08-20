@@ -2,7 +2,6 @@ package org.seefly.rocketmq.config;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import me.robin.spring.rocketmq.ConsumerConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.MQPushConsumer;
@@ -57,7 +56,7 @@ public class RocketConsumerConfig {
             consumer.setInstanceName(rocketConf.getConsumer().getInstanceName());
         }
 
-        ConsumerConfig consumerConfig = rocketConf.getConsumer();
+        RocketProp.ConsumerConfig consumerConfig = rocketConf.getConsumer();
         //consumer.setConsumeMessageBatchMaxSize(5);//设置批量消费，以提升消费吞吐量，默认是1
         consumer.setConsumeThreadMin(consumerConfig.getMinConsumers());
         consumer.setConsumeThreadMax(consumerConfig.getMaxConsumers());

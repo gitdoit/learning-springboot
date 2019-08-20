@@ -1,12 +1,10 @@
 package org.seefly.rocketmq.config;
 
 import lombok.extern.slf4j.Slf4j;
-import me.robin.spring.rocketmq.TransactionCheckListenerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MQProducer;
-import org.apache.rocketmq.client.producer.TransactionCheckListener;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.protocol.header.QueryMessageRequestHeader;
 import org.apache.rocketmq.remoting.CommandCustomHeader;
@@ -96,8 +94,8 @@ public class RocketProducerConfig {
         producer.setCheckRequestHoldMax(2000);
 
         // 由于社区版本的服务器阉割调了消息回查的功能，所以这个地方没有意义
-        TransactionCheckListener transactionCheckListener = new TransactionCheckListenerImpl();
-        producer.setTransactionCheckListener(transactionCheckListener);
+        //TransactionCheckListener transactionCheckListener = new TransactionCheckListenerImpl();
+        // producer.setTransactionCheckListener(transactionCheckListener);
 
         /*
          * Producer对象在使用之前必须要调用start初始化，初始化一次即可

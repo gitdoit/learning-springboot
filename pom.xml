@@ -25,6 +25,7 @@
         <module>spring-annotation</module>
         <module>spring-websocket</module>
         <module>spring-actuator</module>
+        <module>spring-aop</module>
     </modules>
 
 

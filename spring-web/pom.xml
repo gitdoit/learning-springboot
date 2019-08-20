@@ -47,11 +47,7 @@
             <version>${rocketmq.version}</version>
         </dependency>
         <!--这又是啥-->
-        <dependency>
-            <groupId>me.robin.spring</groupId>
-            <artifactId>rocketMQ</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
-        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>

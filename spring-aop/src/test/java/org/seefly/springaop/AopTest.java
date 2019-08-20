@@ -1,7 +1,7 @@
-package org.seefly.springbasic;
+package org.seefly.springaop;
 
 import org.junit.Test;
-import org.seefly.springbasic.aop.People;
+import org.seefly.springaop.component.People;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -1,10 +1,9 @@
 package org.seefly.rocketmq.config;
 
 import lombok.Data;
-import me.robin.spring.rocketmq.ConsumerConfig;
-import me.robin.spring.rocketmq.ProducerConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Data
 @Component
@@ -16,5 +15,24 @@ public class RocketProp {
     private String clientIP;
     private ProducerConfig producer;
     private ConsumerConfig consumer;
+
+
+    @Data
+    public static class ProducerConfig{
+        private String instanceName;
+        private String tranInstanceName;
+        private String group;
+    }
+
+    @Data
+    public static class ConsumerConfig{
+        private String instanceName;
+        private Integer minConsumers;
+        private Integer maxConsumers;
+
+        public String getGroup(String applicationName){
+            return applicationName == null ? "" : applicationName.toUpperCase();
+        }
+    }
 
 }
