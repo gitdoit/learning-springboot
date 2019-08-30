@@ -15,23 +15,22 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 /**
  *
- * AOP初始化流程
+ * 【注册BeanPostProcessor】
  * 1、传入主配置类，创建IOC容器
  * 2、创建完成后调用{@link AbstractApplicationContext#refresh()}刷新容器
  * 3、调用 {@link AbstractApplicationContext#registerBeanPostProcessors} 就是创建bean的后置处理器，来拦截bean的创建。
  * 4、先在bean工厂中拿出所有BeanPostProcessor的实现类，调用一下beanFactory.getBean方法，
- *
- *
  *    1）、调用{@link AbstractBeanFactory#getBean}
- *          ->{@link AbstractBeanFactory#doGetBean}
- *              -> {@link DefaultSingletonBeanRegistry#getSingleton(java.lang.String, org.springframework.beans.factory.ObjectFactory)}
- *                  ->{@link AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])}
+ *          1>{@link AbstractBeanFactory#doGetBean}
+ *              2> {@link DefaultSingletonBeanRegistry#getSingleton(java.lang.String, org.springframework.beans.factory.ObjectFactory)}
+ *                  3>{@link AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])}
  *
- *  *                   这个方法注释说给后置处理器一个机会，如果后置处理器返回了一个代理Bean，则就用后置处理器代理的那个，否则就创建。并直接返回
- *                     -> {@link AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition)}
- *  *                       这块会调用所有的注册的{@link InstantiationAwareBeanPostProcessor}的实例的postProcessBeforeInstantiation方法
+ *                     这个方法注释说给后置处理器一个机会，如果后置处理器返回了一个代理Bean，则就用后置处理器代理的那个，否则就创建。并直接返回
+ *                     4> {@link AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition)}
+ *
+ *                          这块会调用所有的注册的{@link InstantiationAwareBeanPostProcessor}的实例的postProcessBeforeInstantiation方法
  *                          AOP代理注册的那个也属于他的实现类，所以在这里会被应用。
- *  *                       -> {@link AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation(java.lang.Class, java.lang.String)}
+ *                         5> {@link AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation(java.lang.Class, java.lang.String)}
  *
  *                      实际创建Bean的流程
  *                      ->{@link AbstractAutowireCapableBeanFactory#doCreateBean}

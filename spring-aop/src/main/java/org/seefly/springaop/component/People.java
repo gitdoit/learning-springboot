@@ -7,7 +7,7 @@ package org.seefly.springaop.component;
 public class People {
 
     public void sing(String songName){
-        System.out.println("hello it's me!"+songName);
+        System.out.println("唱歌:hello it's me!  -> "+songName);
     }
 
     public void dance(){

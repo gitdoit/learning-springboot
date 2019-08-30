@@ -77,12 +77,9 @@ public class Step2 {
 
         @Bean
         public MethodInterceptor methodInterceptor(){
-            return new MethodInterceptor() {
-                @Override
-                public Object invoke(MethodInvocation invocation) throws Throwable {
-                    System.out.println("方法拦截");
-                    return invocation.proceed();
-                }
+            return invocation -> {
+                System.out.println("方法拦截");
+                return invocation.proceed();
             };
         }
 
@@ -97,6 +94,7 @@ public class Step2 {
             // 一个增强器只能包含一个通知
             advisor.setAdvice(afterAdvice());
             // 但可以匹配多个方法
+            // The default implementation checks for "xxx*", "*xxx" and "*xxx*" matches,as well as direct equality. Can be overridden in subclasses.
             advisor.setMappedNames("createUser");
             return advisor;
         }

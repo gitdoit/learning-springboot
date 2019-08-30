@@ -3,6 +3,8 @@ package org.seefly.lambda.stream;
 import lombok.Data;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +31,25 @@ public class OptionalTest {
         Optional<Object> o = Optional.ofNullable(user);
         //基本用法。如果存在，则执行给定的lambda
         o.ifPresent(System.out::print);
+    }
+
+
+    @Test
+    public void testAPI(){
+
+        List<User> lis = new ArrayList<>();
+        lis.add(null);
+        // 不确定列表是否为null，可以用这个方法
+        String fuck = Optional.ofNullable(lis)
+                // 如果不为null，会执行这个逻辑，这里过滤为空列表的情况
+                .filter(b -> b.size() > 0)
+                // 如果上面被过滤掉了，这里也不会空指针。否则拿出第一个
+                .map(li -> li.get(0))
+                // 如果第一个元素为null,这里也不会空指针
+                .map(User::getUserName)
+                // 最后判断是否能拿出来东西，不行就返回默认的
+                .orElse("fuck");
+        System.out.println(fuck);
     }
 
     @Data
