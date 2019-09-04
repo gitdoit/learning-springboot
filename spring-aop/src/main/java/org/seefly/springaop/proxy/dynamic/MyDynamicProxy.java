@@ -62,15 +62,26 @@ public class MyDynamicProxy implements InvocationHandler {
      * 控制对目标对象的访问.
      * 上面根据接口动态生成的类长这个样子
      * 其中的h 就是创建代理实例的时候传入的当前类
-     * public final void call(String var1) throws  {
-     *         try {
-     *             super.h.invoke(this, m3, new Object[]{var1});
-     *         } catch (RuntimeException | Error var3) {
-     *             throw var3;
-     *         } catch (Throwable var4) {
-     *             throw new UndeclaredThrowableException(var4);
-     *         }
+     *
+     * public final class $Proxy1 extends Proxy implements Call
+     *
+     *   //在内存中生成的class会有一个这样的构造函数，并且在Proxy.newProxyInstance(..)可以看到
+     *   //我们传进去的InvocationHandle会被当作构造参数来构建这个动态生成的类
+     *   public $Proxy1(InvocationHandler var1) throws  {
+     *         super(var1);
      *     }
+     *
+     *   // 然后我们在调用动态生成的类的方法时会执行InvocationHandle.invoke(..)
+     *   public final void call(String var1) throws  {
+     *           try {
+     *               super.h.invoke(this, m3, new Object[]{var1});
+     *           } catch (RuntimeException | Error var3) {
+     *               throw var3;
+     *           } catch (Throwable var4) {
+     *               throw new UndeclaredThrowableException(var4);
+     *           }
+     *       }
+     * }
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
