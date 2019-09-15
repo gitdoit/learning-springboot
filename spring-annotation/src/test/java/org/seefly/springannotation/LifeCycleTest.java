@@ -1,4 +1,4 @@
-package org.seefly.springannotation.demorun;
+package org.seefly.springannotation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +28,12 @@ import javax.annotation.PreDestroy;
  * @author liujianxin
  * @date 2018-12-23 21:43
  */
-public class LifeCycleTest {
+public class LifeCycleTest extends BaseTest {
     private AnnotationConfigApplicationContext applicationContext;
 
     @Before
     public void before(){
-        applicationContext = new AnnotationConfigApplicationContext(LifeCycleConfig .class);
+        applicationContext = new AnnotationConfigApplicationContext(LifeCycleConfig.class);
         System.out.println("容器初始化完毕...");
     }
 
@@ -70,5 +70,4 @@ public class LifeCycleTest {
         System.out.println(tree.getClass());
         applicationContext.close();
     }
-
 }

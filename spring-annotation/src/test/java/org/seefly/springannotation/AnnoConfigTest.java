@@ -1,4 +1,4 @@
-package org.seefly.springannotation.demorun;
+package org.seefly.springannotation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @author liujianxin
  * @date 2018-12-18 23:58
  */
-public class AnnotationConfigApplicationTest {
-
+public class AnnoConfigTest extends BaseTest {
     private ApplicationContext applicationContext;
 
     @Before
