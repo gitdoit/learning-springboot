@@ -1,10 +1,11 @@
 package org.seefly.springweb.controller;
 
+import org.seefly.springweb.controller.request.AbstractQuestion;
+import org.seefly.springweb.controller.request.MultipleChoiceQuestion;
+import org.seefly.springweb.controller.request.SingleChoiceQuestion;
 import org.seefly.springweb.controller.request.UserRequest;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.ModelFactory;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -55,6 +56,23 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class ParamBindController {
+
+
+    /**
+     * 演示多态序列化，能够根据传入的数据不同进行不同的序列化。
+     * 父类做参数签名，实际传入子类，并能够正确序列化。
+     */
+    @PostMapping("/multi-type")
+    public String multiSer(@RequestBody AbstractQuestion question){
+        System.out.println(question);
+        if (question instanceof SingleChoiceQuestion){
+            System.out.println("单选题");
+        }else if(question instanceof MultipleChoiceQuestion){
+            System.out.println("多选题");
+        }
+        return "OK";
+    }
+
 
     /**
      *
