@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +21,11 @@ public class Request {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
     private Map<String,String> map;
+    private List<ListObject> listObjects;
+
+
+    @Data
+    public static class ListObject{
+        private String name;
+    }
 }

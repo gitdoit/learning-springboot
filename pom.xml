@@ -25,6 +25,7 @@
         <module>spring-websocket</module>
         <module>spring-actuator</module>
         <module>spring-aop</module>
+        <module>spring-mybatisplus-ds</module>
     </modules>
 
 

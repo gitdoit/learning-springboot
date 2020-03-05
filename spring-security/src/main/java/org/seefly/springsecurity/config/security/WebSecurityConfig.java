@@ -93,8 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/oauth/**").authenticated()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/private/**").authenticated();
-        http.formLogin().successHandler(new MyLoginSuccessHandle()).failureHandler(new LoginFailureHandler()).permitAll();
+                    .antMatchers("/private/**").authenticated()
+                .and().formLogin().successHandler(new MyLoginSuccessHandle()).failureHandler(new LoginFailureHandler()).permitAll();
         /*http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
             response.setContentType(MediaType.TEXT_HTML_VALUE);
             response.getOutputStream().print("fuck off!");

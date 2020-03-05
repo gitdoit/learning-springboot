@@ -31,7 +31,6 @@ public class LogoutSuccessHandle extends AbstractAuthenticationTargetUrlRequestH
                 tokenStore.removeAccessToken(oAuth2AccessToken);
             }
         }
-
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
