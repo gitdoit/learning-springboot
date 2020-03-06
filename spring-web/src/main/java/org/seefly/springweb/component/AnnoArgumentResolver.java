@@ -25,8 +25,8 @@ public class AnnoArgumentResolver implements HandlerMethodArgumentResolver {
                                   NativeWebRequest request, WebDataBinderFactory binderFactory) {
         String paramValue =  request.getParameter(parameter.getParameterName());
         Object arg = null;
-        if (StringUtils.isEmpty(paramValue)) {
-            arg = paramValue+"liujianxinhahah";
+        if (!StringUtils.isEmpty(paramValue)) {
+            arg = paramValue+":处理后追加！";
         }
         return arg;
     }

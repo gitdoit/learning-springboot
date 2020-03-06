@@ -1,6 +1,13 @@
 package org.seefly.springweb.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
@@ -9,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.util.AntPathMatcher;
@@ -27,6 +35,7 @@ import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +48,7 @@ import java.util.Map;
  * springboot自动配置类{@link WebMvcAutoConfiguration}中的自动配置将会失效
  * 例如静态资源映射这些都没有了，也就是说这个注解表示全面接管web方面的配置
  * 此时生效的只有{@link DelegatingWebMvcConfiguration}类中的配置
- *
+ * <p>
  * 国际化：{@link MessageSourceAutoConfiguration}
  */
 
@@ -47,6 +56,32 @@ import java.util.Map;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Bean
+    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+
+        // 通过该方法对mapper对象进行设置，所有序列化的对象都将按改规则进行系列化
+        // Include.Include.ALWAYS 默认
+        // Include.NON_DEFAULT 属性为默认值不序列化
+        // Include.NON_EMPTY 属性为 空（""） 或者为 NULL 都不序列化，则返回的json是没有这个字段的。这样对移动端会更省流量
+        // Include.NON_NULL 属性为NULL 不序列化
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 允许出现特殊字符和转义符
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        // 允许出现单引号
+        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        // 字段保留，将null值转为""
+        objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+            @Override
+            public void serialize(Object o, JsonGenerator jsonGenerator,
+                                  SerializerProvider serializerProvider)
+                    throws IOException {
+                jsonGenerator.writeString("");
+            }
+        });
+        return objectMapper;
+    }
 
 
     @Override
@@ -54,17 +89,17 @@ public class WebConfig implements WebMvcConfigurer {
         //路径映射视图，省的在Controller中写一个空方法返回视图了
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/index.html").setViewName("index");
+
     }
 
+
+
     /**
-     *
-     *
-     *
      * 添加自定义参数解析器，用于从请求中获取数据将之绑定到对应的接口参数中
      * 对于{@link HandlerMethodArgumentResolver}接口有两个方法
      * supportsParameter  定义能解析哪些参数
      * resolveArgument    定义如何解析
-     *
+     * <p>
      * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
      */
     @Override
@@ -76,19 +111,20 @@ public class WebConfig implements WebMvcConfigurer {
      * 添加返回值处理器,对于{@link HandlerMethodReturnValueHandler}接口有两个方法
      * supportsReturnType  定义能够解析哪种类型的返回值
      * handleReturnValue   定义如何解析
-     *
+     * <p>
      * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
      */
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
 
     }
+
     /**
      * 消息转换器，用来解析请求体中的消息，和向响应体中写入消息；
      * 对于标注了@RequestBody的参数，和@ResponseBody的响应，都会被{@link RequestResponseBodyMethodProcessor}处理
      * 因为这个类实现了解析请求参数{@link HandlerMethodArgumentResolver}、{@link HandlerMethodReturnValueHandler}
      * 且只处理标注了这两个注解的参数解析，和返回值处理，但是实际干活的还是这个消息转换器。
-     *
+     * <p>
      * 对于没有标注@RequestBody的参数(不是从请求体中读消息)，一般使用{@link RequestParamMapMethodArgumentResolver}进行参数绑定
      * 对于没有标注@ResponseBody的接口，那就需要视图解析器返回对应的视图了
      */
@@ -112,14 +148,15 @@ public class WebConfig implements WebMvcConfigurer {
      * 3、通过请求头中的 Accept 如：Accept:application/json  （{@link HeaderContentNegotiationStrategy}）
      * 4、固定的响应格式（{@link FixedContentNegotiationStrategy}）
      * .....
+     *
      * @param configurer
      */
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 
-        Map<String,MediaType> map = new HashMap<>(2);
-        map.put("json",MediaType.APPLICATION_JSON);
-        map.put("xml",MediaType.APPLICATION_XML);
+        Map<String, MediaType> map = new HashMap<>(2);
+        map.put("json", MediaType.APPLICATION_JSON);
+        map.put("xml", MediaType.APPLICATION_XML);
 
         configurer.
                 // 默认的响应体内容格式
@@ -137,6 +174,7 @@ public class WebConfig implements WebMvcConfigurer {
     /**
      * 详情
      * https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match
+     *
      * @param configurer
      */
     @Override
@@ -155,6 +193,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     /**
      * 配置视图解析器
+     *
      * @param registry
      */
     @Override
@@ -190,15 +229,17 @@ public class WebConfig implements WebMvcConfigurer {
     /**
      * 自定义View
      * View接口的任务就是接收模型以及Srevlet的request和response对象，并将输出渲染到response中
+     *
      * @return
      */
     @Bean
-    public View helloView(){
-        return new View(){
+    public View helloView() {
+        return new View() {
             @Override
             public String getContentType() {
                 return "text/html";
             }
+
             @Override
             public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
                 response.getWriter().println("heller world");

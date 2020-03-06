@@ -1,5 +1,7 @@
 package org.seefly.springweb.controller;
 
+import org.seefly.springweb.annotation.MyParamAnno;
+import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.seefly.springweb.controller.request.AbstractQuestion;
 import org.seefly.springweb.controller.request.MultipleChoiceQuestion;
 import org.seefly.springweb.controller.request.SingleChoiceQuestion;
@@ -54,8 +56,20 @@ import java.util.List;
  * @date 2019-07-04 22:18
  */
 @RestController
-@RequestMapping
-public class ParamBindController {
+@RequestMapping("/message")
+public class MessageConverterController {
+
+
+    /**
+     * 测试自定义注解配合自定义消息解析器
+     * 我自定义的消息解析器在检测到方法的参数上含有自定义注解@myParamAnno时会启用自定义
+     * 消息转解析转换消息{@link AnnoArgumentResolver}
+     */
+    @RequestMapping(value = "/my-argument-resolver",method = RequestMethod.GET)
+    public String testCustom(@MyParamAnno String name){
+        System.out.println(name);
+        return name;
+    }
 
 
     /**

@@ -26,9 +26,10 @@ import java.io.*;
  * @date 2019-06-03 13:29
  */
 @RestController
+@RequestMapping("file")
 public class FileUploadController {
 
-    @PostMapping(value = "/file")
+    @PostMapping(value = "/single-file")
     public String uploadFile(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -37,17 +38,21 @@ public class FileUploadController {
         return "OK";
     }
 
+    @PostMapping(value = "/file-list")
+    public String uploadMoreFile(MultipartFile[] file) throws IOException {
+        System.out.println(file.length);
+        return "OK";
+    }
+
 
     @GetMapping("/download")
-    public void getFirmware(HttpServletResponse response, String box) {
+    public void getFirmware(HttpServletResponse response, String box) throws IOException {
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=yeye.txt");
         try(FileInputStream in = new FileInputStream("C:\\Users\\hkdw232\\Desktop\\data\\yeye.txt");
             ServletOutputStream os = response.getOutputStream()){
             IOUtils.copy(in, os);
             os.flush();
-        }catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

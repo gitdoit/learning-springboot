@@ -21,9 +21,11 @@ public class DeptEntity extends Model<DeptEntity> {
     private String dbSource;
 
     @DS("db1")
-    public DeptEntity selectFromDB1(String dname){
+    public DeptEntity selectFromDB1(String dname) {
         QueryWrapper<DeptEntity> qw = new QueryWrapper<>();
         return this.selectOne(qw);
     }
 
 }
+
+
