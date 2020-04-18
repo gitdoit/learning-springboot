@@ -1,4 +1,4 @@
-package org.seefly.mybatisplus.model;
+package org.seefly.springmybaits.entity;
 
 import lombok.Data;
 

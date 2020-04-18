@@ -52,3 +52,5 @@ logs/
 hs_err_pid*
 **/privateConfig.properties
 /spring-websocket/src/main/resources/templates/stomp/sip.html
+!/rocketmq/
+!/cache/

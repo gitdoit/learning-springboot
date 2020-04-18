@@ -1,6 +1,0 @@
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
-  row-bounds-with-count: true

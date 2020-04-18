@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mybatisplus</module>
         <module>spring-cache</module>
         <module>spring-webflux</module>
         <module>spring-rocketmq</module>

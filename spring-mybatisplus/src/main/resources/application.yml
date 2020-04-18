@@ -1,23 +1,23 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver #指定驱动
-    type: com.alibaba.druid.pool.DruidDataSource #指定数据源类型
+    driver-class-name: com.mysql.cj.jdbc.Driver #指定驱动
+    type: com.zaxxer.hikari.HikariDataSource #指定数据源类型
     schema: classpath:db/schema-h2.sql #指定初始化ddl
     data: classpath:db/data-h2.sql #指定初始化dml
     initialization-mode: never #sql语句初始化策略
-    initial-size: 5
-    min-idle: 1
-    max-active: 50
-    max-wait: 30000
-    time-between-eviction-runs-millis: 60000
-    min-evictable-idle-time-millis: 300000
-    validation-query: SELECT 1 FROM DUAL
-    test-while-idle: true
-    test-on-borrow: false
-    test-on-return: false
-    pool-prepared-statements: false
-    filters: [stat,wall,log4j]
-    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    hikari:
+      initialization-fail-timeout: 3000
+      connection-timeout: 1500
+      idle-timeout: 10000
+      minimum-idle: 1
+      maximum-pool-size: 15
+      max-lifetime: 60000
+      connection-init-sql: set names utf8mb4
+      connectionTestQuery: select 1 from DUAL
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: org.seefly.springmybaits.entity
+  type-enums-package: org.seefly.springmybaits.enums
 logging:
   level:
     com.devloper.joker: debug

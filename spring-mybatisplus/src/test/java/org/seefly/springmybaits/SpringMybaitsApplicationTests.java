@@ -1,6 +1,5 @@
 package org.seefly.springmybaits;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seefly.springmybaits.entity.ArUser;
@@ -23,14 +22,7 @@ public class SpringMybaitsApplicationTests {
     @Autowired
     private UserMapper userMapper;
 
-    @Test
-    public void contextLoads() {
-        if(dataSource instanceof  DruidDataSource){
-            DruidDataSource druidDataSource = (DruidDataSource)dataSource;
-            System.out.println(druidDataSource);
-        }
-        System.out.println(dataSource);
-    }
+
 
     @Test
     public void testInsert(){
