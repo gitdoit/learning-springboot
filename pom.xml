@@ -11,9 +11,10 @@
 
     <modules>
         <module>mybatisplus</module>
-        <module>cache</module>
+        <module>spring-cache</module>
+        <module>spring-webflux</module>
+        <module>spring-rocketmq</module>
         <module>spring-redis</module>
-        <module>rocketmq</module>
         <module>spring-basic</module>
         <module>spring-web</module>
         <module>spring-view</module>
