@@ -26,6 +26,7 @@
         <module>spring-actuator</module>
         <module>spring-aop</module>
         <module>spring-mybatisplus-ds</module>
+        <module>spring-oauth</module>
     </modules>
 
 
