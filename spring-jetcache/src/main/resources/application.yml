@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: my-cache
+jetcache:
+  #statIntervalMinutes: 15 \u7EDF\u8BA1\u95F4\u9694\uFF0C0\u4E0D\u7EDF\u8BA1
+  areaInCacheName: false
+  hidePackages: org.seefly # \u53BB\u6389\u6307\u5B9A\u7684\u524D\u7F00\uFF0C\u907F\u514D\u81EA\u52A8\u751F\u6210\u7684key\u592A\u957F
+  local:
+    default:
+      type: caffeine #\u7F13\u5B58\u7C7B\u578B\uFF0C\u672C\u5730\u7C7B\u578B
+      limit: 100 # \u4E00\u4E2A\u7F13\u5B58\u5B9E\u4F8B\u6700\u5927\u5143\u7D20\u6570\u91CF
+      keyConvertor: fastjson # key\u8F6C\u6362\u5668\uFF0C\u4EC5\u652F\u6301fastjson
+      expireAfterWriteInMillis: 100000 #\u7F13\u5B58\u6709\u6548\u65F6\u95F4
+    otherArea:
+      type: linkedhashmap
+      limit: 100
+      keyConvertor: none
+      expireAfterWriteInMillis: 100000
