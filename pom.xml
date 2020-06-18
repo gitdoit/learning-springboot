@@ -27,6 +27,8 @@
         <module>spring-aop</module>
         <module>spring-mybatisplus-ds</module>
         <module>spring-oauth</module>
+        <module>spring-session</module>
+        <module>spring-jetcache</module>
     </modules>
 
 

@@ -3,14 +3,14 @@ spring:
     name: tdscxy
   datasource:
     hikari:
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      minimum-idle: 1
-      maximum-pool-size: 10
+      idle-timeout: 0 #永不超时
+      max-lifetime: 0 #永不死亡
+      minimum-idle: 1 #至少一个链接
+      maximum-pool-size: 10 #最多10个链接
       connection-init-sql: 'set names utf8mb4'
       connection-timeout: 30000
     dynamic:
-      primary: db1 #\u9ED8\u8BA4\u4F7F\u7528\u7684\u6570\u636E\u6E90\uFF0C\u5BF9\u4E8E\u672A\u6807\u6CE8@DS\u7684\u65B9\u6CD5\u6216\u7C7B\uFF0C\u90FD\u7528\u8FD9\u4E2A\uFF0C\u6807\u6CE8\u7684\u5C31\u7528\u6807\u6CE8\u7684
+      primary: db1
       datasource:
         db1:
           driver-class-name: com.mysql.cj.jdbc.Driver
