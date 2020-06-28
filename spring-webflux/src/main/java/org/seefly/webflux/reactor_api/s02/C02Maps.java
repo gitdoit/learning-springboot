@@ -10,41 +10,12 @@ import java.util.List;
 
 /**
  * Mono创建响应式流
- *
+ * https://stackoverflow.com/questions/49115135/map-vs-flatmap-in-reactor
  * @author liujianxin
  * @date 2020/6/18 16:27
  */
-public class C01MonoApi {
+public class C02Maps {
 
-    /**
-     * 使用三种异步方式创建响应式流
-     */
-    @Test
-    public void monoAsyncTest() {
-        // 使用Mono.fromCallable创建
-        // fromCallable:订阅
-        // fromCallable:elastic-2@2020-06-18T16:25:38.741498600
-        Mono<String> stringMono = Mono.
-                fromCallable(() -> Thread.currentThread().getName() + "@" + LocalDateTime.now())
-                .publishOn(Schedulers.elastic());
-        blockMono("fromCallable", stringMono);
-
-        // fromRunnable:订阅
-        // elastic-3@2020-06-18T16:25:38.754463800
-        Mono<Object> fromRunnable = Mono.
-                fromRunnable(() -> System.out.println(Thread.currentThread().getName() + "@" + LocalDateTime.now()))
-                .publishOn(Schedulers.elastic());
-        blockMono("fromRunnable", fromRunnable);
-    }
-
-    /**
-     * 使用just创建
-     */
-    @Test
-    public void monoJustTest(){
-        Mono<Integer> just = Mono.just(1);
-        blockMono("monoJust",just);
-    }
 
     /**
      * 使用thenReturn
@@ -61,6 +32,46 @@ public class C01MonoApi {
                 .doOnNext(e -> System.out.println("after thenReturn:"+e));
         blockMono("map",stringMono);
     }
+
+
+    /**
+     * 拉平展开
+     */
+    @Test
+    public void flatMapTest() {
+        Flux<Integer> integerFlux = Flux.just(1, 2, 3).flatMap(e -> Mono.just(e));
+    }
+
+    @Test
+    public void testThen(){
+        Flux.just(1,2).map(e -> {
+            System.out.println(Thread.currentThread().getName());
+            return e;
+        }).then().map(e -> {
+            System.out.println(e);
+            return 3;
+        }).subscribe();
+    }
+
+    @Test
+    public void testFlatmap() throws InterruptedException {
+        System.out.println("sdfsf");
+        Flux.range(1,5).flatMap(e -> {
+            return Flux.range(1,3).publishOn(Schedulers.elastic()).map(s -> {
+                try {
+                    // System.out.println(Thread.currentThread().getName());
+                    Thread.sleep(500);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                return s;
+            });
+        }).subscribe(e -> {
+            System.out.println(e);
+        });
+        Thread.sleep(20000);
+    }
+
 
     @Test
     public void mono2FluxTest(){

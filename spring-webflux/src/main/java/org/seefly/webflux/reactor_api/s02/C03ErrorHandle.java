@@ -5,64 +5,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 创建响应式流
- *
+ * 异常处理
  * @author liujianxin
- * @date 2020/6/18 15:52
+ * @date 2020/6/19 15:07
  */
-public class C01FluxApi {
-
-    /**
-     * 演示如何创建一个响应式流
-     * just fromArray fromStream
-     */
-    @Test
-    public void create() {
-        // Stream.of() 就这个意思
-        // Flux<Integer> just = Flux.just(1, 2, 3, 4, 5, 6);
-        // subscribeFlux("Flux.just",just);
-
-        // 从数组创建一个流
-        // Flux<Integer> integerFlux = Flux.fromArray(new Integer[]{1, 2, 3, 4});
-        // subscribeFlux("integerFlux",integerFlux);
-
-        // Flux<Integer> fromStream = Flux.fromStream(Stream.of(1, 2, 3, 4));
-        // subscribeFlux("fromStream",fromStream);
-
-        Flux<Integer> range = Flux.range(1, 10);
-        subscribeFlux("range", range);
-    }
-
-
-    /**
-     * 使用generate函数来生成
-     */
-    @Test
-    public void createFluxProgrammatically() {
-        Flux<Object> generate = Flux.generate(() -> 1, (state, sink) -> {
-            sink.next("message #" + state);
-            if (state == 10) {
-                sink.complete();
-            }
-            return state + 1;
-        });
-        subscribeFlux("generate", generate);
-    }
-
-    @Test
-    public void mapTest() {
-        Flux<String> map = Flux.just(1, 2, 3).map(e -> "map:" + e);
-        subscribeFlux("map", map);
-    }
-
-    /**
-     * 拉平展开
-     */
-    @Test
-    public void flatMapTest() {
-        Flux<Integer> integerFlux = Flux.just(1, 2, 3).flatMap(e -> Mono.just(e));
-        subscribeFlux("flatMap", integerFlux);
-    }
+public class C03ErrorHandle {
 
     /**
      * doOnError
@@ -110,13 +57,13 @@ public class C01FluxApi {
     @Test
     public void onErrorResumeTest() {
         var errorFlux = Flux.range(1, 10).flatMap(i -> {
-                        if (i > 5) {
-                            return Mono.error(new RuntimeException("Something wrong"));
-                        }
-                        return Mono.just("item #" + i);
-                }).
+            if (i > 5) {
+                return Mono.error(new RuntimeException("Something wrong"));
+            }
+            return Mono.just("item #" + i);
+        }).
                 // 异常发生的时候使用其他流恢复
-                onErrorResume(e -> Flux.range(6, 10).map(i -> "i???#" + i));
+                        onErrorResume(e -> Flux.range(6, 10).map(i -> "i???#" + i));
         subscribeFlux("onErrorResumeTest", errorFlux);
     }
 
@@ -127,6 +74,4 @@ public class C01FluxApi {
                 .doOnComplete(() -> System.out.println(name + "结束！"))
                 .subscribe();
     }
-
-
 }
