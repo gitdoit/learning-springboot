@@ -6,7 +6,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
 /**
@@ -56,6 +58,51 @@ public class C01CreateMonoAndFlux {
     }
 
     /**
+     * 使用生成器来创建序列
+     */
+    @Test
+    public void testGen(){
+        Flux.generate(() -> 0,(state,sink) -> {
+            sink.next("3 x " + state + " = " + 3*state);
+            if (state == 10) sink.complete();
+            return state + 1;
+        }).subscribe(e-> System.out.println(e));
+    }
+
+    /**
+     * 循环间隔
+     * 从0开始按照指定时间间隔发射自增的值
+     * 需要手动取消。和js里面的类似
+     */
+    @Test
+    public void testInterval() throws InterruptedException {
+        Disposable subscribe = Flux.interval(Duration.of(1, ChronoUnit.SECONDS))
+                .map(value -> {
+                    System.out.println(Thread.currentThread().getName());
+                    return value * 10;
+                })
+                .subscribe(value -> System.out.println("间隔值:" + value));
+        System.out.println("是否启动："+subscribe.isDisposed());
+        Thread.sleep(10000);
+        subscribe.dispose();
+        System.out.println("调用dispose:"+subscribe.isDisposed());
+    }
+
+    /**
+     * 延迟，在订阅的时候才计算发射的值
+     */
+    private String value = "Hello";
+    @Test
+    public void defer(){
+        Flux<String> flux = Flux.defer(() -> Flux.just(value));
+        value = "hello reactive world";
+        flux.subscribe(value -> System.out.println("更新后的value值："+value));
+    }
+
+
+
+
+    /**
      * 看看再创建元素的时候阻塞一下是什么效果
      */
     @Test
@@ -74,17 +121,6 @@ public class C01CreateMonoAndFlux {
     }
 
 
-    /**
-     * 使用生成器来创建序列
-     */
-    @Test
-    public void testGen(){
-        Flux.generate(() -> 0,(state,sink) -> {
-            sink.next("3 x " + state + " = " + 3*state);
-            if (state == 10) sink.complete();
-            return state + 1;
-        }).subscribe(e-> System.out.println(e));
-    }
 
 
     private void subscribeFlux(String name, Flux<?> flux) {
