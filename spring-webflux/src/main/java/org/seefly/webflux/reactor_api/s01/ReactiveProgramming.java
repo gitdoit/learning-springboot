@@ -13,13 +13,18 @@ import java.util.Comparator;
 public class ReactiveProgramming {
 
 
-    /**响应式编程*/
-    public static void main(String[] args) {
-        Flux.just(InMemoryDataSource.books)
-                .collectMultimap(Book::category)
+    public static Flux<Book> getMostExpensiveBooksByCategoryReactive(Flux<Book> books) {
+        return books.collectMultimap(Book::getCategory)
                 .flatMapMany(m -> Flux.fromIterable(m.entrySet()))
-                .flatMap(e -> Flux.fromIterable(e.getValue()).sort(Comparator.comparing(Book::price).reversed()).next())
-                .doOnNext(System.out::print)
-                .subscribe();
+                .flatMap(e -> Flux.fromIterable(e.getValue())
+                        .sort(Comparator.comparing(Book::getPrice).reversed())
+                        .next());
+    }
+
+    public static void main(String[] args) {
+        var pipeline = getMostExpensiveBooksByCategoryReactive(Flux.just(InMemoryDataSource.books));
+        pipeline = pipeline.doOnNext(System.out::println);
+        System.out.println("什么都不会发生，直到pipeline开始");
+        pipeline.subscribe();
     }
 }

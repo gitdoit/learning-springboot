@@ -2,13 +2,12 @@ package org.seefly.webflux.reactor_api.s02;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 /**
  * @author liujianxin
  * @date 2020/6/22 11:15
  */
-public class C04ContextApi {
+public class C07Context {
 
 
     @Test
@@ -20,8 +19,6 @@ public class C04ContextApi {
                 )
                 .subscriberContext(ctx -> ctx.put(key, "World"));
 
-        StepVerifier.create(r)
-                .expectNext("Hello World")
-                .verifyComplete();
+
     }
 }

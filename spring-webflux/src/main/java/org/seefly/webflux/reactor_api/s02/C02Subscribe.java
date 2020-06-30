@@ -58,31 +58,7 @@ public class C02Subscribe {
         });
     }
 
-    /**
-     * subscribeOn不论在什么地方调用
-     * 都会影响发射环境
-     */
-    @Test
-    public void testSubscribeOn() throws InterruptedException {
-        Scheduler s = Schedulers.newParallel("parallel-scheduler", 4);
 
-        final Flux<String> flux = Flux
-                .range(1, 2)
-                .map(i -> {
-                    System.out.println("1"+Thread.currentThread().getName());
-                    return 10 + i;
-                })
-                .subscribeOn(s)
-                .map(i -> {
-                    System.out.println("2"+Thread.currentThread().getName());
-                    return "value " + i;
-                });
-
-        new Thread(() -> flux.subscribe(e -> {
-            System.out.print("3"+Thread.currentThread().getName()+e);
-        }),"匿名线程").start();
-        Thread.sleep(3000);
-    }
 
 
     /**

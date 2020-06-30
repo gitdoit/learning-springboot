@@ -12,7 +12,7 @@ import java.util.Random;
  * @author liujianxin
  * @date 2020/6/29 16:20
  */
-public class C03Combining {
+public class C04Combining {
 
     /**
      * 压缩操作

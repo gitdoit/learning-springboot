@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
  * @author liujianxin
  * @date 2020/6/19 15:07
  */
-public class C03ErrorHandle {
+public class C06Error {
 
     /**
      * doOnError

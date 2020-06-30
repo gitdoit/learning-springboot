@@ -13,11 +13,27 @@ import java.util.stream.Stream;
 
 /**
  * 创建响应式流
+ * Flux
+ *  just
+ *  fromArray
+ *  fromStream
+ *  range
+ *  generate
+ *  interval
+ *  defer
+ *
+ *
+ * Mono
+ *  just
+ *  empty
+ *  fromRunnable
+ *  fromCallable
+ *
  *
  * @author liujianxin
  * @date 2020/6/18 15:52
  */
-public class C01CreateMonoAndFlux {
+public class C01Creating {
 
 
     /**
