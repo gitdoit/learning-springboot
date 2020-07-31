@@ -1,6 +1,7 @@
 package org.seefly.springmybatis.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -39,7 +40,7 @@ public class DbConfig {
 
     /**
      * 代替自动配置
-     * @see DataSourceAutoConfiguration.PooledDataSourceConfiguration
+     * @see DataSourceAutoConfiguration
      */
     @Bean
     public DataSource dataSource(){
@@ -69,7 +70,7 @@ public class DbConfig {
 
     /**
      * 代替自动配置事务管理器
-     * @see DataSourceTransactionManagerAutoConfiguration.DataSourceTransactionManagerConfiguration
+     * @see DataSourceTransactionManagerAutoConfiguration
      */
     @Bean
     public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataBoxDomainDataSource) {

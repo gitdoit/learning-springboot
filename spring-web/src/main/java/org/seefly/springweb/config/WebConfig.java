@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.seefly.springweb.component.AnnoArgumentResolver;
+import org.seefly.springweb.handle.ExtendController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +31,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 import org.springframework.web.util.UrlPathHelper;
@@ -39,6 +42,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author liujianxin
@@ -55,6 +59,20 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    private ExtendController controller;
+
+    @Bean
+    public SimpleUrlHandlerMapping simpleUrlHandlerMapping() {
+        System.out.println("creating  SimpleUrlHandlerMapping ....");
+        SimpleUrlHandlerMapping simpleUrlHandlerMapping = new SimpleUrlHandlerMapping();
+        simpleUrlHandlerMapping.setOrder(0);
+        Properties urlProperties = new Properties();
+        urlProperties.put("/register", controller);
+        simpleUrlHandlerMapping.setMappings(urlProperties);
+        return simpleUrlHandlerMapping;
+    }
+
 
     @Bean
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
@@ -91,7 +109,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/index.html").setViewName("index");
 
     }
-
 
 
     /**
