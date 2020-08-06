@@ -1,4 +1,4 @@
-package org.seefly.springweb.controller;
+package org.seefly.springweb.controller.advice;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,6 @@ import java.util.*;
  * 该类处理全局的Controller层抛出的异常，将其包装，按照约定，返回统一的编码
  * 对于多线程未处理的异常，也将在这里进行捕获
  *
- * 对于捕获的所有异常都将发送到消息队列，在日志处理服务统一处理。
  * @author liujianxin
  */
 @Slf4j
