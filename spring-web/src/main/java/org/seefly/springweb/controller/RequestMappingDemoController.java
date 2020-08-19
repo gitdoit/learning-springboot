@@ -1,7 +1,5 @@
 package org.seefly.springweb.controller;
 
-import org.seefly.springweb.annotation.MyParamAnno;
-import org.seefly.springweb.component.AnnoArgumentResolver;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

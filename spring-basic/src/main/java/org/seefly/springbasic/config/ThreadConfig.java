@@ -1,6 +1,7 @@
 package org.seefly.springbasic.config;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -153,6 +154,7 @@ public class ThreadConfig implements AsyncConfigurer,SchedulingConfigurer{
         threadPoolTaskScheduler.setAwaitTerminationSeconds(60);
         threadPoolTaskScheduler.setErrorHandler((t) -> System.out.println(t.getMessage()));
         threadPoolTaskScheduler.setDaemon(false);
+
         return threadPoolTaskScheduler;
     }
 
