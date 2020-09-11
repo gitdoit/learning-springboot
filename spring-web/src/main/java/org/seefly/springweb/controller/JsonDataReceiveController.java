@@ -95,7 +95,10 @@ public class JsonDataReceiveController {
      *    对于手动序列化和反序列化除了上面的JsonFormat注解还要额外的添加JsonSerialize和JsonDeserialize
      *
      * 对于全局的ObjectMapper配置 详见 org.seefly.springweb.JacksonTest#testSer()
-     * 这样省得在每个LocalDateTime上添加这么多注解了
+     * 这样省得在每个LocalDateTime上添加这么多注解了,同时对于需要定制化的格式，我们只需要在这个
+     * 属性上使用注解就行了，否则使用全局的默认配置
+     *
+     * @see <a href="https://stackoverflow.com/questions/28802544/java-8-localdate-jackson-format/53251526#53251526">jackson format<a/>
      */
     @PostMapping("/data-time")
     public TimeData serBean(@RequestBody TimeData data) throws IOException {
@@ -111,7 +114,7 @@ public class JsonDataReceiveController {
     public static class TimeData{
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDateTime dateTime;
     }
 
