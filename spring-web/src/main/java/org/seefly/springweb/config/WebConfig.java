@@ -34,6 +34,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
+import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,30 @@ public class WebConfig implements WebMvcConfigurer {
         urlProperties.put("/register", controller);
         simpleUrlHandlerMapping.setMappings(urlProperties);
         return simpleUrlHandlerMapping;
+    }
+    
+    /**
+     * <a href="https://blog.csdn.net/xichenguan/article/details/52794862"/>blog</a>
+     *
+     * 静态资源查找规则
+     * 如果静态资源需要权限，不能这么弄
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 将对于例如 http://localhost:8080/local-resource/a.txt 的静态资源访问，映射到F盘下的testfolder文件夹下
+        // 例如上面这个静态资源，最终访问到 F:/testfolder/a.txt
+        registry
+                .addResourceHandler("/local-resource/**")
+                .addResourceLocations("file:F:/testfolder/")
+                // 使用资源连式查找，并设置为true表示开启缓存
+                .resourceChain(true)
+                // 如果上面的路径匹配规则查不到，则使用版本匹配
+                // 例如访问：http://localhost:8080/local-resource/1.0.0/a.txt
+                // 因为没有 F:/testfolder/1.0.0/a.txt这个文件
+                // 则这个解析器会去掉版本信息 '1.0.0' 使绝对路径变为 F:/testfolder/a.txt，这样就找到了
+                .addResolver(new VersionResourceResolver().addFixedVersionStrategy("1.0.0", "/**"));
+                // 对资源进行转换修改
+                //.addTransformer(null);
     }
 
 
