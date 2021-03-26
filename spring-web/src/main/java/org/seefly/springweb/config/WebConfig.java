@@ -47,12 +47,9 @@ import java.util.Properties;
 
 /**
  * @author liujianxin
- * @date 2018-09-11 19:49
- * 对于@EnableWebMvc注解
- * 当在配置类或者启动类上标注这个注解的时候
- * springboot自动配置类{@link WebMvcAutoConfiguration}中的自动配置将会失效
- * 例如静态资源映射这些都没有了，也就是说这个注解表示全面接管web方面的配置
- * 此时生效的只有{@link DelegatingWebMvcConfiguration}类中的配置
+ * @date 2018-09-11 19:49 对于@EnableWebMvc注解 当在配置类或者启动类上标注这个注解的时候 springboot自动配置类{@link
+ * WebMvcAutoConfiguration}中的自动配置将会失效 例如静态资源映射这些都没有了，也就是说这个注解表示全面接管web方面的配置 此时生效的只有{@link
+ * DelegatingWebMvcConfiguration}类中的配置
  * <p>
  * 国际化：{@link MessageSourceAutoConfiguration}
  */
@@ -60,9 +57,10 @@ import java.util.Properties;
 @Slf4j
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    
     @Autowired
     private ExtendController controller;
-
+    
     @Bean
     public SimpleUrlHandlerMapping simpleUrlHandlerMapping() {
         System.out.println("creating  SimpleUrlHandlerMapping ....");
@@ -76,17 +74,14 @@ public class WebConfig implements WebMvcConfigurer {
     
     /**
      * <a href="https://blog.csdn.net/xichenguan/article/details/52794862"/>blog</a>
-     *
-     * 静态资源查找规则
-     * 如果静态资源需要权限，不能这么弄
+     * <p>
+     * 静态资源查找规则 如果静态资源需要权限，不能这么弄
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 将对于例如 http://localhost:8080/local-resource/a.txt 的静态资源访问，映射到F盘下的testfolder文件夹下
         // 例如上面这个静态资源，最终访问到 F:/testfolder/a.txt
-        registry
-                .addResourceHandler("/local-resource/**")
-                .addResourceLocations("file:F:/testfolder/")
+        registry.addResourceHandler("/local-resource/**").addResourceLocations("file:F:/testfolder/")
                 // 使用资源连式查找，并设置为true表示开启缓存
                 .resourceChain(true)
                 // 如果上面的路径匹配规则查不到，则使用版本匹配
@@ -94,15 +89,15 @@ public class WebConfig implements WebMvcConfigurer {
                 // 因为没有 F:/testfolder/1.0.0/a.txt这个文件
                 // 则这个解析器会去掉版本信息 '1.0.0' 使绝对路径变为 F:/testfolder/a.txt，这样就找到了
                 .addResolver(new VersionResourceResolver().addFixedVersionStrategy("1.0.0", "/**"));
-                // 对资源进行转换修改
-                //.addTransformer(null);
+        // 对资源进行转换修改
+        //.addTransformer(null);
     }
-
-
+    
+    
     @Bean
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-
+        
         // 通过该方法对mapper对象进行设置，所有序列化的对象都将按改规则进行系列化
         // Include.Include.ALWAYS 默认
         // Include.NON_DEFAULT 属性为默认值不序列化
@@ -117,29 +112,26 @@ public class WebConfig implements WebMvcConfigurer {
         // 字段保留，将null值转为""
         objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
             @Override
-            public void serialize(Object o, JsonGenerator jsonGenerator,
-                                  SerializerProvider serializerProvider)
+            public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
                     throws IOException {
                 jsonGenerator.writeString("");
             }
         });
         return objectMapper;
     }
-
-
+    
+    
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //路径映射视图，省的在Controller中写一个空方法返回视图了
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/index.html").setViewName("index");
-
+        
     }
-
-
+    
+    
     /**
-     * 添加自定义参数解析器，用于从请求中获取数据将之绑定到对应的接口参数中
-     * 对于{@link HandlerMethodArgumentResolver}接口有两个方法
-     * supportsParameter  定义能解析哪些参数
+     * 添加自定义参数解析器，用于从请求中获取数据将之绑定到对应的接口参数中 对于{@link HandlerMethodArgumentResolver}接口有两个方法 supportsParameter  定义能解析哪些参数
      * resolveArgument    定义如何解析
      * <p>
      * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
@@ -148,24 +140,22 @@ public class WebConfig implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new AnnoArgumentResolver());
     }
-
+    
     /**
-     * 添加返回值处理器,对于{@link HandlerMethodReturnValueHandler}接口有两个方法
-     * supportsReturnType  定义能够解析哪种类型的返回值
-     * handleReturnValue   定义如何解析
+     * 添加返回值处理器,对于{@link HandlerMethodReturnValueHandler}接口有两个方法 supportsReturnType  定义能够解析哪种类型的返回值 handleReturnValue
+     * 定义如何解析
      * <p>
      * 将被配置到->{@link RequestMappingHandlerAdapter#afterPropertiesSet()}
      */
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-
+        
     }
-
+    
     /**
-     * 消息转换器，用来解析请求体中的消息，和向响应体中写入消息；
-     * 对于标注了@RequestBody的参数，和@ResponseBody的响应，都会被{@link RequestResponseBodyMethodProcessor}处理
-     * 因为这个类实现了解析请求参数{@link HandlerMethodArgumentResolver}、{@link HandlerMethodReturnValueHandler}
-     * 且只处理标注了这两个注解的参数解析，和返回值处理，但是实际干活的还是这个消息转换器。
+     * 消息转换器，用来解析请求体中的消息，和向响应体中写入消息； 对于标注了@RequestBody的参数，和@ResponseBody的响应，都会被{@link
+     * RequestResponseBodyMethodProcessor}处理 因为这个类实现了解析请求参数{@link HandlerMethodArgumentResolver}、{@link
+     * HandlerMethodReturnValueHandler} 且只处理标注了这两个注解的参数解析，和返回值处理，但是实际干活的还是这个消息转换器。
      * <p>
      * 对于没有标注@RequestBody的参数(不是从请求体中读消息)，一般使用{@link RequestParamMapMethodArgumentResolver}进行参数绑定
      * 对于没有标注@ResponseBody的接口，那就需要视图解析器返回对应的视图了
@@ -177,29 +167,25 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(converter);
         converters.add(converterf);
     }
-
-
+    
+    
     /**
      * 详情：https://docs.spring.io/spring-boot/docs/2.0.3.RELEASE/reference/htmlsingle/#boot-features-spring-mvc-pathmatch
-     * 内容协商配置，用来确定响应内容的格式
-     * 由于理想情况下是根据请求头中的  Accept:application/json...... 字段来告诉服务器
-     * 客户端想要接收什么样类型的消息内容，但实际情况是客户端一般都处理不好这个请求头。导致返回的内容并不是客户端真正想要的
-     * 所以spring提供了多种策略用来确定响应内容格式，但这些策略需要手动开启
-     * 1、URL中的拓展后缀如 ：http://www.abc.com/book/spring.xml（{@link PathExtensionContentNegotiationStrategy}）
-     * 2、通过RUL参数确定如：http://www.abc.com/book/spring?format=xml ({@link ParameterContentNegotiationStrategy})
-     * 3、通过请求头中的 Accept 如：Accept:application/json  （{@link HeaderContentNegotiationStrategy}）
-     * 4、固定的响应格式（{@link FixedContentNegotiationStrategy}）
-     * .....
+     * 内容协商配置，用来确定响应内容的格式 由于理想情况下是根据请求头中的  Accept:application/json...... 字段来告诉服务器 客户端想要接收什么样类型的消息内容，但实际情况是客户端一般都处理不好这个请求头。导致返回的内容并不是客户端真正想要的
+     * 所以spring提供了多种策略用来确定响应内容格式，但这些策略需要手动开启 1、URL中的拓展后缀如 ：http://www.abc.com/book/spring.xml（{@link
+     * PathExtensionContentNegotiationStrategy}） 2、通过RUL参数确定如：http://www.abc.com/book/spring?format=xml ({@link
+     * ParameterContentNegotiationStrategy}) 3、通过请求头中的 Accept 如：Accept:application/json  （{@link
+     * HeaderContentNegotiationStrategy}） 4、固定的响应格式（{@link FixedContentNegotiationStrategy}） .....
      *
      * @param configurer
      */
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-
+        
         Map<String, MediaType> map = new HashMap<>(2);
         map.put("json", MediaType.APPLICATION_JSON);
         map.put("xml", MediaType.APPLICATION_XML);
-
+        
         configurer.
                 // 默认的响应体内容格式
                         defaultContentType(MediaType.APPLICATION_JSON)
@@ -212,10 +198,9 @@ public class WebConfig implements WebMvcConfigurer {
                 // 关闭参数匹配
                 .favorParameter(false);
     }
-
+    
     /**
-     * 详情
-     * https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match
+     * 详情 https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match
      *
      * @param configurer
      */
@@ -227,12 +212,11 @@ public class WebConfig implements WebMvcConfigurer {
                 //If enabled a method mapped to "/users" also matches to "/users/".
                 .setUseTrailingSlashMatch(false)
                 //后缀模式匹配是否仅适用于配置内容协商时显式注册的路径扩展。
-                .setUseRegisteredSuffixPatternMatch(false)
-                .setPathMatcher(new AntPathMatcher())
+                .setUseRegisteredSuffixPatternMatch(false).setPathMatcher(new AntPathMatcher())
                 .setUrlPathHelper(new UrlPathHelper());
     }
-
-
+    
+    
     /**
      * 配置视图解析器
      *
@@ -267,10 +251,9 @@ public class WebConfig implements WebMvcConfigurer {
         //开启beanName视图解析，省的自己创建这个实例放到容器里了
         registry.beanName();
     }
-
+    
     /**
-     * 自定义View
-     * View接口的任务就是接收模型以及Srevlet的request和response对象，并将输出渲染到response中
+     * 自定义View View接口的任务就是接收模型以及Srevlet的request和response对象，并将输出渲染到response中
      *
      * @return
      */
@@ -281,13 +264,14 @@ public class WebConfig implements WebMvcConfigurer {
             public String getContentType() {
                 return "text/html";
             }
-
+            
             @Override
-            public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+            public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
+                    throws Exception {
                 response.getWriter().println("heller world");
             }
         };
     }
-
-
+    
+    
 }

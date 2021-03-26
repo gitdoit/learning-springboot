@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * https://cloud.tencent.com/developer/article/1497623
+ *
  * @author liujianxin
  * @date 2020/7/31 14:55
  */
 @Component("/beanName")
 public class ExtendController implements Controller {
+    
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.getWriter().write("ok fuck");

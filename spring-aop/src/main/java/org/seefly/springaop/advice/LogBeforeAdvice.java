@@ -10,8 +10,9 @@ import java.util.Arrays;
  * @date 2019/8/20 20:27
  */
 public class LogBeforeAdvice implements MethodBeforeAdvice {
+    
     @Override
     public void before(Method method, Object[] objects, Object o) throws Throwable {
-        System.out.println("准备执行方法"+method.getName()+" 参数列表"+ Arrays.toString(objects));
+        System.out.println("准备执行方法" + method.getName() + " 参数列表" + Arrays.toString(objects));
     }
 }

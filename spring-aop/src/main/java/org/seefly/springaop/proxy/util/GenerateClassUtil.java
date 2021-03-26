@@ -13,9 +13,9 @@ import java.nio.file.StandardOpenOption;
  * @date 2019/8/29 22:45
  */
 public class GenerateClassUtil {
-
-    public static  void generateClassFile(String proxyName,Class clazz) throws IOException {
-        byte[] bytes = ProxyGenerator.generateProxyClass(proxyName, new Class[]{clazz});
-        Files.write(Paths.get("F:\\IOTest\\"+proxyName+".class"),bytes, StandardOpenOption.CREATE);
+    
+    public static void generateClassFile(String proxyName, Class clazz) throws IOException {
+        byte[] bytes = ProxyGenerator.generateProxyClass(proxyName, new Class[] {clazz});
+        Files.write(Paths.get("F:\\IOTest\\" + proxyName + ".class"), bytes, StandardOpenOption.CREATE);
     }
 }

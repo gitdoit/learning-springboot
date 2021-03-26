@@ -14,3 +14,12 @@ binder:
 ph:
   p1: ${param.student.age}
   p2: ${random.int}
+# Map<String,Set<String>>
+nested:
+  setInMap:
+    key1:
+      - value1
+      - value2
+    key2:
+      - value3
+      - value4
