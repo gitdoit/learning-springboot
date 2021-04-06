@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity.lifecycle;
+package org.seefly.springannotation.lifecycle;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -6,12 +6,13 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * 实现这两个接口也可以代替@Bean注解种的初始化销毁参数
  * 我觉得这个弥补某些bean不是用注解方式注入容器，但要实现初始化、销毁逻辑。就像是用@Import
+ * InitializingBean --> afterPropertiesSet
  * @author liujianxin
  * @date 2018-12-23 21:57
  */
-public class LifeByInterface implements InitializingBean, DisposableBean {
+public class ByInterface implements InitializingBean, DisposableBean {
 
-    public LifeByInterface() {
+    public ByInterface() {
         System.out.println("我种了一朵花....");
     }
 

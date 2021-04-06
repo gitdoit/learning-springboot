@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity.lifecycle;
+package org.seefly.springannotation.lifecycle;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -9,7 +9,7 @@ import javax.annotation.PreDestroy;
  * @author liujianxin
  * @date 2018-12-26 21:17
  */
-public class LifeByJSR {
+public class ByJSR {
 
     @PostConstruct
     private void init(){

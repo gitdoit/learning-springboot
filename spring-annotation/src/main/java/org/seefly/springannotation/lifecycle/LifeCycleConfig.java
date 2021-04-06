@@ -1,10 +1,6 @@
-package org.seefly.springannotation.config;
+package org.seefly.springannotation.lifecycle;
 
-import org.seefly.springannotation.entity.aware.AwaresDemo;
-import org.seefly.springannotation.entity.lifecycle.LifeBeanPost;
-import org.seefly.springannotation.entity.lifecycle.LifeByInterface;
-import org.seefly.springannotation.entity.lifecycle.LifeByBean;
-import org.seefly.springannotation.entity.lifecycle.LifeByJSR;
+import org.seefly.springannotation.aware.AwaresDemo;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
@@ -34,12 +30,12 @@ import javax.annotation.PreDestroy;
  * @date 2018-12-23 21:36
  */
 @Configuration
-@Import({LifeByInterface.class, LifeByJSR.class, LifeBeanPost.class})
+@Import({ByInterface.class, ByJSR.class})
 public class LifeCycleConfig {
 
     @Bean(initMethod = "init",destroyMethod = "destroy")
-    public LifeByBean tree(){
-        return new LifeByBean();
+    public ByAnnotationParam tree(){
+        return new ByAnnotationParam();
     }
 
     @Bean

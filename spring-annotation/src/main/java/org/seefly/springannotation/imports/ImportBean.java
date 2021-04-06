@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.imports;
 
 import lombok.Data;
 import org.springframework.context.annotation.Import;

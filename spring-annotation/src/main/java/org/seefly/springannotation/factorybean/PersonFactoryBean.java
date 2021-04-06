@@ -1,5 +1,6 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.factorybean;
 
+import org.seefly.springannotation.entity.Person;
 import org.springframework.beans.factory.FactoryBean;
 
 /**

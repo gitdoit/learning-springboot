@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.scope;
 
 import lombok.Getter;
 import lombok.Setter;

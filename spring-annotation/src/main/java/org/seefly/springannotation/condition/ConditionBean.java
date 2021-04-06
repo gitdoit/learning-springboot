@@ -1,4 +1,4 @@
-package org.seefly.springannotation.entity;
+package org.seefly.springannotation.condition;
 
 import lombok.Data;
 

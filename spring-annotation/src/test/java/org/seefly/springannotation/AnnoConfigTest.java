@@ -2,7 +2,7 @@ package org.seefly.springannotation;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seefly.springannotation.config.ImportConfig;
+import org.seefly.springannotation.imports.ImportConfig;
 import org.seefly.springannotation.entity.Person;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -61,7 +61,7 @@ public class AnnoConfigTest extends BaseTest {
         Object factoryBean = applicationContext.getBean("&personFactoryBean");
         // class org.seefly.springannotation.entity.Person
         System.out.println(person.getClass());
-        // class org.seefly.springannotation.entity.PersonFactoryBean
+        // class org.seefly.springannotation.factorybean.PersonFactoryBean
         System.out.println(factoryBean.getClass());
     }
 }
