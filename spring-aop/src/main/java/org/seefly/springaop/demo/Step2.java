@@ -19,17 +19,24 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 /**
- * 由上一步骤得知 我们没法对类中的指定方法做拦截，只能拦截该类下的所有方法。
- * <p>
- * 现在我们引入增强器  {@link NameMatchMethodPointcutAdvisor} {@link PointcutAdvisor} extends {@link Advisor} 我们知道（其实不知道
- * ）增强器是Spring里的概念，AspectJ中没有对应的概念。 一个增强器包含两个基本元素：匹配规则(就是切入点)、通知 增强器负责匹配，匹配到的切入点交由Advice执行逻辑。这个匹配规则大部分都是一个Pointcut 而
- * {@link NameMatchMethodPointcutAdvisor}增强器则是可以根据传入的方法名称进行匹配 还有其他很多类型的增强器
- * <p>
- * 组件介绍 {@link MethodInterceptor}  另一种形式的通知，这里相当于拦截器。拦截方法执行前后 {@link NameMatchMethodPointcutAdvisor}
- * 方法名匹配增强器，根据方法名进行匹配，并执行其内部组合的通知的逻辑
- * <p>
- * <p>
- * 但是还有一个缺陷就是需要为每个需要被增强的对象做一个单独的代理，这里没有解决 只解决了拦截粒度的细化
+ * 由上一步骤得知
+ * 我们没法对类中的指定方法做拦截，只能拦截该类下的所有方法。
+ *
+ * 现在我们引入增强器  {@link NameMatchMethodPointcutAdvisor} {@link PointcutAdvisor} extends {@link Advisor}
+ * 我们知道（其实不知道 ）增强器是Spring里的概念，AspectJ中没有对应的概念。
+ *  一个增强器包含两个基本元素：匹配规则(就是切入点)、通知
+ *  增强器负责匹配，匹配到的切入点交由Advice执行逻辑。这个匹配规则大部分都是一个Pointcut
+ *  而 {@link NameMatchMethodPointcutAdvisor}增强器则是可以根据传入的方法名称进行匹配
+ *  还有其他很多类型的增强器
+ *
+ * 组件介绍
+ * {@link MethodInterceptor}  另一种形式的通知，这里相当于拦截器。拦截方法执行前后
+ * {@link NameMatchMethodPointcutAdvisor} 方法名匹配增强器，根据方法名进行匹配，并执行其内部组合的通知的逻辑
+ *
+ *
+ * 但是还有一个缺陷就是需要为每个需要被增强的对象做一个单独的代理，这里没有解决
+ * 只解决了拦截粒度的细化
+ *
  *
  * @author liujianxin
  * @date 2019/8/21 9:45

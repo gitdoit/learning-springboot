@@ -12,12 +12,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-
 /**
- * 步骤2的需要对被代理对象一个一个的单独配置的缺陷还没解决 这里可以使用{@link BeanNameAutoProxyCreator} 查询容器中所有的Bean根据配置的Bean的匹配规则来匹配，如果匹配的上 就应用Advice
- * Advisor Interceptor..来创建代理对象替代原有的对象放入容器 使用的时候获取被代理对象就行，不用像之前那样获取代理对象。
- * <p>
- * 组件介绍 {@link RegexpMethodPointcutAdvisor} 另一种增强器，之前的按方法名匹配的增强器不够灵活，这个可以支持正则 {@link BeanNameAutoProxyCreator} ...见上
+ * 步骤2的需要对被代理对象一个一个的单独配置的缺陷还没解决
+ * 这里可以使用{@link BeanNameAutoProxyCreator}
+ *  查询容器中所有的Bean根据配置的Bean的匹配规则来匹配，如果匹配的上
+ *  就应用Advice Advisor Interceptor..来创建代理对象替代原有的对象放入容器
+ *  使用的时候获取被代理对象就行，不用像之前那样获取代理对象。
+ *
+ * 组件介绍
+ * {@link RegexpMethodPointcutAdvisor} 另一种增强器，之前的按方法名匹配的增强器不够灵活，这个可以支持正则
+ * {@link BeanNameAutoProxyCreator} ...见上
+ *
  *
  * @author liujianxin
  * @date 2019/8/21 11:39

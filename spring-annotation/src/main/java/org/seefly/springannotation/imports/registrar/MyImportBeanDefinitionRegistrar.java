@@ -1,5 +1,9 @@
 package org.seefly.springannotation.imports.registrar;
 
+import org.seefly.springannotation.entity.AutowireByTypeBean;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
@@ -35,6 +39,16 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
             RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(ImportRegistrarBean.class);
             registry.registerBeanDefinition("seefly",rootBeanDefinition);
         }
+        
+        
+        // 测试自动注入方式，byType  byName
+        // byType就是根据方法签名中的参数列表的参数类型来从容器中获取bean对象，对当前bean进行依赖注入
+        // byName 就是根据  setSomeName(Bean bean)的方法名称来从容器中获取bean，进行依赖注入
+        AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition().getBeanDefinition();
+        beanDefinition.setBeanClass(AutowireByTypeBean.class);
+        // byType,设置这个注入模式之后不需要添加注解，我估计是判断方法是不是以set开头，然后获取参数type，再从容器中查找
+        beanDefinition.setAutowireMode(AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE);
+        registry.registerBeanDefinition("autowireByTypeBean",beanDefinition);
     }
     
     public static class ImportRegistrarBean{

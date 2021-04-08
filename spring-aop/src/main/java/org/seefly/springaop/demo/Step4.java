@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Import;
 import java.util.Arrays;
 
 /**
- * 之前的自动创建代理的已经解决了一个一个创建代理的问题 工作方式就是从容器中获取bean根据自己的规则决定需不需要在这个bean上应用advice advisor等
- * <p>
- * 现在使用{@link DefaultAdvisorAutoProxyCreator} 就高级了，看名字就是增强器自动代理创建 他会从容器中获取所有的Advisor，在容器中所有的Bean上应用增强器的匹配规则，匹配的上就创建代理。
+ * 之前的自动创建代理的已经解决了一个一个创建代理的问题
+ * 工作方式就是从容器中获取bean根据自己的规则决定需不需要在这个bean上应用advice advisor等
+ *
+ * 现在使用{@link DefaultAdvisorAutoProxyCreator} 就高级了，看名字就是增强器自动代理创建
+ * 他会从容器中获取所有的Advisor，在容器中所有的Bean上应用增强器的匹配规则，匹配的上就创建代理。
  *
  * @author liujianxin
  * @date 2019/8/21 17:29

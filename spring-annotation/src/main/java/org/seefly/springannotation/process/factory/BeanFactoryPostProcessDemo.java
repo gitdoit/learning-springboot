@@ -19,8 +19,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  *      调用所有的BeanFactoryPostProcessor.postProcessBeanFactory方法
  *
  *
- *
+ * 【！！！！！！！！！！！！！重要！！！！！！！！！！！！！！！！】
  * 其中子接口 {@link BeanDefinitionRegistryPostProcessor}扩展了父接口
+ * 【！！！！！！！！！！！！！重要！！！！！！！！！！！！！！！！】
  * 使他能够向容器中注入额外的BeanDefinition
  * 例如：
  * 1、主要子类{@link ConfigurationClassPostProcessor}

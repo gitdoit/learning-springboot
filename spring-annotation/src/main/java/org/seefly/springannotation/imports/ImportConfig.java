@@ -28,7 +28,7 @@ import org.springframework.context.annotation.ImportSelector;
  *  3、参数指定一个{@link ImportBeanDefinitionRegistrar}的实例，自定义手动注册组件
  */
 @Configuration
-@Import({ImportBean.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class})
+//@Import({ImportBean.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class})
 public class ImportConfig {
 
 

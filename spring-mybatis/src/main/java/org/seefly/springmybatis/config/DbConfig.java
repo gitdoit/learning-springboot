@@ -22,6 +22,9 @@ import javax.sql.DataSource;
  * 演示手动配置MyBatis
  * spring boot的自动配置在这里{@link MybatisAutoConfiguration}
  * 1、{@link MapperScan}是怎样工作的？
+ *  来自两年半(2021-4-6)后的回答，哎。。当初就应该好好看，荒废了太多时间
+ *  这个注解里面引入了另一个注解 @Import,它向容器中添加了一个BeanDefinition注册器，这样可以自己控制向容器中注入哪些额外的bean
+ *
  * 2、接口和XML是怎样关联的？
  * 3、spring是如何接管Mybatis的事务的？
  *
