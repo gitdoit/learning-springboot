@@ -2,6 +2,7 @@ package org.seefly.transaction.service;
 
 import org.seefly.transaction.mapper.StudentMapper;
 import org.seefly.transaction.model.Student;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -135,12 +136,19 @@ public class BatchStudentService {
 
             // 这种直接调用的方式，子方法的事务声明不会起作用
             //insertBySelf(student);
-
+            
+            // 在配置AOP的时候把暴露代理对象打开，然后用这个
+            // AopContext.currentProxy();
+            
+            
             // 可以从容器中获取，使AOP生效
             bean.insertBySelf(student);
 
         }
     }
+    
+    
+    
     @Transactional(rollbackFor = Throwable.class,isolation = Isolation.READ_COMMITTED,propagation = Propagation.NEVER)
     public void insertBySelf(Student student){
         studentMapper.insert(student);

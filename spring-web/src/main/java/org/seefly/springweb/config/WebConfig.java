@@ -29,6 +29,8 @@ import org.springframework.web.accept.PathExtensionContentNegotiationStrategy;
 import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
@@ -70,6 +72,21 @@ public class WebConfig implements WebMvcConfigurer {
         urlProperties.put("/register", controller);
         simpleUrlHandlerMapping.setMappings(urlProperties);
         return simpleUrlHandlerMapping;
+    }
+    
+    /**
+     * 注入拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HandlerInterceptor(){
+            @Override
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+                    throws Exception {
+                return false;
+            }
+           
+        });
     }
     
     /**
@@ -149,7 +166,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-        
+    
     }
     
     /**
