@@ -83,6 +83,7 @@ public class WebConfig implements WebMvcConfigurer {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                     throws Exception {
+                log.info("被拦截！");
                 return false;
             }
            

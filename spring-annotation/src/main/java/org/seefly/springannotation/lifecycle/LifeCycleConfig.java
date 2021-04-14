@@ -1,11 +1,10 @@
 package org.seefly.springannotation.lifecycle;
 
-import org.seefly.springannotation.aware.AwaresDemo;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -30,7 +29,7 @@ import javax.annotation.PreDestroy;
  * @date 2018-12-23 21:36
  */
 @Configuration
-@Import({ByInterface.class, ByJSR.class})
+@ComponentScan(basePackages = {"org.seefly.springannotation.lifecycle"})
 public class LifeCycleConfig {
 
     @Bean(initMethod = "init",destroyMethod = "destroy")
@@ -38,8 +37,4 @@ public class LifeCycleConfig {
         return new ByAnnotationParam();
     }
 
-    @Bean
-    public AwaresDemo awaresDemo(){
-        return new AwaresDemo();
-    }
 }
