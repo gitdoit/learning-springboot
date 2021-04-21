@@ -48,6 +48,9 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * SpringMVC 扫描容器，生成处理器原理 https://www.cnblogs.com/w-y-c-m/p/8416630.html
+ *
+ *
  * @author liujianxin
  * @date 2018-09-11 19:49 对于@EnableWebMvc注解 当在配置类或者启动类上标注这个注解的时候 springboot自动配置类{@link
  * WebMvcAutoConfiguration}中的自动配置将会失效 例如静态资源映射这些都没有了，也就是说这个注解表示全面接管web方面的配置 此时生效的只有{@link

@@ -56,7 +56,7 @@ public class Step2 {
     }
     
     
-    @Configuration
+    //@Configuration
     public static class Config {
         
         @Bean

@@ -50,7 +50,7 @@ public class Step1 {
     }
     
     
-    @Configuration
+    //@Configuration
     public static class Config {
         
         /**

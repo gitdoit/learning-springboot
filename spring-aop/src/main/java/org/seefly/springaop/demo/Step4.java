@@ -26,8 +26,8 @@ import java.util.Arrays;
 public class Step4 {
     
     
-    @Configuration
-    @Import(DefaultAdvisorAutoProxyCreator.class)
+    //@Configuration
+    //@Import(DefaultAdvisorAutoProxyCreator.class)
     public static class Config {
         
         public static void main(String[] args) {

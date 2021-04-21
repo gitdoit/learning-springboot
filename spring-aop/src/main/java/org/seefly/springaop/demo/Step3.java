@@ -38,7 +38,7 @@ public class Step3 {
     }
     
     
-    @Configuration
+    //@Configuration
     public static class Config {
         
         
