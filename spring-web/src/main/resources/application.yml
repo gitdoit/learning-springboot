@@ -1,3 +1,4 @@
+
 my:
   age: 11
   name: haha
@@ -7,3 +8,5 @@ spring:
 logservice:
   rocketmq:
     namesrv-addr: 119.23.252.178:9876
+server:
+  port: 80
