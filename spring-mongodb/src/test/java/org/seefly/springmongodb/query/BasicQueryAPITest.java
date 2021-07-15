@@ -1,7 +1,8 @@
-package org.seefly.springmongodb;
+package org.seefly.springmongodb.query;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import jdk.internal.util.EnvUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,12 +19,12 @@ import java.util.List;
  * @date 2021/7/8 17:25
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class MongoTemplateSearchAPITest {
+public class BasicQueryAPITest {
     MongoTemplate template;
     
     @BeforeAll
     void before() {
-        MongoClient client = MongoClients.create("mongodb://admin:shang2010@121.36.142.5:27017/test?authSource=admin");
+        MongoClient client = MongoClients.create("mongodb://admin:"+ EnvUtils.getEnvVar("MY_PWD")+"@"+EnvUtils.getEnvVar("MY_SERVER")+":27017/test?authSource=admin");
         template = new MongoTemplate(client, "test");
     }
     

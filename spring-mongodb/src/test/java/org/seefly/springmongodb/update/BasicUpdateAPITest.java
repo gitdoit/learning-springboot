@@ -1,7 +1,8 @@
-package org.seefly.springmongodb;
+package org.seefly.springmongodb.update;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import jdk.internal.util.EnvUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,12 +19,12 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * @date 2021/7/9 10:26
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class MongoTemplateUpdateAPITest {
+public class BasicUpdateAPITest {
     MongoTemplate template;
     
     @BeforeAll
     void before() {
-        MongoClient client = MongoClients.create("mongodb://admin:shang2010@121.36.142.5:27017/test?authSource=admin");
+        MongoClient client = MongoClients.create("mongodb://admin:"+ EnvUtils.getEnvVar("MY_PWD")+"@"+EnvUtils.getEnvVar("MY_SERVER")+":27017/test?authSource=admin");
         template = new MongoTemplate(client, "test");
     }
     

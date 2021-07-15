@@ -1,4 +1,4 @@
-package org.seefly.springmongodb;
+package org.seefly.springmongodb.insert;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -8,21 +8,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.seefly.springmongodb.entity.MemberReadHistory;
 import org.seefly.springmongodb.entity.NestedEntity;
+import org.seefly.springmongodb.entity.Person;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author liujianxin
  * @date 2021/7/9 10:13
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class MongoTemplateSaveAPITest {
+public class BasicSaveAPITest {
     
     MongoTemplate template;
-    
-    public static void main(String[] args) {
-    }
+ 
     
     @BeforeAll
     void before() {
@@ -60,6 +62,27 @@ public class MongoTemplateSaveAPITest {
             entity.setCreateTime(new Date());
             template.save(entity);
         }
+    }
+    
+    
+    @Test
+    void savePerson() {
+        Person p = new Person();
+        p.setAge(34);
+        p.setName("Michael");
+        p.setHeight(188);
+        p.setHobbies(Arrays.asList("eat","play","dance","run"));
+        List<Person> children = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Person c = new Person();
+            c.setName("child-"+i);
+            c.setAge(i+1);
+            c.setHeight(15*(i+1));
+            c.setHobbies(Arrays.asList("play"));
+            children.add(c);
+        }
+        p.setChildren(children);
+        template.save(p);
     }
     
     

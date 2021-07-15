@@ -1,6 +1,7 @@
 package org.seefly.springmongodb.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Document
 public class Person {
     
+    @Id
     private String id;
     
     private String name;
@@ -21,7 +23,7 @@ public class Person {
     
     private Integer age;
     
-    private List<String> bobbies;
+    private List<String> hobbies;
     
     private List<Person> children;
     
