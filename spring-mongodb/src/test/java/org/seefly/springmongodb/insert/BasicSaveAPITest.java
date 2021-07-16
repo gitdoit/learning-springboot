@@ -8,11 +8,10 @@ import org.seefly.springmongodb.entity.NestedEntity;
 import org.seefly.springmongodb.entity.Person;
 import org.seefly.springmongodb.utils.MongoClientUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author liujianxin
@@ -22,7 +21,8 @@ import java.util.List;
 public class BasicSaveAPITest {
     
     MongoTemplate template;
- 
+    private static final String[] HOBBIES = new String[]{"eat","drink","play","happy","run","sleep","yellow"};
+
     
     @BeforeAll
     void before() {
@@ -80,6 +80,40 @@ public class BasicSaveAPITest {
         p.setChildren(children);
         template.save(p);
     }
-    
-    
+
+    @Test
+    void makeData() throws IOException {
+        RestTemplate restTemplate = new RestTemplate();
+        String names = restTemplate.getForObject("http://names.drycodes.com/100", String.class).replace("[","").replace("]","");
+        String[] split = names.split(",");
+        List<Person> list = new ArrayList<>();
+        Random random = new Random(21);
+        for (int i = 0; i < split.length; i++) {
+            String name = split[i];
+            Person p = new Person();
+            list.add(p);
+            p.setAge(Math.abs(random.nextInt() % 100));
+            p.setName(name);
+            p.setHeight(188);
+            p.setHobbies(someHobbies(i));
+        }
+        template.insertAll(list);
+
+
+
+
+    }
+
+
+
+    private List<String> someHobbies(int seed){
+        Random random = new Random(seed);
+        int count = Math.abs(random.nextInt() % 7);
+        Set<String> names = new HashSet<>();
+        for (int i = 0; i < count; i++) {
+            names.add(HOBBIES[Math.abs(random.nextInt() % 6)]);
+        }
+        return new ArrayList<>(names);
+    }
+
 }

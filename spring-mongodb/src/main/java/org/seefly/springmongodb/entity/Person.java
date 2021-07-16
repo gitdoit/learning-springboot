@@ -26,5 +26,7 @@ public class Person {
     private List<String> hobbies;
     
     private List<Person> children;
+
+    private List<Integer> scores;
     
 }
