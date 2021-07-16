@@ -1,18 +1,21 @@
 package org.seefly.springmongodb.query;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import jdk.internal.util.EnvUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.seefly.springmongodb.entity.MemberReadHistory;
 import org.seefly.springmongodb.entity.NestedEntity;
+import org.seefly.springmongodb.entity.Person;
+import org.seefly.springmongodb.utils.MongoClientUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.util.Assert;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * @author liujianxin
@@ -21,13 +24,30 @@ import java.util.List;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BasicQueryAPITest {
     MongoTemplate template;
-    
+
+
     @BeforeAll
     void before() {
-        MongoClient client = MongoClients.create("mongodb://admin:"+ EnvUtils.getEnvVar("MY_PWD")+"@"+EnvUtils.getEnvVar("MY_SERVER")+":27017/test?authSource=admin");
-        template = new MongoTemplate(client, "test");
+        template = MongoClientUtil.create("test");
     }
-    
+
+    /**
+     * 如果查询的数据量比较大，这个时候最好只查询指定的字段，减少数据量，避免OOM
+     * query.fields().include(xx)只查询指定的字段(默认包含id),通过exclude()把id也剔除
+     */
+    @Test
+    void findSpecifiedField(){
+        Query query = query(where("age").lte(40));
+        query.fields().include("age","name").exclude("id");
+        Person one = template.findOne(query, Person.class);
+
+        assert one != null;
+        assert one.getChildren() == null;
+        assert one.getId() == null;
+        System.out.println(one);
+    }
+
+
     /**
      * 无条件查询一个
      * select * from memberReadHistory limit 1
@@ -92,7 +112,7 @@ public class BasicQueryAPITest {
     @Test
     void testAndOr(){
         Criteria conditions = new Criteria();
-        conditions.orOperator(Criteria.where("productId").in(1,2,3),Criteria.where("productName").regex(".*?6$"));
+        conditions.orOperator(where("productId").in(1,2,3), where("productName").regex(".*?6$"));
         List<MemberReadHistory> memberReadHistories = template.find(new Query(conditions), MemberReadHistory.class);
         System.out.println(memberReadHistories);
     }

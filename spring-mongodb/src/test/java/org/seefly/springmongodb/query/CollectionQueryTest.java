@@ -1,13 +1,12 @@
 package org.seefly.springmongodb.query;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import jdk.internal.util.EnvUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.seefly.springmongodb.entity.Person;
+import org.seefly.springmongodb.utils.MongoClientUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +25,7 @@ public class CollectionQueryTest {
     MongoTemplate template;
     @BeforeAll
     void before() {
-        MongoClient client = MongoClients
-                .create("mongodb://admin:"+ EnvUtils.getEnvVar("MY_PWD")+"@"+EnvUtils.getEnvVar("MY_SERVER")+":27017/test?authSource=admin");
-        template = new MongoTemplate(client, "test");
+        template = MongoClientUtil.create("test");
     }
     
     /**
@@ -74,11 +71,28 @@ public class CollectionQueryTest {
         List<Person> people = template.find(query(where("hobbies").elemMatch(where("$nin").is(Arrays.asList("drink","eat")))), Person.class);
         System.out.println(people.size());
     }
-    
+
+    /**
+     * 指定位置的元素等于
+     * 查找一条记录A,A的hobbies属性中,第0号位的元素必须是 eat
+     */
     @Test
-    void sizeGreaterThan(){
-        List<Person> people = template.find(query(where("hobbies")), Person.class);
-        System.out.println(people.size());
+    void findSpecifiedIndexIs(){
+        List<Person> eat = template.find(query(where("hobbies.0").is("eat")), Person.class);
+        System.out.println(eat.size());
+        System.out.println(eat);
+    }
+
+    /**
+     * 返回指定位置的元素
+     * 查找一条记录A，返回hobbies属性中最后一个元素
+     */
+    @Test
+    void returnSpecifiedIndexElement(){
+        Query query = query(where("name").is("Michael"));
+        query.fields().slice("hobbies",-1);
+        List<Person> people = template.find(query, Person.class);
+        System.out.println(people);
     }
     
     
