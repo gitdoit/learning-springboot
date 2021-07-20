@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
+import org.seefly.springweb.enums.GenderEnum;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,6 +109,32 @@ public class JsonDataReceiveController {
         TimeData timeData = mapper.readValue(json, TimeData.class);
         System.out.println("手动反序列化:"+timeData);
         return data;
+    }
+
+
+    /**
+     * 一个比较常见的需求
+     * 前端传入异常枚举value，例如1、2、3这样的，后端需要序列化为对应的枚举实例;
+     * 只要在枚举的反序列化依赖的字段上添加 @JsonValue 注解就行
+     * <a href="https://stackoverflow.com/questions/12468764/jackson-enum-serializing-and-deserializer">
+     *     jackson-enum-serializing-and-deserializer
+     * <a/>
+     */
+    @PostMapping("/deser-enum")
+    public String deserializeEnum(@RequestBody Person person){
+        System.out.println(person);
+        return person.gender.name();
+    }
+
+
+
+
+    /***************************************************************************************************************************/
+
+    @Data
+    public static class Person{
+        private String name;
+        private GenderEnum gender;
     }
 
     @Data

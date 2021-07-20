@@ -22,7 +22,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * @date 2021/7/8 17:25
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BasicQueryAPITest {
+public class SimpleQueryAPITest {
     MongoTemplate template;
 
 

@@ -42,10 +42,7 @@ import org.springframework.web.util.UrlPathHelper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * SpringMVC 扫描容器，生成处理器原理 https://www.cnblogs.com/w-y-c-m/p/8416630.html
@@ -86,8 +83,8 @@ public class WebConfig implements WebMvcConfigurer {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                     throws Exception {
-                log.info("被拦截！");
-                return false;
+                String header = request.getHeader("X-NO");
+                return Objects.isNull(header);
             }
            
         });

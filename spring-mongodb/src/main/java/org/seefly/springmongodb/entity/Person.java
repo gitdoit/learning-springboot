@@ -1,8 +1,11 @@
 package org.seefly.springmongodb.entity;
 
 import lombok.Data;
+import org.seefly.springmongodb.enums.AuditStatusEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class Person {
     private Integer height;
     
     private Integer age;
+
+    private AuditStatusEnum status;
     
     private List<String> hobbies;
     

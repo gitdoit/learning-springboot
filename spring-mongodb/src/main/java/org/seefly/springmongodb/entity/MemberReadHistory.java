@@ -3,6 +3,7 @@ package org.seefly.springmongodb.entity;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -43,8 +44,10 @@ public class MemberReadHistory {
     
     
     private Date createTime;
+
+    @Version
+    private Integer version;
     
-    //省略了所有getter和setter方法
-    
+
     
 }
