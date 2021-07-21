@@ -10,7 +10,6 @@ import org.seefly.springmongodb.utils.MongoClientUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -32,6 +31,7 @@ public class SimpleQueryAPITest {
     }
 
     /**
+     * 【查询指定字段】
      * 如果查询的数据量比较大，这个时候最好只查询指定的字段，减少数据量，避免OOM
      * query.fields().include(xx)只查询指定的字段(默认包含id),通过exclude()把id也剔除
      */
@@ -49,7 +49,7 @@ public class SimpleQueryAPITest {
 
 
     /**
-     * 无条件查询一个
+     * 【无条件查询一个】
      * select * from memberReadHistory limit 1
      */
     @Test
@@ -59,7 +59,7 @@ public class SimpleQueryAPITest {
     }
     
     /**
-     * 模糊查询
+     * 【模糊查询】
      * select * from memberReadHistory where productName like %y%
      */
     @Test
@@ -71,7 +71,7 @@ public class SimpleQueryAPITest {
     }
     
     /**
-     * 在...之间
+     * 【在...之间】
      * select * from memberReadHistory where productId productId < 6 and productId > 3
      */
     @Test
@@ -83,7 +83,7 @@ public class SimpleQueryAPITest {
     }
     
     /**
-     * 正则匹配,以...结尾
+     * 【正则匹配,以...结尾】
      * select * from memberReadHistory where productName like %3
      */
     @Test
@@ -95,7 +95,7 @@ public class SimpleQueryAPITest {
     }
     
     /**
-     * in
+     * 【in】
      * select * from memberReadHistory where productId in (1,2,3)
      */
     @Test
