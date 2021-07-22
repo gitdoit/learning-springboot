@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.seefly.springmongodb.entity.Person;
 import org.springframework.data.mongodb.core.aggregation.ScriptOperators;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 
 import java.util.List;
 
@@ -12,6 +11,9 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
+ *
+ * 使用Js脚本会降低查询性能
+ * 使用之前最好知道自己在做什么
  * @author liujianxin
  * @date 2021/7/21 11:23
  **/

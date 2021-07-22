@@ -18,7 +18,7 @@ import java.util.*;
  * @date 2021/7/9 10:13
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BasicSaveAPITest {
+public class InsertAPITest {
     
     MongoTemplate template;
     private static final String[] HOBBIES = new String[]{"eat","drink","play","happy","run","sleep","yellow"};
@@ -93,8 +93,8 @@ public class BasicSaveAPITest {
             Person p = new Person();
             list.add(p);
             p.setAge(Math.abs(random.nextInt() % 100));
-            p.setName(name);
-            p.setHeight(188);
+            p.setName(name.replaceAll("\"",""));
+            p.setHeight(Math.abs(random.nextInt() % 100) + 100);
             p.setHobbies(someHobbies(i));
         }
         template.insertAll(list);
