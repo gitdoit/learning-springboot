@@ -1,4 +1,4 @@
-package org.seefly.springaop.domain;
+package org.seefly.springaop.model;
 
 import lombok.Data;
 

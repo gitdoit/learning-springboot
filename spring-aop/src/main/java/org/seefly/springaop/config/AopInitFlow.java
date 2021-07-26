@@ -1,6 +1,6 @@
 package org.seefly.springaop.config;
 
-import org.seefly.springaop.component.People;
+import org.seefly.springaop.model.People;
 import org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator;
 import org.springframework.aop.framework.DefaultAopProxyFactory;
 import org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry;

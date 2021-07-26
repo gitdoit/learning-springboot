@@ -1,7 +1,7 @@
 package org.seefly.springaop.config;
 
-import org.seefly.springaop.aspect.MyAspect;
-import org.seefly.springaop.component.People;
+import org.seefly.springaop.aspect.BasicAspect;
+import org.seefly.springaop.model.People;
 import org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator;
 import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
@@ -43,8 +43,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AopConfig {
     
     @Bean
-    public MyAspect myAspect() {
-        return new MyAspect();
+    public BasicAspect myAspect() {
+        return new BasicAspect();
     }
     
     @Bean

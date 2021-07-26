@@ -1,6 +1,6 @@
 package org.seefly.springaop.service;
 
-import org.seefly.springaop.domain.User;
+import org.seefly.springaop.model.User;
 
 /**
  * @author liujianxin

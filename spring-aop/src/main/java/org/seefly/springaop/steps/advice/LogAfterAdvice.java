@@ -1,4 +1,4 @@
-package org.seefly.springaop.advice;
+package org.seefly.springaop.steps.advice;
 
 import org.springframework.aop.AfterReturningAdvice;
 

@@ -6,6 +6,7 @@ import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.springframework.data.mongodb.core.aggregation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -30,15 +31,17 @@ public class AggregationQuery extends BaseWithoutSpringTest {
         AggregationResults<Document> aggregate = template.aggregate(
                 newAggregation(
                         new MatchOperation(where("age").gt(20)),
-                        new ProjectionOperation(Fields.fields("name", "age")).andExclude("_id")
-                        .and("name").substring(0,2).as("sub")
-                        .andExpression("age * 2").as("doubleAge")
+                        new ProjectionOperation(Fields.fields("_id"))
+//                        new ProjectionOperation(Fields.fields("name", "age")).andExclude("_id")
+//                        .and("name").substring(0,2).as("sub")
+//                        .andExpression("age * 2").as("doubleAge")
                 ),
                 "person",
                 Document.class
         );
         List<Document> results = aggregate.getMappedResults();
-        System.out.println(results);
+        List<String> id = results.stream().map(d -> d.getObjectId("_id").toString()).collect(Collectors.toList());
+        System.out.println(id);
     }
 
 

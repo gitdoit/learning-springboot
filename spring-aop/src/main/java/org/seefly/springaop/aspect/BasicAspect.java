@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
  * @date 2019-04-22 21:02
  */
 @Aspect
-public class MyAspect {
+public class BasicAspect {
     
     /**
      * 我记得我之前写过这些学习笔记，但是代码呢？？ 我他妈代码丢了，还要从头再写一遍？！！ 这个注解我他妈还要跟自己再解释一遍吗？ 这个基础的东西我学过了就必须要有代码，有自己的笔记才行
      */
-    @Pointcut("execution(* org.seefly.springaop.component.People.*(..))")
+    @Pointcut("execution(* org.seefly.springaop.model.People.*(..))")
     public void pointCut() {
     }
     

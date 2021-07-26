@@ -1,6 +1,6 @@
 package org.seefly.springaop.service.impl;
 
-import org.seefly.springaop.domain.User;
+import org.seefly.springaop.model.User;
 import org.seefly.springaop.service.UserService;
 
 /**

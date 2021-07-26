@@ -1,10 +1,9 @@
-package org.seefly.springaop.demo;
+package org.seefly.springaop.steps;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.seefly.springaop.component.People;
+import org.seefly.springaop.model.People;
 import org.springframework.context.annotation.*;
-import org.springframework.core.annotation.Order;
 
 /**
  * @author liujianxin
@@ -44,7 +43,7 @@ public class Step5 {
    // @Aspect
     public static class MyAspect {
         
-        @Pointcut("execution(* org.seefly.springaop.component.People.*(..))")
+        @Pointcut("execution(* org.seefly.springaop.model.People.*(..))")
         public void pointCut() {
         }
         

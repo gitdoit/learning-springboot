@@ -1,14 +1,13 @@
-package org.seefly.springaop.demo;
+package org.seefly.springaop.steps;
 
-import org.seefly.springaop.advice.LogAfterAdvice;
-import org.seefly.springaop.advice.LogBeforeAdvice;
-import org.seefly.springaop.domain.User;
+import org.seefly.springaop.steps.advice.LogAfterAdvice;
+import org.seefly.springaop.steps.advice.LogBeforeAdvice;
+import org.seefly.springaop.model.User;
 import org.seefly.springaop.service.UserService;
 import org.seefly.springaop.service.impl.UserServiceImpl;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 演示Spring 1.2中怎么使用AOP
