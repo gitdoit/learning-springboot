@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.seefly.springaop.utils.SpElUtil;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.expression.BeanExpressionContextAccessor;
@@ -15,7 +16,9 @@ import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
@@ -101,17 +104,21 @@ public class AspectWithAnnotation implements ApplicationContextAware {
     private  String parse(Object rootObject,String spel, Method method, Object[] args) {
         //获取被拦截方法参数名列表(使用Spring支持类库)
         LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
-        String[] paraNameArr = u.getParameterNames(method);
-        //使用SPEL进行key的解析
         ExpressionParser parser = new SpelExpressionParser();
-        //SPEL上下文
+
         StandardEvaluationContext context = new MethodBasedEvaluationContext(rootObject,method,args,u);
+
         context.setBeanResolver(new BeanFactoryResolver(applicationContext));
+
         context.addPropertyAccessor(new BeanExpressionContextAccessor());
-        //把方法参数放入SPEL上下文中
-        for (int i = 0; i < paraNameArr.length; i++) {
-            context.setVariable(paraNameArr[i], args[i]);
-        }
-        return parser.parseExpression(spel).getValue(context, String.class);
+
+
+        Expression expression = parser.parseExpression(spel, new TemplateParserContext());
+
+        String value = expression.getValue(context, String.class);
+
+        return value;
+
+
     }
 }

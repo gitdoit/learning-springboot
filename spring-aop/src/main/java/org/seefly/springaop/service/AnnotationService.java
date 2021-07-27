@@ -3,6 +3,7 @@ package org.seefly.springaop.service;
 import lombok.extern.slf4j.Slf4j;
 import org.seefly.springaop.aspect.AspectWithAnnotation;
 import org.seefly.springaop.model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnnotationService {
     public static final String A = "223";
+    @Value("${server.port}")
+    private String port;
+    public String getPort(){
+        return port;
+    }
 
     @AspectWithAnnotation.DistributedLock
     public String doSomething(String value) {
@@ -20,7 +26,9 @@ public class AnnotationService {
         return "ok!";
     }
 
-    @AspectWithAnnotation.DistributedLock(key = "@annotationService.A + #user.name")
+    // #{} 这种写法需要parser.parseExpression(spel, new TemplateParserContext());
+    // 并且只能在#{}里面写表达式了
+    @AspectWithAnnotation.DistributedLock(key = "#{ @annotationService.port + #user.name} ok!")
     public String getValueByKey( User user){
         return "ok!";
     }
