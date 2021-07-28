@@ -30,8 +30,7 @@ import java.lang.reflect.Proxy;
 public class JdkProxyDemo  {
     
     
-    @Test
-    public void testJdk(){
+    public static void main(String[] arg) {
         CallImpl originalObject = new CallImpl();
         // jkd是根据
         Call proxiedObject =(Call) Proxy.newProxyInstance(
@@ -47,9 +46,7 @@ public class JdkProxyDemo  {
                     return returnValue;
                 });
         proxiedObject.call("110");
-    
     }
-    
     /**
      * InvocationHandler是由代理实例的调用处理程序实现的接口。
      * 每个代理实例都有一个关联的调用处理程序。在代理实例上调用方法时，方法调用将被编码并调度到其调用处理程序的invoke方法。

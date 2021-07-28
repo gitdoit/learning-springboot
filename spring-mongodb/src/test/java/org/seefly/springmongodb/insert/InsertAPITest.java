@@ -84,7 +84,7 @@ public class InsertAPITest {
     @Test
     void makeData() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
-        String names = restTemplate.getForObject("http://names.drycodes.com/100", String.class).replace("[","").replace("]","");
+        String names = restTemplate.getForObject("http://names.drycodes.com/1000", String.class).replace("[","").replace("]","");
         String[] split = names.split(",");
         List<Person> list = new ArrayList<>();
         Random random = new Random(21);

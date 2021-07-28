@@ -10,9 +10,10 @@ import java.util.Arrays;
 
 /**
  * Jdk动态代理和CGlib动态代理不一样的地方是
- *  1、CGLib动态代理使用的是动态在内存中产生一个集成源Class的类,并创建一个实例
+ *  1、CGLib动态代理使用的是动态在内存中产生一个继承源Class的类,并创建一个实例
  *  2、CGLib对目标方法的调用不是通过反射，而是通过直接引用的方法调用
  *
+ * 所以对于被final修饰的类，是不能用CGLIB的
  * 更多操作：https://www.runoob.com/w3cnote/cglibcode-generation-library-intro.html
  *
  *
