@@ -37,7 +37,11 @@ public class GroupQueryTest extends BaseWithoutSpringTest {
 
     /**
      * 按照年龄分组，年龄相同的组成数组显示
-     * {_id=23, names=[Shoes_Kitty, Video_games_Cone]}
+     *
+     *  [{ "$group" : { "_id" : "$age", "names" : { "$push" : "$name"}}}]
+     *
+     *   --->{_id=23, names=[Shoes_Kitty, Video_games_Cone]}
+     *
      */
     @Test
     void testGroupByName(){

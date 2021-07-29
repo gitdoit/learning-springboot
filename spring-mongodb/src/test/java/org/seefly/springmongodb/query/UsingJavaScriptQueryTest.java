@@ -22,6 +22,8 @@ public class UsingJavaScriptQueryTest extends BaseWithoutSpringTest {
     /**
      * 利用where指令【使用js函数】
      * 返回名字长度大于10的，并且年龄大于30的
+     *
+     *  { "$where" : "function(){return this.name.length > 10}", "age" : { "$gt" : 30}} fields: Document{{}}
      */
     @Test
     void testWhere(){

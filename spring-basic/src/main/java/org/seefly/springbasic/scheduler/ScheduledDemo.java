@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * https://docs.spring.io/spring-framework/docs/5.3.9/reference/html/integration.html#scheduling
  * @author liujianxin
  * @date 2018-11-30 10:48
  */

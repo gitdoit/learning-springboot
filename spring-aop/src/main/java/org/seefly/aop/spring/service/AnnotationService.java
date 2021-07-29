@@ -26,8 +26,13 @@ public class AnnotationService {
         return "ok!";
     }
 
-    // #{} 这种写法需要parser.parseExpression(spel, new TemplateParserContext());
-    // 并且只能在#{}里面写表达式了
+    
+    /**
+     * #{} 这种写法需要parser.parseExpression(spel, new TemplateParserContext());
+     * 并且只能在#{}里面写表达式了
+     *
+     * <a href="https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html">SpEl表达式<a/>
+     */
     @AnnotationAspect.DistributedLock(key = "#{ @annotationService.port + #user.name} ok!")
     public String getValueByKey( User user){
         return "ok!";

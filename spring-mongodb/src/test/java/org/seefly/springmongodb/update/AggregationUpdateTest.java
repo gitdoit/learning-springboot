@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.seefly.springmongodb.entity.Person;
 import org.springframework.data.mongodb.core.aggregation.AggregationUpdate;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ScriptOperators;
 import org.springframework.data.mongodb.core.aggregation.StringOperators;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * 坑爹的Navicat并不支持聚合管道更新的方式，只能登录到控制台执行更新语句
@@ -25,8 +27,9 @@ public class AggregationUpdateTest extends BaseWithoutSpringTest {
 
     @Test
     void testUpdateAggregationPipeline(){
-        AggregationUpdate update = newUpdate().set("name").toValue(StringOperators.Substr.valueOf("name").substring(1,2));
-        UpdateResult first = template.update(Person.class).apply(update).first();
+        AggregationUpdate update = newUpdate()
+                .set("name").toValue(StringOperators.Substr.valueOf("name").substring(1,2));
+        UpdateResult first = template.update(Person.class).matching(query(where("name").is("Boat_Cone"))).apply(update).first();
     }
 
 
@@ -48,7 +51,7 @@ public class AggregationUpdateTest extends BaseWithoutSpringTest {
 
     @Test
     void updateHeightAsRandom(){
-        AggregationUpdate update = newUpdate( )
+        AggregationUpdate update = newUpdate()
                 .set("height").toValueOf(ScriptOperators.Function.function("function(name) {return Math.round(Math.random() * (200 - 100)) + 100;}").args("$name").lang("js"));
         template.update(Person.class).apply(update).all();
     }
