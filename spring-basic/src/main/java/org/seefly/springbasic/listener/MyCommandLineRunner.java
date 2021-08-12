@@ -1,4 +1,4 @@
-package org.seefly.springbasic.event;
+package org.seefly.springbasic.listener;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

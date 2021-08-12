@@ -1,14 +1,12 @@
 package org.seefly.springbasic;
 
-import org.springframework.boot.SpringApplication;
+import org.seefly.springbasic.customize.EnableRedisMessageListener;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
 
+@EnableRedisMessageListener
 @SpringBootApplication
 public class SpringBasicApplication {
     

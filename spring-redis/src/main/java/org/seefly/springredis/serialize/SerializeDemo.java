@@ -3,6 +3,7 @@ package org.seefly.springredis.serialize;
 import org.junit.Test;
 import org.seefly.springredis.api.BaseOps;
 import org.seefly.springredis.model.User;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;

@@ -108,7 +108,8 @@ public class ZSetOps extends BaseOps{
     public void ops3() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
         //权重自增1哟哟哟哟哟哟
-        ops.incrementScore("老子天下第一", 1.0);
+        Double get = ops.incrementScore("TEST-VALUE-FOR", 1.0);
+        System.out.println(get);
     }
 
     /**
