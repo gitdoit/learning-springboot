@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://admin:${MY_PWD}@${MY_SERVER}:27017/test?authSource=admin
+      uri: mongodb://admin:${MY_PWD}@${MY_SERVER}:27017/test?authSource=admin&retryWrites=false

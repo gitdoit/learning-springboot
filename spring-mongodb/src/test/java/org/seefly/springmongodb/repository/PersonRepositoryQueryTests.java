@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * @date 2021/7/28 17:43
  **/
 @SpringBootTest
-public class PersonRepositoryTests {
+public class PersonRepositoryQueryTests {
     
     @Autowired
     private PersonRepository personRepository;
