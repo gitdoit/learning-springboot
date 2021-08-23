@@ -11,11 +11,11 @@ import java.util.Optional;
  * @author liujianxin
  * @date 2021/8/4 19:50
  **/
-public class SoftDeleteMongoRepositoryFactory extends MongoRepositoryFactory {
+public class TenantMongoRepositoryFactory extends MongoRepositoryFactory {
     
     private final MongoOperations mongoOperations;
     
-    public SoftDeleteMongoRepositoryFactory(MongoOperations mongoOperations) {
+    public TenantMongoRepositoryFactory(MongoOperations mongoOperations) {
         super(mongoOperations);
         this.mongoOperations = mongoOperations;
     }
@@ -28,8 +28,8 @@ public class SoftDeleteMongoRepositoryFactory extends MongoRepositoryFactory {
         return optStrategy.map(this::createSoftDeleteQueryLookupStrategy);
     }
     
-    private SoftDeleteMongoQueryLookupStrategy createSoftDeleteQueryLookupStrategy(QueryLookupStrategy strategy) {
-        return new SoftDeleteMongoQueryLookupStrategy(strategy, mongoOperations);
+    private TenantMongoQueryLookupStrategy createSoftDeleteQueryLookupStrategy(QueryLookupStrategy strategy) {
+        return new TenantMongoQueryLookupStrategy(strategy, mongoOperations);
     }
 
 }

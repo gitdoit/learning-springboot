@@ -20,6 +20,7 @@ public class PersonAggregationRepositoryTests {
     @Test
     void testGroupByAge(){
         List<PersonAggregate> results = personRepository.groupByAgeAndGreaterThen(20);
+        System.out.println(results.size());
         System.out.println(results);
     }
     

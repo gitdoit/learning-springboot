@@ -11,16 +11,16 @@ import java.io.Serializable;
  * @author liujianxin
  * @date 2021/8/4 19:51
  **/
-public class SoftDeleteMongoRepositoryFactoryBean <T extends Repository<S, ID>, S, ID extends Serializable>
+public class TenantMongoRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
         extends MongoRepositoryFactoryBean<T, S, ID> {
     
-    public SoftDeleteMongoRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
+    public TenantMongoRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
         super(repositoryInterface);
     }
     
     @Override
     protected RepositoryFactorySupport getFactoryInstance(MongoOperations operations) {
-        return new SoftDeleteMongoRepositoryFactory(operations);
+        return new TenantMongoRepositoryFactory(operations);
     }
 
 }

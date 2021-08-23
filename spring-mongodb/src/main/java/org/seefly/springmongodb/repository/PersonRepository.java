@@ -3,6 +3,7 @@ package org.seefly.springmongodb.repository;
 import org.seefly.springmongodb.context.SecurityEvaluationContext;
 import org.seefly.springmongodb.entity.Person;
 import org.seefly.springmongodb.entity.aggregate.PersonAggregate;
+import org.seefly.springmongodb.extend.TenantQuery;
 import org.seefly.springmongodb.projections.DynamicProjections;
 import org.seefly.springmongodb.projections.NameHobby;
 import org.seefly.springmongodb.wrapper.Persons;
@@ -143,7 +144,8 @@ public interface PersonRepository extends MongoRepository<Person,String>,Customi
      * 先按年龄过滤, 再按照年龄分组，同一组的姓名组成一个数组
      * usage see {@link Aggregation#pipeline()}
      */
-    @Aggregation(pipeline ={"{$match: {age:{$gt:?0}} }}","{ $group:{_id:$age,names:{$addToSet:$name}} }"})
+    @TenantQuery
+    @Aggregation(pipeline ={"{ $group:{_id:$age,names:{$addToSet:$name}} }"})
     List<PersonAggregate> groupByAgeAndGreaterThen(Integer age);
     
     /**
@@ -151,8 +153,16 @@ public interface PersonRepository extends MongoRepository<Person,String>,Customi
      * 注意，聚合管道查询只能使用$expr包一下$function来执行脚本，不能直接$where执行，那个是用来普通查询的
      *
      */
+    @TenantQuery
     @Meta(allowDiskUse = true)
     @Aggregation(pipeline = {"{$match:{age:{$gte:?0},$expr:{$function:{body: 'function(name) { return name.length>10; }', args: ['$name'],lang: 'js' }  }  }}}","{$group:{_id:null,total:{$sum:$age}}}"})
     Long sumAgeThatGreaterThen(Integer age);
+
+
+
+    /***********************************tenant多租户********************************************************/
+
+    @TenantQuery
+    List<Person> findByHeightBetween(Integer low,Integer height);
 
 }

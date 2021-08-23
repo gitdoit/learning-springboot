@@ -31,6 +31,7 @@
         <module>spring-jetcache</module>
         <module>spring-mongodb</module>
         <module>spring-shiro</module>
+        <module>spring-kafka</module>
     </modules>
 
 

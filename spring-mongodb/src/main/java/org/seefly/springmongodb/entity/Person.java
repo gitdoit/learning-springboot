@@ -38,7 +38,8 @@ public class Person {
     private List<Person> children;
 
     private List<Integer> scores;
-    
+
+    private String tenantId;
     
     /**
      *
