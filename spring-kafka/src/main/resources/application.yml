@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: SPRING-KAFKA
+  kafka:
+    template:
+      default-topic: ${topic}
+    consumer:
+      group-id: TEMP-KAFKA-TEST
+      bootstrap-servers: 10.5.4.147:9092,10.5.4.148:9092,10.5.4.149:9092
+
+topic: TEMP-KAFKA-TEST
