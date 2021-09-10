@@ -1,14 +1,15 @@
 package org.seefly.springmongodb.repository;
 
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.entity.Person;
+import org.seefly.springmongodb.extend.TenantRepository;
 import org.seefly.springmongodb.projections.DynamicProjections;
 import org.seefly.springmongodb.projections.NameHobby;
 import org.seefly.springmongodb.wrapper.Persons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,13 @@ public class PersonRepositoryQueryTests {
     
     @Autowired
     private PersonRepository personRepository;
+
+
+    @Test
+    void testFindFirst(){
+        Person shoe_comics = personRepository.findFirstByNameIsAndAgeIs("Shoe_Comics", 62);
+        System.out.println(shoe_comics);
+    }
     
     @Test
     void testPersonAgeIn(){
@@ -176,8 +184,10 @@ public class PersonRepositoryQueryTests {
         List<Person> top2 = personRepository.findTop2ByName("Michael jackson");
         System.out.println(top2);
     }
-    
-    
+
+    /**
+     * 动态投影
+     */
     @Test
     void testDynamicProjections(){
         List<DynamicProjections.OnlyAge> onlyAges = personRepository
@@ -188,8 +198,39 @@ public class PersonRepositoryQueryTests {
                 .findTop6ByName("Michael jackson", DynamicProjections.OnlyName.class);
         System.out.println(onlyNames);
     }
+
+    @Test
+    void testDynamicQuery() {
+        Person p = new Person();
+        p.setName("og");
+
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains);
+
+        Example<Person> example = Example.of(p, matcher);
+
+        List<Person> all = personRepository.findAll(example);
+
+
+        System.out.println(all);
+    }
+
+    @Autowired
+    private TenantRepository tenantRepository;
+    @Test
+    void testFindALl() {
+        //Page<Person> all = tenantRepotiroty.getProxy().findAll(Query.query(where("height").gte(150)), Pageable.ofSize(10));
+        //System.out.println(all);
+
+        Person firstByNameIsAndAgeIs = tenantRepository.getProxy().findFirstByNameIsAndAgeIs("", 11);
+        System.out.println(firstByNameIsAndAgeIs);
+    }
     
-    
+
+    @Test
+    void testOK(){
+        Person y = personRepository.fffff(new ObjectId("60f938f523f17a32c93a8b11"));
+        System.out.println(y);
+    }
     
     
 }

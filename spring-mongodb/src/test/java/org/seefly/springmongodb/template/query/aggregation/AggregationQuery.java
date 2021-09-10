@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.query.aggregation;
+package org.seefly.springmongodb.template.query.aggregation;
 
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,7 @@ import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.springframework.data.mongodb.core.aggregation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -18,6 +19,29 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @date 2021/7/16 11:19
  **/
 public class AggregationQuery extends BaseWithoutSpringTest {
+
+
+    /**
+     * 测试连表查询
+     */
+    @Test
+    void testLookUp() {
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("tenant")
+                .localField("tenantId")
+                .foreignField("_id")
+                // 会在主表 person下新增一个 tenantInfo:[{xx},{xx}]
+                .as("tenantInfo");
+
+        MatchOperation match = match(where("age").is(111));
+        LimitOperation limitOperation = Aggregation.limit(50);
+        ProjectionOperation project = project("name","age","height","hobbies").and("tenantInfo.name").as("tenantNames");
+        SkipOperation skipOperation = new SkipOperation(0);
+
+        AggregationResults<Map> person = template.aggregate(newAggregation(lookup, match,limitOperation,skipOperation,project), "person", Map.class);
+        List<Map> mappedResults = person.getMappedResults();
+        System.out.println(mappedResults);
+    }
 
     /**
      * 【查询返回指定字段】

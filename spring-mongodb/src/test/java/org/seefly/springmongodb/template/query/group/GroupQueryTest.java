@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.query.group;
+package org.seefly.springmongodb.template.query.group;
 
 import org.bson.Document;
 import org.junit.jupiter.api.Test;

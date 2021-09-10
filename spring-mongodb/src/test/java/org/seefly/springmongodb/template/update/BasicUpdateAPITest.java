@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.update;
+package org.seefly.springmongodb.template.update;
 
 import com.mongodb.client.result.UpdateResult;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.query;
+package org.seefly.springmongodb.template.query;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

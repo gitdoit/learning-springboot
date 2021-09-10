@@ -1,6 +1,5 @@
 package org.seefly.spring.kafka.client;
 
-import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.ProducerConfig;
 
 import java.nio.charset.StandardCharsets;
@@ -14,10 +13,7 @@ import java.util.Map;
  */
 public class ProducerClient {
 
-    public static void main(String[] args) {
-        String str = "0000000000000000000劬";
-        System.out.println(str.getBytes(StandardCharsets.UTF_8).length);
-    }
+
 
     public static void mai22n(String[] args) {
         Map<String, Object> props = new HashMap<>();

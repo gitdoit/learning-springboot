@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.transaction;
+package org.seefly.springmongodb.template.transaction;
 
 import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.entity.Person;

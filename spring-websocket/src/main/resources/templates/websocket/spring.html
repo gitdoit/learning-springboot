@@ -94,12 +94,12 @@
             console.log("连接异常关闭")
         };
         door = true;
-        window.setTimeout(function () {
-            // 开始录音
-            gRecorder.run();
-        },500);
+        // window.setTimeout(function () {
+        //     // 开始录音
+        //     gRecorder.run();
+        // },500);
         timOutId = window.setInterval(function () {
-            ws.send(gRecorder.getAndClear());
+            ws.send('xxx');
             console.log("音频数据已发送！")
         }, 3000);
     }

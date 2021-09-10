@@ -1,11 +1,10 @@
-package org.seefly.springmongodb.update;
+package org.seefly.springmongodb.template.update;
 
 import com.mongodb.client.result.UpdateResult;
 import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.seefly.springmongodb.entity.Person;
 import org.springframework.data.mongodb.core.aggregation.AggregationUpdate;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ScriptOperators;
 import org.springframework.data.mongodb.core.aggregation.StringOperators;
 

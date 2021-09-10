@@ -1,5 +1,6 @@
 package org.seefly.springmongodb.extend.querys;
 
+import org.seefly.springmongodb.extend.ExecEvnContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.query.ConvertingParameterAccessor;
@@ -23,11 +24,19 @@ public class TenantPartTreeMongoQuery extends PartTreeMongoQuery {
 
     @Override
     protected Query createQuery(ConvertingParameterAccessor accessor) {
-        return super.createQuery(accessor).addCriteria(where("tenantId").is(40));
+        Query query = super.createQuery(accessor);
+        if(ExecEvnContext.get()) {
+            return query.addCriteria(where("tenantId").is(40));
+        }
+        return super.createQuery(accessor);
     }
 
     @Override
     protected Query createCountQuery(ConvertingParameterAccessor accessor) {
-        return super.createCountQuery(accessor).addCriteria(where("tenantId").is(40));
+        Query query = super.createQuery(accessor);
+        if(ExecEvnContext.get()) {
+            return query.addCriteria(where("tenantId").is(40));
+        }
+        return super.createQuery(accessor);
     }
 }

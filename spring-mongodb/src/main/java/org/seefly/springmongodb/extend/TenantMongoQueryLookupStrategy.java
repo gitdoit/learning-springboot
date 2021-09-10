@@ -39,20 +39,17 @@ public class TenantMongoQueryLookupStrategy implements QueryLookupStrategy {
             NamedQueries namedQueries) {
         RepositoryQuery repositoryQuery = strategy.resolveQuery(method, metadata, factory, namedQueries);
 
-        // 标注了指定注解，处理一下，额外查询租户字段
-        if (method.getAnnotation(TenantQuery.class) != null) {
-            // 基础语法查询
-            if(repositoryQuery instanceof PartTreeMongoQuery) {
-                return new TenantPartTreeMongoQuery(((PartTreeMongoQuery) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT);
-            }
-            // 基础string
-            if(repositoryQuery instanceof StringBasedMongoQuery) {
-                return new TenantStringBasedMongoQuery(((StringBasedMongoQuery) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT);
-            }
+        // 基础语法查询
+        if(repositoryQuery instanceof PartTreeMongoQuery) {
+            return new TenantPartTreeMongoQuery(((PartTreeMongoQuery) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT);
+        }
+        // 基础string
+        if(repositoryQuery instanceof StringBasedMongoQuery) {
+            return new TenantStringBasedMongoQuery(((StringBasedMongoQuery) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT);
+        }
 
-            if(repositoryQuery instanceof StringBasedAggregation) {
-                return new TenantStringBasedAggregation(metadata,((StringBasedAggregation) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT, method, factory);
-            }
+        if(repositoryQuery instanceof StringBasedAggregation) {
+            return new TenantStringBasedAggregation(metadata,((StringBasedAggregation) repositoryQuery).getQueryMethod(),mongoOperations,parser,QueryMethodEvaluationContextProvider.DEFAULT, method, factory);
         }
         return repositoryQuery;
     }

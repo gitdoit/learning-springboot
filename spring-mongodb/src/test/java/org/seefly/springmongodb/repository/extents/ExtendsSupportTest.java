@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.extents;
+package org.seefly.springmongodb.repository.extents;
 
 import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.entity.Person;

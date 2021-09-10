@@ -1,4 +1,4 @@
-package org.seefly.springmongodb.insert;
+package org.seefly.springmongodb.template.insert;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.seefly.springmongodb.entity.MemberReadHistory;
 import org.seefly.springmongodb.entity.NestedEntity;
 import org.seefly.springmongodb.entity.Person;
+import org.seefly.springmongodb.entity.Tenant;
 import org.seefly.springmongodb.utils.MongoClientUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.client.RestTemplate;
@@ -96,12 +97,20 @@ public class InsertAPITest {
             p.setName(name.replaceAll("\"",""));
             p.setHeight(Math.abs(random.nextInt() % 100) + 100);
             p.setHobbies(someHobbies(i));
+            p.setTenantId(String.valueOf(i % 50));
         }
         template.insertAll(list);
 
+    }
 
-
-
+    @Test
+    void insertTenant() {
+        for (int i = 0; i < 50; i++) {
+            Tenant tenant = new Tenant();
+            tenant.setId(String.valueOf(i));
+            tenant.setName("tenant-"+i);
+            template.save(tenant);
+        }
     }
 
 
