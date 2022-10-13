@@ -36,11 +36,11 @@ public class FormDataReceiveController {
      * 在这里直接使用日期类型接收，而不用自定义转换器。
      * 若自定义了一个{@link String2UserConverter}，然后还要用这个注解的话 这个注解是不会起作用的，起作用的是上面那个。
      */
-    @PostMapping("/format-date")
+    @PostMapping("/format-date4")
     public String format(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println(sdf.format(date));
-        return "OK";
+        return "34535345435";
     }
 
     /**

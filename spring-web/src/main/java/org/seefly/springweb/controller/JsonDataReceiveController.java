@@ -1,6 +1,8 @@
 package org.seefly.springweb.controller;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -126,10 +128,33 @@ public class JsonDataReceiveController {
         return person.gender.name();
     }
 
+    /**
+     * JSON属性别名策略
+     * @JsonAlias("position")
+     *  只在反序列化的时候生效,用于标注这个属性在反序列化的时候可以接受指定的属性名,可以同时存在多个注解;
+     * @JsonProperty(value = "thename",access = JsonProperty.Access.WRITE_ONLY)
+     *  默认在序列化和反序列化的时候生效, 直观作用就是给实体类上的属性改个名字. 原来的是name, 用这个
+     *  改成thename之后,反序列化的时候只接受thename, 序列化输出的时候也是thename
+     *
+     *  其中access 如果是WRITE_ONLY的时候,反序列化的时候生效(即可以接受thename),序列化的时候不生效不会输出name也不会输出thename 即使这个字段有值
+     */
+    @PostMapping("/json-alias")
+    public JsonAlias jsonAlias(@RequestBody JsonAlias data){
+        System.out.println(data);
+        return data;
+    }
+
 
 
 
     /***************************************************************************************************************************/
+    @Data
+    public static class JsonAlias {
+        @JsonProperty(value = "thename",access = JsonProperty.Access.WRITE_ONLY)
+        private String name;
+        @com.fasterxml.jackson.annotation.JsonAlias("position")
+        private String address;
+    }
 
     @Data
     public static class Person{

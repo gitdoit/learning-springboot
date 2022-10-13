@@ -4,6 +4,7 @@ import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import org.seefly.springmongodb.BaseWithoutSpringTest;
 import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,19 @@ public class AggregationQuery extends BaseWithoutSpringTest {
         AggregationResults<Document> result = template.aggregate(aggregation, "nestedEntity", Document.class);
         System.out.println(result.getUniqueMappedResult());
 
+    }
+
+
+    /**
+     * 自定义查询语句
+     * MongoTemplate对于一些比较复杂的查询语句, 组织起来非常费劲
+     * 这时候不如自己手写查询语句
+     */
+    public void testCustom() {
+        Criteria where = where("a").is("b");
+        AggregationOperation group = aoc -> Document.parse("{$group:{_id:{c:'$recorder_mobile',i:'$install_mobile'},count:{$sum:1},recorder:{$first:'$recorder'},installer:{$first:'$installer'}}}");
+        AggregationOperation project = aoc -> Document.parse("{$project:{_id:0,count:1,recorder:1,installer:1,recorderMobile: '$_id.c',installerMobile:'$_id.i'}}");
+        AggregationResults<Document> result = template.aggregate(Aggregation.newAggregation(Aggregation.match(where), group, project), "helper_wells", Document.class);
     }
 
 
