@@ -67,6 +67,11 @@ public class ZSetOps extends BaseOps{
     @Test
     public void ops4() {
         BoundZSetOperations<String, String> ops = stringTemplate.boundZSetOps("set:ZSet:A");
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = ops.rangeByScoreWithScores(0, 2);
+        for (ZSetOperations.TypedTuple<String> typedTuple : typedTuples) {
+            Double score = typedTuple.getScore();
+            String value = typedTuple.getValue();
+        }
 
         /**********************通过索引区间获取***************************/
         //获取指定区间范围内的元素,当结束值为-1时，则表示（n,+∞）
