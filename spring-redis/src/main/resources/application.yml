@@ -1,7 +1,7 @@
 spring:
   redis:
-    host: ${REDIS_HOST}
-    port: 6679
+    host: localhost
+    port: 49153
     database: 15
     lettuce:
       pool:
@@ -9,7 +9,8 @@ spring:
         max-wait: 30s
         max-idle: 8
         min-idle: 0
+    password: redispw
   application:
     name: redisB
-#debug: true
+#debug: true redis://default:redispw@localhost:49153
 
