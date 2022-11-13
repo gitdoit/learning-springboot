@@ -111,7 +111,58 @@ int epoll_wait(
    5. 回到步骤3，再次循环
 
 
-## Redis网络模型
+## Redis-过期策略
+```
+typedef struct redisDb {
+  dict *dict;// 存放所有key及value的地方
+  dict *expires;// 存放每一个key及其对应的TTL存活时间，只包含设置了TTL的key
+  dict *blocking_keys;//
+  dict *ready_keys;
+  dict *watched_keys;
+  int id;
+  long long avg_ttl;// 平均TTL时长
+  unsigned long expire_cursor;//expire检查时在dict中抽样的索引位置
+  list *defrag_later;//等待碎片整理的key列表
+}
+```
+### 过期策略-惰性删除
+> 惰性删除并不是在key过期后立即删除，而是在访问一个key的时候，检查该key的存活时间，如果已经过期才执行删除
+> 
+```
+// 查找一个key执行写操作
+robj *lookupKeyWriteWithFlags(redisDb *db,robj *key,int flags) {
+  // 检查key是否过期
+  expireIfNeeded(db,key);
+  return lookupKey(db,key,flags)
+}
+// 查找一个key执行读操作
+robj *lookupKeyReadWithFlags(redisDb *db,robj *key,int flags) {
+   robj *val;
+   // 检查key是否过期
+   if(expireIfNeeded(db,key)==1) {
+  
+   }
+   return lookupKey(db,key,flags)
+}
+
+int expireIfNeeded(redisDb *db,robj *key) {
+ if(!keyIsExpired(db,key)) return 0;
+ deleteExpireKeyAndPropagate(db,key);
+ return 1;
+}
+```
+### 过期策略-周期删除
+> 通过一个定时任务，周期性的抽样部分过期的key，执行删除。执行周期有两种
+1. Redis会设置一个定时任务，并按照固定的频率来执行过期key清理，模式为slow
+   1. 执行频率受server.hz的影响，默认为10，即每秒执行10测，每个执行周期100ms
+   2. 执行清理耗时不超过一次执行周期的25%
+   3. 逐个遍历db，逐个遍历db中的bucket，抽取20个key判断是否过期
+   4. 如果没有达到时间上限25ms，并且过期key比例大于10%，则再进行一次抽样，否则结束
+2. Redis的每个事件循环前会调用beforeSleep函数，执行过期key清理，模式为fast
+   1. 执行频率受beforeSleep调用频率的影像，但是两次FAST模式间隔不低于2ms
+   2. 执行清理耗时不超过1ms
+   3. 逐个遍历db，逐个遍历db中的bucket，抽取20个key判断是否过期
+   4. 如果没有达到时间上限1ms并且过期key比例大于10%，再进行一次抽样，否则结束。
 
 
 
